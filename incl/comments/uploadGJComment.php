@@ -46,6 +46,12 @@ if($cmds->doCommands($id, $decodecomment, $levelID)){
 	exit("-1");
 }
 if($id != "" AND $comment != ""){
+	$permaBan = $db->prepare("SELECT isCommentBanned FROM users WHERE userID = :userID");
+	$permaBan->execute([':userID' => $userID]);
+	$permaBan_result = $permaBan->fetchColumn(); 
+	if ($permaBan_result == 2) {
+		exit("-10");
+	}
 	$query = $db->prepare("INSERT INTO comments (userName, comment, levelID, userID, timeStamp, percent) VALUES (:userName, :comment, :levelID, :userID, :uploadDate, :percent)");
 	if($register == 1){
 		$query->execute([':userName' => $userName, ':comment' => $comment, ':levelID' => $levelID, ':userID' => $userID, ':uploadDate' => $uploadDate, ':percent' => $percent]);
