@@ -44,7 +44,7 @@ foreach($result as &$action){
 	$value2 = $action["value2"];
 	switch($action["type"]){
 		case 1:
-			$actionname = "Rated a level";
+			$actionname = "Level rate change";
 			break;
 		case 2:
 			$actionname = "Featured change";
