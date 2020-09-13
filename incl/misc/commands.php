@@ -23,6 +23,7 @@ class Commands {
 		require_once "../lib/mainLib.php";
 		$ep = new exploitPatch();
 		$gs = new mainLib();
+		$comment = strtolower($comment);
 		$commentarray = explode(' ', $comment);
 		$uploadDate = time();
 		$prefixLen = strlen($prefix);
@@ -32,7 +33,10 @@ class Commands {
 		$targetExtID = $query2->fetchColumn();
 		//ADMIN COMMANDS
 		if(substr($comment, 0, 4 + $prefixLen) == $prefix.'rate' AND $gs->checkPermission($accountID, "commandRate") AND $commandRate == 1){
-			return rate($uploadDate, $gs, $commentarray, $accountID, $levelID);
+			return rate($gs, $commentarray, $uploadDate, $accountID, $levelID);
+		}
+		if(substr($comment, 0, 6 + $prefixLen) == $prefix.'unrate' AND $gs->checkPermission($accountID, "commandRate") AND $commandRate == 1){
+			return unrate($commentarray, $uploadDate, $accountID, $levelID);
 		}
 		if(substr($comment, 0, 7 + $prefixLen) == $prefix.'feature' AND $gs->checkPermission($accountID, "commandFeature") AND $commandFeature == 1){
 			return feature($uploadDate, $accountID, $levelID);
