@@ -3,7 +3,7 @@
 include "../incl/lib/connection.php";
 require_once "../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
-$api_key = "dc467dd431fc48eb0244b0aead929ccd";
+include "../config/reupload.php";
 if(!empty($_POST["songlink"])){
 $song = str_replace("www.dropbox.com","dl.dropboxusercontent.com",$_POST["songlink"]);
 if (filter_var($song, FILTER_VALIDATE_URL) == TRUE) {

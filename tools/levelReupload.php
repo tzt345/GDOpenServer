@@ -15,8 +15,7 @@ function chkarray($source){
 //error_reporting(0);
 include "../incl/lib/connection.php";
 require "../incl/lib/XORCipher.php";
-require "../config/reuploadAcc.php";
-include "../config/reuploadLimits.php";
+require "../config/reupload.php";
 $xc = new XORCipher();
 require "../incl/lib/mainLib.php";
 $gs = new mainLib();
