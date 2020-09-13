@@ -1,6 +1,10 @@
 # GDOpenServer
-Basically a "server emulator" for Geometry Dash.
+Basically a "server emulator" for Geometry Dash, except it's rewritten now.
 
+### WARNING
+There haven't been made lots of tests so far, and it's currently still under development.
+I advise you to not use this for a public server until a release will be pushed.
+Currently, tests are done on a Linux server, with MariaDB and PHP 7.3 installed.
 
 ### Setup (extremely simplified)
 1. Upload all files to your webserver
