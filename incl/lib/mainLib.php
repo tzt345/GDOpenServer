@@ -760,7 +760,7 @@ class mainLib {
 	public function songReupload($url){
 		require __DIR__ . "/../../incl/lib/connection.php";
 		require __DIR__ . "/../../incl/lib/exploitPatch.php";
-		include __DIR__ . "/../../config/songAdd.php";
+		include __DIR__ . "/../../config/reupload.php";
 		$ep = new exploitPatch();
 		$song = str_replace("www.dropbox.com","dl.dropboxusercontent.com",$url);
 		if (filter_var($song, FILTER_VALIDATE_URL) == TRUE) {
