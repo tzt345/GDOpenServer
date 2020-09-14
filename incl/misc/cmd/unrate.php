@@ -23,7 +23,7 @@ function unrate($gs, $commentarray, $uploadDate, $accountID, $levelID) {
         $query->execute([':value' => $gs->getDifficulty($levelDiff["starStars"], $levelDiff["starAuto"], $levelDiff["starDemon"]),':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
     } else {
         $query = $db->prepare("UPDATE levels SET starStars='0', starDifficulty='0', starDemon='0', starAuto='0' WHERE levelID=:levelID");
-        $query->execute(':levelID' => $levelID);
+        $query->execute([':levelID' => $levelID]);
         $query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('1', 'na', '0', :levelID, :timestamp, :id)");
         $query->execute([':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
     }
