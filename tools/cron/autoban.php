@@ -84,6 +84,7 @@ foreach($result as $user){
 echo "<h3>User coins based bans</h3>";
 ob_flush();
 flush();
+$coins = 0;
 $quarter = floor($coins / 4);
 $coins = $coins + 10 + $quarter;
 $query = $db->prepare("SELECT userID, userName FROM users WHERE userCoins > :coins");
