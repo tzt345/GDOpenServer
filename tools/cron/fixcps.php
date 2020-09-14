@@ -74,7 +74,7 @@ foreach($result as $level){
 	$query = $db->prepare("SELECT userID FROM cpshares WHERE levelID = :levelID");
 	$query->execute([':levelID' => $level["levelID"]]);
 	$sharecount = $query->rowCount() + 1;
-	if ($CPWholeShare == 1) {
+	if ($CPSharedWhole == 1) {
 		$addcp = $deservedcp;
 	} else {
 		$addcp = round($deservedcp / $sharecount);

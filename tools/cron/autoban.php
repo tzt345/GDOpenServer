@@ -37,7 +37,7 @@ foreach($result as $gauntlet){
 	foreach($gauntlet as $level){
 		$query = $db->prepare("SELECT starStars, starDemon, coins, starCoins FROM levels WHERE levelID = :levelid");
 		$query->execute([':levelid' => $level]);
-		$result = $query->fetchColumn();
+		$result = $query->fetch();
 		$stars += $result["starStars"];
 		$demons += $result["starDemon"];
 		if($result["starCoins"] != 0){
@@ -51,20 +51,13 @@ $query->execute([':time' => time()]);
 $result = $query->fetchAll();
 foreach($result as $daily){
 	//getting lvls
-	$query = $db->prepare("SELECT userID, levelID FROM levels WHERE levelID = :levelID");
+	$query = $db->prepare("SELECT starStars, starDemon, coins, starCoins FROM levels WHERE levelID = :levelID");
 	$query->execute([':levelID' => $daily["levelID"]]);
-	$result = $query->fetchAll();
-	foreach($result as $level){
-		$stars += $level["starStars"];
-		$demons += $level["starDemon"];
-		$query = $db->prepare("SELECT starStars, starDemon, coins, starCoins FROM levels WHERE levelID = :levelid");
-		$query->execute([':levelid' => $level]);
-		$result = $query->fetchColumn();
-		$stars += $result["starStars"];
-		$demons += $result["starDemon"];
-		if($result["starCoins"] != 0){
-			$coins += $result["coins"];
-		}
+	$result = $query->fetch();
+	$stars += $result["starStars"];
+	$demons += $result["starDemon"];
+	if($result["starCoins"] != 0){
+		$coins += $result["coins"];
 	}
 }
 //counting stars
@@ -119,7 +112,7 @@ foreach($result as &$ip){
 	$query = $db->prepare("UPDATE users SET isBanned = '1' WHERE IP LIKE CONCAT(:ip, '%')");
 	$query->execute([':ip' => $ip["IP"]]);
 }
-echo "<hr>Autoban finished";
+echo "<hr>Auto-ban finished";
 ob_flush();
 flush();
 //done
