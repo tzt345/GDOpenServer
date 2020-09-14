@@ -88,7 +88,7 @@ foreach($result as $level){
 	$query->execute([':levelID' => $level["levelID"]]);
 	$sharecount = $query->rowCount() + 1;
 	if ($CPWholeShare == 1) {
-		$addcp = $deservedcp
+		$addcp = $deservedcp;
 	} else {
 		$addcp = round($deservedcp / $sharecount);
 	}
