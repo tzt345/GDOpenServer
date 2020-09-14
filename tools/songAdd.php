@@ -127,9 +127,9 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 			</form>';
 	} else {
 		echo '<form action="songAdd.php" method="post">
-        Link: <input type="text" name="songLink">
-        <br><input type="submit" value="Add Song">
-        </form>';
+        	Link: <input type="text" name="songLink">
+        	<br><input type="submit" value="Add Song">
+        	</form>';
 	}
 }
 ?>
