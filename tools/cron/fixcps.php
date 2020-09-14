@@ -3,19 +3,6 @@ chdir(dirname(__FILE__));
 echo "Please wait...<br>";
 ob_flush();
 flush();
-if(file_exists("../logs/fixcpslog.txt")){
-	$cptime = file_get_contents("../logs/fixcpslog.txt");
-	$newtime = time() - 30;
-	if($cptime > $newtime){
-		$remaintime = time() - $cptime;
-		$remaintime = 30 - $remaintime;
-		$remainmins = floor($remaintime / 60);
-		$remainsecs = $remainmins * 60;
-		$remainsecs = $remaintime - $remainsecs;
-		exit("Please wait $remainmins minutes and $remainsecs seconds before running ". basename($_SERVER['SCRIPT_NAME'])." again");
-	}
-}
-file_put_contents("../logs/fixcpslog.txt",time());
 set_time_limit(0);
 $cplog = "";
 $people = array();

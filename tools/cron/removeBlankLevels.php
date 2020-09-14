@@ -41,7 +41,7 @@ foreach($tables as &$table){
 	ob_flush();
 	flush();
 }*/
-echo "<hr>Success probably";
+echo "<hr>Success";
 ob_flush();
 flush();
 ?>

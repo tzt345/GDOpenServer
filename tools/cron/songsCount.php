@@ -23,6 +23,7 @@ foreach($result as &$songData){
 		$query4->execute([':count' => $count, ':songID' => $song]);
 	}
 }
+touch("../logs/snglog.txt");
 file_put_contents("../logs/snglog.txt",$frndlog);
 echo "<hr>";
 ?>

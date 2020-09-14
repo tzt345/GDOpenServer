@@ -1,18 +1,5 @@
 <?php
 chdir(dirname(__FILE__));
-if(file_exists("../logs/fixfrndlog.txt")){
-	$cptime = file_get_contents("../logs/fixfrndlog.txt");
-	$newtime = time() - 30;
-	if($cptime > $newtime){
-		$remaintime = time() - $cptime;
-		$remaintime = 30 - $remaintime;
-		$remainmins = floor($remaintime / 60);
-		$remainsecs = $remainmins * 60;
-		$remainsecs = $remaintime - $remainsecs;
-		exit("Please wait $remainmins minutes and $remainsecs seconds before running ". basename($_SERVER['SCRIPT_NAME'])." again");
-	}
-}
-file_put_contents("../logs/fixfrndlog.txt",time());
 set_time_limit(0);
 $frndlog = "";
 include "../../incl/lib/connection.php";
@@ -36,6 +23,7 @@ foreach($result as $account){
 		$query4->execute([':friendscount' => $friendscount, ':me' => $me]);
 	}
 }
+touch("../logs/frndlog.txt");
 file_put_contents("../logs/frndlog.txt",$frndlog);
 echo "<hr>";
 ?>
