@@ -76,24 +76,24 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 				//checking the amount of reuploads
 				if($isSongReuploadLimitDaily == 1) {
 					$query = $db->prepare("SELECT value2 FROM actions WHERE type = 18 AND value = :accountID AND timestamp > :timestamp");
-					$query->execute([':accountID' => $extID, ':timestamp' => time() - 86400]);
+					$query->execute([':accountID' => $accountID, ':timestamp' => time() - 86400]);
 				} else {
 					$query = $db->prepare("SELECT value2 FROM actions WHERE type = 18 AND value = :accountID");
-					$query->execute([':accountID' => $extID]);
+					$query->execute([':accountID' => $accountID]);
 				}
 				
 				if($query->rowCount() == 0) {
 					$query = $db->prepare("INSERT INTO actions (type, value, value2, timestamp) VALUES (18, :accountID, 1, :timestamp)");
-					$query->execute([':accountID' => $extID, ':timestamp' => time()]);
+					$query->execute([':accountID' => $accountID, ':timestamp' => time()]);
 					$reuploads = 1;
 				} else {
 					$reuploads = $query->fetchColumn();
 					if($isSongReuploadLimitDaily == 1) {
 						$query = $db->prepare("UPDATE actions SET value2 = ".($reuploads + 1)." WHERE type = 17 AND value = :accountID AND timestamp > :timestamp");
-						$query->execute([':accountID' => $extID, ':timestamp' => time() - 86400]);
+						$query->execute([':accountID' => $accountID, ':timestamp' => time() - 86400]);
 					} else {
 						$query = $db->prepare("UPDATE actions SET value2 = ".($reuploads + 1)." WHERE type = 17 AND value = :accountID");
-						$query->execute([':accountID' => $extID]);
+						$query->execute([':accountID' => $accountID]);
 					}
 				}
 			} else {

@@ -7,7 +7,7 @@ $dl = new dashboardLib();
 require_once "../../incl/lib/mainLib.php";
 $gs = new mainLib();
 if(!empty($_POST["url"])){
-	$songID = $gs->songReupload($_POST["url"]);
+	$songID = $gs->songReupload($_SESSION["accountID"], $_POST["url"]);
 	if($songID < 0){
 		$errorDesc = $dl->getLocalizedString("songAddError$songID");
 		$dl->printBox('<h1>'.$dl->getLocalizedString("songAdd")."</h1>

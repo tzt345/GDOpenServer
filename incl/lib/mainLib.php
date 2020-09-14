@@ -763,11 +763,11 @@ class mainLib {
 		$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('3', :value, :levelID, :timestamp, :id)");
 		$query->execute([':value' => $coins, ':timestamp' => time(), ':id' => $accountID, ':levelID' => $levelID]);
 	}
-	public function songReupload($url){
+	public function songReupload($accountID, $url){
 		require __DIR__ . "/../../incl/lib/connection.php";
 		require __DIR__ . "/../../incl/lib/exploitPatch.php";
-		include __DIR__ . "/../../config/reupload.php";
 		$ep = new exploitPatch();
+		include __DIR__ . "/../../config/reupload.php";
 		$song = str_replace("www.dropbox.com","dl.dropboxusercontent.com",$url);
 		if (filter_var($song, FILTER_VALIDATE_URL) == TRUE) {
 			if(strpos($song, 'soundcloud.com') !== false){
@@ -799,14 +799,45 @@ class mainLib {
 			$query = $db->prepare("SELECT count(*) FROM songs WHERE download = :download");
 			$query->execute([':download' => $song]);	
 			$count = $query->fetchColumn();
-			if($count != 0){
-				return "-3";
-			}else{
-				$query = $db->prepare("INSERT INTO songs (name, authorID, authorName, size, download, hash)
-				VALUES (:name, '9', :author, :size, :download, :hash)");
-				$query->execute([':name' => $name, ':download' => $song, ':author' => $author, ':size' => $size, ':hash' => $hash]);
-				return $db->lastInsertId();
+			if ($song_reupload != 0) {
+				//checking the amount of reuploads
+				if($isSongReuploadLimitDaily == 1) {
+					$query = $db->prepare("SELECT value2 FROM actions WHERE type = 18 AND value = :accountID AND timestamp > :timestamp");
+					$query->execute([':accountID' => $accountID, ':timestamp' => time() - 86400]);
+				} else {
+					$query = $db->prepare("SELECT value2 FROM actions WHERE type = 18 AND value = :accountID");
+					$query->execute([':accountID' => $accountID]);
+				}
+				
+				if($query->rowCount() == 0) {
+					$query = $db->prepare("INSERT INTO actions (type, value, value2, timestamp) VALUES (18, :accountID, 1, :timestamp)");
+					$query->execute([':accountID' => $accountID, ':timestamp' => time()]);
+					$reuploads = 1;
+				} else {
+					$reuploads = $query->fetchColumn();
+					if($isSongReuploadLimitDaily == 1) {
+						$query = $db->prepare("UPDATE actions SET value2 = ".($reuploads + 1)." WHERE type = 17 AND value = :accountID AND timestamp > :timestamp");
+						$query->execute([':accountID' => $accountID, ':timestamp' => time() - 86400]);
+					} else {
+						$query = $db->prepare("UPDATE actions SET value2 = ".($reuploads + 1)." WHERE type = 17 AND value = :accountID");
+						$query->execute([':accountID' => $accountID]);
+					}
+				}
+			} else {
+				$reuploads = -2;
 			}
+            if($count != 0){
+                return "-3";
+            }else{
+				if ($reuploads < $song_reupload) {
+					$query = $db->prepare("INSERT INTO songs (name, authorID, authorName, size, download, hash)
+					VALUES (:name, '9', :author, :size, :download, :hash)");
+					$query->execute([':name' => $name, ':download' => $song, ':author' => $author, ':size' => $size, ':hash' => $hash]);
+					return $db->lastInsertId();
+				} else {
+					return "-2";
+				}
+            }
 		}else{
 			return "-2";
 		}
