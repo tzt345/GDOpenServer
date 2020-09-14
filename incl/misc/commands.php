@@ -36,7 +36,7 @@ class Commands {
 			return rate($gs, $commentarray, $uploadDate, $accountID, $levelID);
 		}
 		if(substr($comment, 0, 6 + $prefixLen) == $prefix.'unrate' AND $gs->checkPermission($accountID, "commandRate") AND $commandRate == 1){
-			return unrate($commentarray, $uploadDate, $accountID, $levelID);
+			return unrate($gs, $commentarray, $uploadDate, $accountID, $levelID);
 		}
 		if(substr($comment, 0, 7 + $prefixLen) == $prefix.'feature' AND $gs->checkPermission($accountID, "commandFeature") AND $commandFeature == 1){
 			return feature($uploadDate, $accountID, $levelID);
