@@ -118,11 +118,18 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 		echo "Incorrect password. <a href='songAdd.php'>Try again.</a>";
 	}
 }else{
-    echo '<form action="songAdd.php" method="post">
-        Username: <input type="text" name="userName">
-        <br>Password: <input type="password" name="password">
-        <br>Link: <input type="text" name="songLink">
+	if ($song_reupload != 0) {
+		echo '<form action="songAdd.php" method="post">
+			Username: <input type="text" name="userName">
+			<br>Password: <input type="password" name="password">
+			<br>Link: <input type="text" name="songLink">
+			<br><input type="submit" value="Add Song">
+			</form>';
+	} else {
+		echo '<form action="songAdd.php" method="post">
+        Link: <input type="text" name="songLink">
         <br><input type="submit" value="Add Song">
         </form>';
+	}
 }
 ?>
