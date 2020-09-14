@@ -14,7 +14,7 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"])){
 		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName=:userName");	
 		$query->execute([':userName' => $userName]);
 		$accountID = $query->fetchColumn();
-		if($query->rowCount()==0){
+		if($query->rowCount() == 0){
 			echo "Invalid account/password. <a href='suggestList.php'>Try again.</a>";
 		}else if($gs->checkPermission($accountID, "toolSuggestlist")){
 			$accountID = $query->fetchColumn();
@@ -22,9 +22,9 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"])){
 			$query->execute();
 			$result = $query->fetchAll();
 			echo '<table border="1"><tr><th>Time</th><th>Suggested by</th><th>Level ID</th><th>Difficulty</th><th>Stars</th><th>Featured</th></tr>';
-		foreach($result as &$sugg){
-			echo "<tr><td>".date("d/m/Y G:i", $sugg["timestamp"])."</td><td>".$gs->getAccountName($sugg["suggestBy"])."(".$sugg["suggestBy"].")</td><td>".htmlspecialchars($sugg["suggestLevelId"],ENT_QUOTES)."</td><td>".htmlspecialchars($gs->getDifficulty($sugg["suggestDifficulty"],$sugg["suggestAuto"],$sugg["suggestDemon"]), ENT_QUOTES)."</td><td>".htmlspecialchars($sugg["suggestStars"],ENT_QUOTES)."</td><td>".htmlspecialchars($sugg["suggestFeatured"],ENT_QUOTES)."</td></tr>";
-		}
+			foreach($result as &$sugg){
+				echo "<tr><td>".date("d/m/Y G:i", $sugg["timestamp"])."</td><td>".$gs->getAccountName($sugg["suggestBy"])."(".$sugg["suggestBy"].")</td><td>".htmlspecialchars($sugg["suggestLevelId"],ENT_QUOTES)."</td><td>".htmlspecialchars($gs->getDifficulty($sugg["suggestDifficulty"],$sugg["suggestAuto"],$sugg["suggestDemon"]), ENT_QUOTES)."</td><td>".htmlspecialchars($sugg["suggestStars"],ENT_QUOTES)."</td><td>".htmlspecialchars($sugg["suggestFeatured"],ENT_QUOTES)."</td></tr>";
+			}
 			echo "</table>";
 		}else{
 			echo "You don't have permissions to view content on this page. <a href='suggestList.php'>Try again.</a>\n";

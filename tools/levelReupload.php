@@ -15,8 +15,8 @@ function chkarray($source){
 //error_reporting(0);
 include "../incl/lib/connection.php";
 require "../incl/lib/XORCipher.php";
-require "../config/reupload.php";
 $xc = new XORCipher();
+require "../config/reupload.php";
 require "../incl/lib/mainLib.php";
 $gs = new mainLib();
 if ($level_reupload == -1) {
@@ -111,8 +111,6 @@ if(!empty($_POST["levelid"])){
 			$query = $db->prepare("SELECT accountID, userID FROM links WHERE targetUserID=:target AND server=:url");
 			$query->execute([':target' => $targetUserID, ':url' => $parsedurl["host"]]);
 			if($query->rowCount() == 0){
-				$userID = $reupUID;
-				$extID = $reupAID;
 				if ($level_reupload == 0){
 					$userID = $reupUID;
 					$extID = $reupAID;
@@ -124,32 +122,35 @@ if(!empty($_POST["levelid"])){
 				$userID = $userInfo["userID"];
 				$extID = $userInfo["accountID"];
 			}
-			//checking the amount of reuploads
-			if($isLevelReuploadLimitDaily == 1) {
-                $query = $db->prepare("SELECT value2 FROM actions WHERE type = 17 AND value = :accountID AND timestamp > :timestamp");
-                $query->execute([':accountID' => $extID, ':timestamp' => time() - 86400]);
-            } else {
-                $query = $db->prepare("SELECT value2 FROM actions WHERE type = 17 AND value = :accountID");
-                $query->execute([':accountID' => $extID]);
-            }
+			if ($level_reupload != 0) {
+				//checking the amount of reuploads
+				if($isLevelReuploadLimitDaily == 1) {
+					$query = $db->prepare("SELECT value2 FROM actions WHERE type = 17 AND value = :accountID AND timestamp > :timestamp");
+					$query->execute([':accountID' => $extID, ':timestamp' => time() - 86400]);
+				} else {
+					$query = $db->prepare("SELECT value2 FROM actions WHERE type = 17 AND value = :accountID");
+					$query->execute([':accountID' => $extID]);
+				}
+				
+				if($query->rowCount() == 0) {
+					$query = $db->prepare("INSERT INTO actions (type, value, value2, timestamp) VALUES (17, :accountID, 1, :timestamp)");
+					$query->execute([':accountID' => $extID, ':timestamp' => time()]);
+					$reuploads = 1;
+				} else {
+					$reuploads = $query->fetchColumn();
+					if($isLevelReuploadLimitDaily == 1) {
+						$query = $db->prepare("UPDATE actions SET value2 = ".($reuploads + 1)." WHERE type = 17 AND value = :accountID AND timestamp > :timestamp");
+						$query->execute([':accountID' => $extID, ':timestamp' => time() - 86400]);
+					} else {
+						$query = $db->prepare("UPDATE actions SET value2 = ".($reuploads + 1)." WHERE type = 17 AND value = :accountID");
+						$query->execute([':accountID' => $extID]);
+					}
+				}
+			} else {
+				$reuploads = -2;
+			}
 			
-            if($query->rowCount() == 0) {
-                $query = $db->prepare("INSERT INTO actions (type, value, value2, timestamp) VALUES (17, :accountID, 1, :timestamp)");
-                $query->execute([':accountID' => $extID, ':timestamp' => time()]);
-				$reuploads = 1;
-            } else {
-                $reuploads = $query->fetchColumn();
-            }
-            
-            if($reuploads > 0 AND $isLevelReuploadLimitDaily == 1) {
-                $query = $db->prepare("UPDATE actions SET value2 = ".($reuploads + 1)." WHERE type = 17 AND value = :accountID AND timestamp > :timestamp");
-                $query->execute([':accountID' => $extID, ':timestamp' => time() - 86400]);
-			} elseif($reuploads > 0) {
-				$query = $db->prepare("UPDATE actions SET value2 = ".($reuploads + 1)." WHERE type = 17 AND value = :accountID");
-                $query->execute([':accountID' => $extID]);
-            }
-			
-			if ($reuploads < $level_reupload OR $level_reupload == 0) {
+			if ($reuploads < $level_reupload) {
 				//query
 				$query = $db->prepare("INSERT INTO levels (levelName, gameVersion, binaryVersion, userName, levelDesc, levelVersion, levelLength, audioTrack, auto, password, original, twoPlayer, songID, objects, coins, requestedStars, extraString, levelString, levelInfo, secret, uploadDate, updateDate, originalReup, userID, extID, unlisted, hostname, starStars, starCoins, starDifficulty, starDemon, starAuto, isLDM)
 													VALUES (:name ,:gameVersion, '27', 'Reupload', :desc, :version, :length, :audiotrack, '0', :password, :originalReup, :twoPlayer, :songID, '0', :coins, :reqstar, :extraString, :levelString, '0', '0', '$uploadDate', '$uploadDate', :originalReup, :userID, :extID, '0', :hostname, :starStars, :starCoins, :starDifficulty, :starDemon, :starAuto, :isLDM)");

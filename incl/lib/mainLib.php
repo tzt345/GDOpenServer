@@ -568,7 +568,7 @@ class mainLib {
 		$query->execute([':accountID' => $accountID]);
 		$isAdmin = $query->fetchColumn();
 		if($isAdmin == 1){
-			return 1;
+			return true;
 		}
 		
 		$query = $db->prepare("SELECT roleID FROM roleassign WHERE accountID = :accountID");
@@ -682,6 +682,12 @@ class mainLib {
 	}
 	public function getMaxValuePermission($accountID, $permission){
 		include __DIR__ . "/connection.php";
+		$query = $db->prepare("SELECT isAdmin FROM accounts WHERE accountID = :accountID");
+		$query->execute([':accountID' => $accountID]);
+		$isAdmin = $query->fetchColumn();
+		if($isAdmin == 1){
+			return 1;
+		}
 		$maxvalue = 0;
 		$query = $db->prepare("SELECT roleID FROM roleassign WHERE accountID = :accountID");
 		$query->execute([':accountID' => $accountID]);
