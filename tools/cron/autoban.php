@@ -10,6 +10,7 @@ $levelstuff = $query->fetchAll();
 //counting stars
 $stars = 0;
 $demons = 0;
+$coins = 0;
 foreach($levelstuff as $level){
 	$stars = $stars + $level["starStars"];
 	if($level["starCoins"] != 0){
