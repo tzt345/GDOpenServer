@@ -91,6 +91,9 @@ foreach($result as &$action){
 		case 16:
 			$actionname = "Magic change";
 			break;
+		case 17:
+			$actionname = "Quest Added";
+			break;
 		default:
 			$actionname = $action["type"];
 			break;

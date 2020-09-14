@@ -41,6 +41,9 @@ class Commands {
 		if(substr($comment, 0, 7 + $prefixLen) == $prefix.'feature' AND $gs->checkPermission($accountID, "commandFeature") AND $commandFeature == 1){
 			return feature($uploadDate, $accountID, $levelID);
 		}
+		if(substr($comment, 0, 9 + $prefixLen) == $prefix.'unfeature' AND $gs->checkPermission($accountID, "commandFeature") AND $commandFeature == 1){
+			return unfeature($uploadDate, $accountID, $levelID);
+		}
 		if(substr($comment, 0, 4 + $prefixLen) == $prefix.'epic' AND $gs->checkPermission($accountID, "commandEpic") AND $commandEpic == 1){
 			return epic($uploadDate, $accountID, $levelID);
 		}
@@ -55,6 +58,9 @@ class Commands {
 		}
 		if(substr($comment, 0, 11 + $prefixLen) == $prefix.'verifycoins' AND $gs->checkPermission($accountID, "commandVerifycoins") AND $commandVerifyCoins == 1){
 			return verifycoins($uploadDate, $accountID, $levelID);
+		}
+		if(substr($comment, 0, 13 + $prefixLen) == $prefix.'unverifycoins' AND $gs->checkPermission($accountID, "commandVerifycoins") AND $commandVerifyCoins == 1){
+			return unverifycoins($uploadDate, $accountID, $levelID);
 		}
 		if(substr($comment, 0, 5 + $prefixLen) == $prefix.'daily' AND $gs->checkPermission($accountID, "commandDaily") AND $commandDaily == 1){
 			return daily($uploadDate, $accountID, $levelID);

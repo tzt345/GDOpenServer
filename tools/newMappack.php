@@ -1,10 +1,11 @@
 <?php
 include "../incl/lib/connection.php";
 require "../incl/lib/generatePass.php";
+$gp = new generatePass();
 require "../incl/lib/exploitPatch.php";
+$ep = new exploitPatch();
 require "../incl/lib/mainLib.php";
 $gs = new mainLib();
-$ep = new exploitPatch();
 if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["packName"]) AND !empty($_POST["levels"]) AND !empty($_POST["stars"]) AND !empty($_POST["coins"]) AND !empty($_POST["color"])){
 	$userName = $ep->remove($_POST["userName"]);
 	$password = $ep->remove($_POST["password"]);
@@ -13,8 +14,7 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 	$stars = $ep->remove($_POST["stars"]);
 	$coins = $ep->remove($_POST["coins"]);
 	$color = $ep->remove($_POST["color"]);
-	$generatePass = new generatePass();
-	$pass = $generatePass->isValidUsrname($userName, $password);
+	$pass = $gp->isValidUsrname($userName, $password);
 	if ($pass == 1) {
 		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName=:userName");	
 		$query->execute([':userName' => $userName]);

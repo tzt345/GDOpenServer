@@ -35,7 +35,7 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 			}
 
 			$query = $db->prepare("INSERT INTO modactions  (type, value, value2, value3, timestamp, account) 
-													VALUES ('17',:levelID, '1',  :now,:account)");
+													VALUES ('18',:levelID, '1',  :now,:account)");
 			$query->execute([':levelID' => $levelID,':timestamp' => $timestamp, ':now' => time(), ':account' => $accountID]);
 
 		}else{

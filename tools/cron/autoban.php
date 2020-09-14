@@ -1,7 +1,7 @@
 <hr>
 <?php
 include "../../incl/lib/connection.php";
-echo "Initializing autoban";
+echo "Initializing auto-ban";
 ob_flush();
 flush();
 $query = $db->prepare("SELECT starStars, coins, starDemon, starCoins FROM levels");
@@ -37,11 +37,14 @@ $query->execute();
 $result = $query->fetchAll();
 foreach($result as $gauntlet){
 	foreach($gauntlet as $level){
-		$query = $db->prepare("SELECT starStars, starDemon FROM levels WHERE levelID = :levelid");
+		$query = $db->prepare("SELECT starStars, starDemon, coins, starCoins FROM levels WHERE levelID = :levelid");
 		$query->execute([':levelid' => $level]);
 		$result = $query->fetchColumn();
 		$stars += $result["starStars"];
 		$demons += $result["starDemon"];
+		if($result["starCoins"] != 0){
+			$coins += $result["coins"];
+		}
 	}
 }
 // daily and weekly stars and demons
@@ -56,10 +59,14 @@ foreach($result as $daily){
 	foreach($result as $level){
 		$stars += $level["starStars"];
 		$demons += $level["starDemon"];
-		$query = $db->prepare("SELECT starStars FROM levels WHERE levelID = :levelid");
+		$query = $db->prepare("SELECT starStars, starDemon, coins, starCoins FROM levels WHERE levelID = :levelid");
 		$query->execute([':levelid' => $level]);
 		$result = $query->fetchColumn();
 		$stars += $result["starStars"];
+		$demons += $result["starDemon"];
+		if($result["starCoins"] != 0){
+			$coins += $result["coins"];
+		}
 	}
 }
 //counting stars
