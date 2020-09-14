@@ -32,11 +32,13 @@ foreach($result as $user){
 	$query2 = $db->prepare("SELECT count(*) FROM levels WHERE userID = :userID AND starStars != 0 AND isCPShared = 0");
 	$query2->execute([':userID' => $userID]);
 	$creatorpoints = $query2->fetchColumn();
+	$creatorpoints = $creatorpoints * $rateCP;
 	$cplog .= $user["userName"] . " - " . $creatorpoints . "\r\n";
 	//getting featured lvls count
 	$query3 = $db->prepare("SELECT count(*) FROM levels WHERE userID = :userID AND starFeatured != 0 AND isCPShared = 0");
 	$query3->execute([':userID' => $userID]);
 	$cpgain = $query3->fetchColumn();
+	$cpgain = $cpgain * $featureCP;
 	$creatorpoints = $creatorpoints + $cpgain;
 	$cplog .= $user["userName"] . " - " . $creatorpoints . "\r\n";
 	//getting epic lvls count
