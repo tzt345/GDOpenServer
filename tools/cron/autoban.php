@@ -28,9 +28,6 @@ foreach($result as $pack){
 }
 $quarter = floor($stars / 4);
 $stars = $stars + 200 + $quarter;
-$query = $db->prepare("SELECT userID, userName FROM users WHERE stars > :stars");
-$query->execute([':stars' => $stars]);
-$result = $query->fetchAll();
 // gauntlet stars
 $query = $db->prepare("SELECT level1, level2, level3, level4, level5 FROM gauntlets");
 $query->execute();
@@ -70,6 +67,9 @@ foreach($result as $daily){
 	}
 }
 //counting stars
+$query = $db->prepare("SELECT userID, userName FROM users WHERE stars > :stars");
+$query->execute([':stars' => $stars]);
+$result = $query->fetchAll();
 echo "<h3>Stars based bans</h3>";
 ob_flush();
 flush();
