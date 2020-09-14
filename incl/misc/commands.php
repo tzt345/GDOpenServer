@@ -50,6 +50,9 @@ class Commands {
 		if(substr($comment, 0, 6 + $prefixLen) == $prefix.'unepic' AND $gs->checkPermission($accountID, "commandEpic") AND $commandEpic == 1){
 			return unepic($uploadDate, $accountID, $levelID);
 		}
+		if(substr($comment, 0, 4 + $prefixLen) == $prefix.'hall' AND $gs->checkPermission($accountID, "commandEpic") AND $commandEpic == 1 AND $epicInHall == 0){
+			return epic($uploadDate, $accountID, $levelID);
+		}
 		if(substr($comment, 0, 5 + $prefixLen) == $prefix.'magic' AND $gs->checkPermission($accountID, "commandMagic") AND $commandMagic == 1 AND $isMagicSectionManual == 1){
 			return magic($uploadDate, $accountID, $levelID);
 		}

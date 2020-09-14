@@ -1,6 +1,14 @@
 <?php
-$epicCP = 2; // creator points given for getting epic
-$magicCP = 2; // this counts if magic section is manual
-$isMagicSectionManual = 0; // enables magic command and gives creator points for levels that go into that section
-$CPSharedWhole = 0; // this indicates if shared level creator points are added equally to each creator, or split between the creators; 0 for no and 1 for yes
+// Whenever a level gets rated, any below will give the amount of CP to the creator.
+// NOTE: This WILL stack. Which in the end means (rate + feature + epic) = total CP reward.
+$rateCP = 1; 
+$featureCP = 1;
+$epicCP = 2; 
+$magicCP = 2; // Counts if magic section is manual
+
+$epicInHall = 1; // 1 = Epic levels can be seen in Hall of Fame, 0 = Only levels with !hall command applied will go to Hall of Fame
+// !hall command is disabled by default if $epicToHall is set to 1.
+
+$isMagicSectionManual = 0; // Enables magic command and gives creator points for levels that go into that section
+$CPSharedWhole = 0; // Indicates if shared level creator points are added equally to each creator, or split between the creators; 0 for no and 1 for yes
 ?>

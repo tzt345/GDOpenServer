@@ -189,7 +189,11 @@ if($type==6 OR $type==17){ //featured
 	$order = "rateDate DESC,uploadDate";
 }
 if($type==16){ //HALL OF FAME
-	$params[] = "NOT starEpic = 0";
+	if ($epicInHall == 1) {
+		$params[] = "NOT starEpic = 0";
+	} else {
+		$params[] = "NOT starHall = 0";
+	}
 	$order = "rateDate DESC,uploadDate";
 }
 if($type==7){ //MAGIC
