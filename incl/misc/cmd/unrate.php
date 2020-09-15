@@ -33,11 +33,13 @@ function unrate($gs, $commentarray, $uploadDate, $accountID, $levelID) {
         } elseif ($starFeatured <= 0) {
             $starFeatured = 1;
         }
-        if ($gs->checkPermission($accountID, "commandFeature")) {
-            $query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
-            $query->execute([':value' => $starFeatured, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);	
-            $query = $db->prepare("UPDATE levels SET starFeatured=:starFeatured WHERE levelID=:levelID");
-            $query->execute([':starFeatured' => $starFeatured, ':levelID' => $levelID]);
+        if ($starFeatured == 0) {
+            if ($gs->checkPermission($accountID, "commandFeature")) {
+                $query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
+                $query->execute([':value' => $starFeatured, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);	
+                $query = $db->prepare("UPDATE levels SET starFeatured=:starFeatured WHERE levelID=:levelID");
+                $query->execute([':starFeatured' => $starFeatured, ':levelID' => $levelID]);
+            }
         }
     }
     if (isset($starCoins) AND is_numeric($starCoins)) {
@@ -46,11 +48,13 @@ function unrate($gs, $commentarray, $uploadDate, $accountID, $levelID) {
         } elseif ($starCoins <= 0) {
             $starCoins = 1;
         }
-        if ($gs->checkPermission($accountID, "commandVerifycoins")) {
-            $query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('3', :value, :levelID, :timestamp, :id)");
-            $query->execute([':value' => $starCoins, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
-            $query = $db->prepare("UPDATE levels SET starCoins=:starCoins WHERE levelID=:levelID");
-            $query->execute([':starCoins' => $starCoins, ':levelID' => $levelID]);
+        if ($starCoins == 0) {
+            if ($gs->checkPermission($accountID, "commandVerifycoins")) {
+                $query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('3', :value, :levelID, :timestamp, :id)");
+                $query->execute([':value' => $starCoins, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+                $query = $db->prepare("UPDATE levels SET starCoins=:starCoins WHERE levelID=:levelID");
+                $query->execute([':starCoins' => $starCoins, ':levelID' => $levelID]);
+            }
         }
     }
     return true;
