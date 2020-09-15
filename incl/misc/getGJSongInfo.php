@@ -1,8 +1,6 @@
 <?php
 chdir(dirname(__FILE__));
 include "../lib/connection.php";
-require_once "../lib/songReup.php";
-$songReup = new songReup();
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 if(empty($_POST["songID"])){
