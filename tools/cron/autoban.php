@@ -27,7 +27,7 @@ $result = $query->fetchAll();
 foreach($result as $pack){
 	$stars += $pack["stars"];
 }
-// gauntlet stars
+/* gauntlet stars
 $query = $db->prepare("SELECT level1, level2, level3, level4, level5 FROM gauntlets");
 $query->execute();
 $result = $query->fetchAll();
@@ -58,6 +58,7 @@ foreach($result as $daily){
 		$coins += $result["coins"];
 	}
 }
+*/
 //counting stars
 echo "<h3>Stars based bans</h3>";
 ob_flush();
