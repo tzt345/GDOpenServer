@@ -27,8 +27,6 @@ $result = $query->fetchAll();
 foreach($result as $pack){
 	$stars += $pack["stars"];
 }
-$quarter = floor($stars / 4);
-$stars = $stars + 200 + $quarter;
 // gauntlet stars
 $query = $db->prepare("SELECT level1, level2, level3, level4, level5 FROM gauntlets");
 $query->execute();
@@ -61,12 +59,16 @@ foreach($result as $daily){
 	}
 }
 //counting stars
-$query = $db->prepare("SELECT userID, userName FROM users WHERE stars > :stars");
-$query->execute([':stars' => $stars]);
-$result = $query->fetchAll();
 echo "<h3>Stars based bans</h3>";
 ob_flush();
 flush();
+echo $stars;
+$quarter = floor($stars / 4);
+$stars = $stars + 200 + $quarter;
+echo $stars;
+$query = $db->prepare("SELECT userID, userName FROM users WHERE stars > :stars");
+$query->execute([':stars' => $stars]);
+$result = $query->fetchAll();
 //banning ppl
 foreach($result as $user){
 	$query = $db->prepare("UPDATE users SET isBanned = '1' WHERE userID = :id");
@@ -77,9 +79,14 @@ foreach($result as $user){
 echo "<h3>User coins based bans</h3>";
 ob_flush();
 flush();
+<<<<<<< HEAD
 $coins = 0;
+=======
+echo $coins;
+>>>>>>> f33bf6737b7a52c0dbea80a5bf22aa6659e37e82
 $quarter = floor($coins / 4);
 $coins = $coins + 10 + $quarter;
+echo $coins;
 $query = $db->prepare("SELECT userID, userName FROM users WHERE userCoins > :coins");
 $query->execute([':coins' => $coins]);
 $result = $query->fetchAll();
@@ -93,8 +100,10 @@ foreach($result as $user){
 echo "<h3>Demons based bans</h3>";
 ob_flush();
 flush();
+echo $demons;
 $quarter = floor($demons / 16);
 $demons = $demons + 3 + $quarter;
+echo $demons;
 $query = $db->prepare("SELECT userID, userName FROM users WHERE demons > :demons");
 $query->execute([':demons' => $demons]);
 $result = $query->fetchAll();
