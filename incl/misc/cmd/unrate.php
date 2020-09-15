@@ -29,11 +29,11 @@ function unrate($gs, $commentarray, $uploadDate, $accountID, $levelID) {
     }
     if(isset($starFeatured) AND is_numeric($starFeatured)){
         if ($starFeatured >= 1) {
-            $starFeatured = 0;
-        } elseif ($starFeatured <= 0) {
             $starFeatured = 1;
+        } elseif ($starFeatured <= 0) {
+            $starFeatured = 0;
         }
-        if ($starFeatured == 0) {
+        if ($starFeatured == 1) {
             if ($gs->checkPermission($accountID, "commandFeature")) {
                 $query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
                 $query->execute([':value' => $starFeatured, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);	
@@ -44,11 +44,11 @@ function unrate($gs, $commentarray, $uploadDate, $accountID, $levelID) {
     }
     if (isset($starCoins) AND is_numeric($starCoins)) {
         if ($starCoins >= 1) {
-            $starCoins = 0;
-        } elseif ($starCoins <= 0) {
             $starCoins = 1;
+        } elseif ($starCoins <= 0) {
+            $starCoins = 0;
         }
-        if ($starCoins == 0) {
+        if ($starCoins == 1) {
             if ($gs->checkPermission($accountID, "commandVerifycoins")) {
                 $query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('3', :value, :levelID, :timestamp, :id)");
                 $query->execute([':value' => $starCoins, ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
