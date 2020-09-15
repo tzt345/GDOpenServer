@@ -244,6 +244,7 @@ class mainLib {
 		$name = strtolower($name);
 		$starAuto = 0;
 		$starDemon = 0;
+		$starDifficulty = 0;
 		switch ($name) {
 			case "na":
 				$starDifficulty = 0;
