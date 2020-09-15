@@ -1,10 +1,10 @@
 <?php
-include "../../incl/lib/connection.php";
-require "../../incl/lib/generatePass.php";
+include dirname(__FILE__)."/../incl/lib/connection.php";
+require dirname(__FILE__)."/../incl/lib/generatePass.php";
 $gp = new generatePass();
-require_once "../../incl/lib/exploitPatch.php";
+require_once dirname(__FILE__)."/../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
-include "../config/reupload.php";
+include dirname(__FILE__)."/../config/reupload.php";
 if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["songLink"])){
 	$userName = $ep->remove($_POST["userName"]);
     $password = $ep->remove($_POST["password"]);
@@ -12,7 +12,7 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 	$query->execute([':userName' => $userName]);
 	$accountID = $query->fetchColumn();
 	if ($query->rowCount() == 0) {
-        exit("Invalid or non-existant account. <a href='songAdd.php'>Try again.</a>")
+        exit("Invalid or non-existant account. <a href='songAdd.php'>Try again.</a>");
     }
 	$pass = $gp->isValidUsrname($userName, $password);
 	if ($pass == 1) {
