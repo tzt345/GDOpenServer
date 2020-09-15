@@ -61,6 +61,7 @@ if(!is_numeric($levelID)){
 		}
 		//getting the days since uploaded... or outputting the date in Y-M-D format at least for now...
 		$uploadDate = date("d-m-Y G-i", $result["uploadDate"]);
+		$uploadDate = date("d-m-Y G-i", $result["uploadDate"]);
 		//password xor
 		$pass = $result["password"];
 		$desc = $result["levelDesc"];
