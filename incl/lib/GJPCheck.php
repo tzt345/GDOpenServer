@@ -7,10 +7,18 @@ class GJPCheck {
 		$ml = new mainLib();
 		if($sessionGrants){
 			$ip = $ml->getIP();
-			$query = $db->prepare("SELECT count(*) FROM actions WHERE type = 16 AND value = :accountID AND value2 = :ip AND timestamp > :timestamp");
-			$query->execute([':accountID' => $accountID, ':ip' => $ip, ':timestamp' => time() - 3600]);
-			if($query->fetchColumn() > 0){
-				return 1;
+			if ($sessionGrantsTime <= 0) {
+				$query = $db->prepare("SELECT count(*) FROM actions WHERE type = 16 AND value = :accountID AND value2 = :ip");
+				$query->execute([':accountID' => $accountID, ':ip' => $ip]);
+				if($query->fetchColumn() > 0){
+					return 1;
+				}
+			} else {
+				$query = $db->prepare("SELECT count(*) FROM actions WHERE type = 16 AND value = :accountID AND value2 = :ip AND timestamp > :timestamp");
+				$query->execute([':accountID' => $accountID, ':ip' => $ip, ':timestamp' => time() - ($sessionGrantsTime * 60)]);
+				if($query->fetchColumn() > 0){
+					return 1;
+				}
 			}
 		}
 		require_once dirname(__FILE__)."/XORCipher.php";
