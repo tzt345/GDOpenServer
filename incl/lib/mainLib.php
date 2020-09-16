@@ -769,6 +769,9 @@ class mainLib {
 		require __DIR__ . "/../../incl/lib/exploitPatch.php";
 		$ep = new exploitPatch();
 		include __DIR__ . "/../../config/reupload.php";
+		if ($song_reupload == -1) {
+			exit("-2");
+		}
 		$song = str_replace("www.dropbox.com","dl.dropboxusercontent.com",$url);
 		if (filter_var($song, FILTER_VALIDATE_URL) == TRUE) {
 			if(strpos($song, 'soundcloud.com') !== false){
