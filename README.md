@@ -15,4 +15,4 @@ Currently, tests are done on a Linux server, with MariaDB and PHP 7.3 installed.
 ### Credits
 Most said code changes are already credited in https://github.com/Cvolton/GMDprivateServer.  
 Big thanks to Intelligent-Cat and Wyliemaster for helping me working on this project.  
-Additional credits to Alex1304 for letting me take some code from https://github.com/Alex1304/gdps/.
+Additional credits to Alex1304 and DonAlex0 for some code they made that's included in here.
