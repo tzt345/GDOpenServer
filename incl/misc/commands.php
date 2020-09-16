@@ -36,34 +36,34 @@ class Commands {
 		if(substr($comment, 0, 4 + $prefixLen) == $prefix.'rate' AND $gs->checkPermission($accountID, "commandRate") AND $commandRate == 1){
 			return rate($gs, $commentarray, $uploadDate, $accountID, $levelID);
 		}
-		if(substr($comment, 0, 6 + $prefixLen) == $prefix.'unrate' AND $gs->checkPermission($accountID, "commandRate") AND $commandRate == 1){
+		if(substr($comment, 0, 6 + $prefixLen) == $prefix.'unrate' AND $gs->checkPermission($accountID, "commandRate") AND $commandUnrate == 1){
 			return unrate($gs, $commentarray, $uploadDate, $accountID, $levelID);
 		}
 		if(substr($comment, 0, 7 + $prefixLen) == $prefix.'feature' AND $gs->checkPermission($accountID, "commandFeature") AND $commandFeature == 1){
 			return feature($uploadDate, $accountID, $levelID);
 		}
-		if(substr($comment, 0, 9 + $prefixLen) == $prefix.'unfeature' AND $gs->checkPermission($accountID, "commandFeature") AND $commandFeature == 1){
+		if(substr($comment, 0, 9 + $prefixLen) == $prefix.'unfeature' AND $gs->checkPermission($accountID, "commandFeature") AND $commandUnfeature == 1){
 			return unfeature($uploadDate, $accountID, $levelID);
 		}
 		if(substr($comment, 0, 4 + $prefixLen) == $prefix.'epic' AND $gs->checkPermission($accountID, "commandEpic") AND $commandEpic == 1){
 			return epic($uploadDate, $accountID, $levelID);
 		}
-		if(substr($comment, 0, 6 + $prefixLen) == $prefix.'unepic' AND $gs->checkPermission($accountID, "commandEpic") AND $commandEpic == 1){
+		if(substr($comment, 0, 6 + $prefixLen) == $prefix.'unepic' AND $gs->checkPermission($accountID, "commandEpic") AND $commandUnepic == 1){
 			return unepic($uploadDate, $accountID, $levelID);
 		}
-		if(substr($comment, 0, 4 + $prefixLen) == $prefix.'hall' AND $gs->checkPermission($accountID, "commandEpic") AND $commandEpic == 1 AND $epicInHall == 0){
+		if(substr($comment, 0, 4 + $prefixLen) == $prefix.'hall' AND $gs->checkPermission($accountID, "commandEpic") AND $commandHall == 1 AND $epicInHall == 0){
 			return hall($uploadDate, $accountID, $levelID);
 		}
 		if(substr($comment, 0, 5 + $prefixLen) == $prefix.'magic' AND $gs->checkPermission($accountID, "commandMagic") AND $commandMagic == 1 AND $isMagicSectionManual == 1){
 			return magic($uploadDate, $accountID, $levelID);
 		}
-		if(substr($comment, 0, 7 + $prefixLen) == $prefix.'unmagic' AND $gs->checkPermission($accountID, "commandMagic") AND $commandMagic == 1 AND $isMagicSectionManual == 1){
+		if(substr($comment, 0, 7 + $prefixLen) == $prefix.'unmagic' AND $gs->checkPermission($accountID, "commandMagic") AND $commandUnmagic == 1 AND $isMagicSectionManual == 1){
 			return unmagic($uploadDate, $accountID, $levelID);
 		}
 		if(substr($comment, 0, 11 + $prefixLen) == $prefix.'verifycoins' AND $gs->checkPermission($accountID, "commandVerifycoins") AND $commandVerifyCoins == 1){
 			return verifycoins($uploadDate, $accountID, $levelID);
 		}
-		if(substr($comment, 0, 13 + $prefixLen) == $prefix.'unverifycoins' AND $gs->checkPermission($accountID, "commandVerifycoins") AND $commandVerifyCoins == 1){
+		if(substr($comment, 0, 13 + $prefixLen) == $prefix.'unverifycoins' AND $gs->checkPermission($accountID, "commandVerifycoins") AND $commandUnverifyCoins == 1){
 			return unverifycoins($uploadDate, $accountID, $levelID);
 		}
 		if(substr($comment, 0, 5 + $prefixLen) == $prefix.'daily' AND $gs->checkPermission($accountID, "commandDaily") AND $commandDaily == 1){
