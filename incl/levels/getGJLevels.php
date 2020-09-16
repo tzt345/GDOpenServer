@@ -25,7 +25,7 @@ if(!empty($_POST["gameVersion"])){
 if(!is_numeric($gameVersion)){
 	exit("-1");
 }
-if($gameVersion == 20){
+if($gameVersion >= 20){
 	$binaryVersion = $ep->number($_POST["binaryVersion"]);
 	if($binaryVersion > 27){
 		$gameVersion++;
@@ -47,7 +47,7 @@ if(!empty($_POST["diff"])){
 if($gameVersion==0){
 	$params[] = "gameVersion <= 18";
 }else{
-	$params[] = " gameVersion <= '$gameVersion'";
+	$params[] = "gameVersion <= '$gameVersion'";
 }
 if(!empty($_POST["featured"]) AND $_POST["featured"]==1){
 	$params[] = "starFeatured = 1";
@@ -200,7 +200,7 @@ if($type==7){ //MAGIC
 	if ($isMagicSectionManual == 1) {
 		$params[] = "NOT starMagic = 0";
 	} else {
-		$params[] = "objects > 9999";
+		$params[] = "objects > 4999";
 	}
 }
 if($type==10){ //MAP PACKS

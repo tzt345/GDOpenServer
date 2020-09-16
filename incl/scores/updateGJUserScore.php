@@ -11,7 +11,7 @@ $gs = new mainLib();
 if(!empty($_POST["gameVersion"])){
 	$gameVersion = $ep->remove($_POST["gameVersion"]);
 }else{
-	$gameVersion = 1;
+	$gameVersion = 21;
 }
 if(!empty($_POST["binaryVersion"])){
 	$binaryVersion = $ep->remove($_POST["binaryVersion"]);
@@ -112,11 +112,13 @@ if(!empty($_POST["udid"])){
 }
 if(!empty($_POST["accountID"]) AND $_POST["accountID"]!="0"){
 	$id = $ep->remove($_POST["accountID"]);
-	$gjp = $ep->remove($_POST["gjp"]);
-	$GJPCheck = new GJPCheck(); //gjp check
-	$gjpresult = $GJPCheck->check($gjp,$id);
-	if($gjpresult != 1){
-		exit("-1");
+	if($_POST["gameVersion"] >= 20) {
+		$gjp = $ep->remove($_POST["gjp"]);
+		$GJPCheck = new GJPCheck(); //gjp check
+		$gjpresult = $GJPCheck->check($gjp,$id);
+		if($gjpresult != 1){
+			exit("-1");
+		}
 	}
 }else{
 	$register = 0;
