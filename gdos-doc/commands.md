@@ -5,7 +5,7 @@ Commenting such "commands" will send the command to the server to do something.
 As an example, commenting **!unrate** on a level will unrate the level _completely_, setting the level to have no difficulty rating, no stars and no coins.
 
 Additionally, commands can have "parameters", meaning that they can/should have options added after the command.  
-Another example, **!rate insane 9 1** will rate the level with the insane difficulty, 9 stars and be featured.  
+Another example, **!rate insane 9 1** will rate the level with the insane difficulty, 9 stars and make it be featured.  
 You can probably guess where it goes for other commands.
 
 Note when commenting a command: You WILL recieve a "Comment Upload failed!" message. This is intentional and just tells you that you did everything correct.

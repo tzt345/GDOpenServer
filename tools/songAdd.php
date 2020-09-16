@@ -6,6 +6,9 @@ $gp = new generatePass();
 require_once dirname(__FILE__)."/../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
 include dirname(__FILE__)."/../config/reupload.php";
+if ($song_reupload == -1) {
+	exit("Song reuploading to this GDPS is disabled.");
+}
 if(!empty($_POST["songLink"])){
 	if ($song_reupload != 0) {
 		if (!empty($_POST["userName"]) AND !empty($_POST["password"])){

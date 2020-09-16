@@ -3,6 +3,7 @@ session_start();
 require "incl/dashboardLib.php";
 $dl = new dashboardLib();
 require "../incl/lib/connection.php";
+include "../config/metadata.php";
 
 $chartdata = array();
 for($x = 7; $x >= 0;){
@@ -46,7 +47,7 @@ foreach($months as &$month){
 	}
 }
 
-$dl->printPage('<p>Welcome to the CvoltonGDPS dashboard. Please choose a tool above.
+$dl->printPage('<p>Welcome to the '.$name.' dashboard. Please choose a tool above.
 				<br>DISCLAIMER: THIS AREA IS UNDER HEAVY DEVELOPEMENT, DON\'T EXPECT MUCH STUFF TO WORK
 				<br>Legend: (N) = Not Working, (T) = Links to the legacy tool version
 				<br>

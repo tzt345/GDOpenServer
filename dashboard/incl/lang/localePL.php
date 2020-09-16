@@ -92,9 +92,6 @@ $string["modAction15"] = "zbanował/odbanował na tabeli wyników";
 //errors
 $string["errorNoAccWithPerm"] = "Błąd: Nie znaleziono żadnych kont z zezwoleniem '%s'";
 /*
-   This is the Polish language translation created
-   exclusively for CvoltonGDPS by Tygrysek, ONLY ALLOWED FOR USE
-   on CvoltonGDPS. If you would like to use it for your GDPS, please contact.
-   IF I FIND YOU USING IT WITHOUT ASKING ME I WILL DESTROY YOUR HOUSE
+   Polish language translation created for GDPSes by Tygrysek. Just keep these lines for the sake of it.
    Improved by Lord Zaxior#3444
 */
