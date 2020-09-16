@@ -99,12 +99,14 @@ if(!empty($_POST["udid"])){
 		exit("-1");
 	}
 }
-if(!empty($_POST["accountID"]) AND $_POST["accountID"]!="0"){
-	$id = $ep->remove($_POST["accountID"]);
-	$GJPCheck = new GJPCheck();
-	$gjpresult = $GJPCheck->check($gjp,$id);
-	if($gjpresult != 1){
-		exit("-1");
+if ($gameVersion >= 20) {
+	if(!empty($_POST["accountID"]) AND $_POST["accountID"]!="0"){
+		$id = $ep->remove($_POST["accountID"]);
+		$GJPCheck = new GJPCheck();
+		$gjpresult = $GJPCheck->check($gjp,$id);
+		if($gjpresult != 1){
+			exit("-1");
+		}
 	}
 }
 $hostname = $mainLib->getIP();
