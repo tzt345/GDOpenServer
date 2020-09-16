@@ -27,7 +27,7 @@ if ($gameVersion >= 20){
 		}
 	}else{
 		$accountID = $ep->remove($_POST["udid"]);
-		if(is_numeric($accountID)){
+		if(!is_numeric($accountID)){
 			exit("-1");
 		}
 	}
