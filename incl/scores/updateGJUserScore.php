@@ -110,16 +110,18 @@ if(!empty($_POST["udid"])){
 		exit("-1");
 	}
 }
-if(!empty($_POST["accountID"]) AND $_POST["accountID"]!="0"){
-	$id = $ep->remove($_POST["accountID"]);
-	$gjp = $ep->remove($_POST["gjp"]);
-	$GJPCheck = new GJPCheck(); //gjp check
-	$gjpresult = $GJPCheck->check($gjp,$id);
-	if($gjpresult != 1){
-		exit("-1");
+if ($gameVersion >= 20) {
+	if(!empty($_POST["accountID"]) AND $_POST["accountID"] != "0"){
+		$id = $ep->remove($_POST["accountID"]);
+		$gjp = $ep->remove($_POST["gjp"]);
+		$GJPCheck = new GJPCheck(); //gjp check
+		$gjpresult = $GJPCheck->check($gjp, $id);
+		if($gjpresult != 1){
+			exit("-1");
+		}
+	}else{
+		$register = 0;
 	}
-}else{
-	$register = 0;
 }
 $userID = $gs->getUserID($id, $userName);
 $uploadDate = time();
