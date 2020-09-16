@@ -110,7 +110,6 @@ if(!empty($_POST["udid"])){
 		exit("-1");
 	}
 }
-<<<<<<< HEAD
 if(!empty($_POST["accountID"]) AND $_POST["accountID"]!="0"){
 	$id = $ep->remove($_POST["accountID"]);
 	if($_POST["gameVersion"] >= 20) {
@@ -120,7 +119,6 @@ if(!empty($_POST["accountID"]) AND $_POST["accountID"]!="0"){
 		if($gjpresult != 1){
 			exit("-1");
 		}
-=======
 if ($gameVersion >= 20) {
 	if(!empty($_POST["accountID"]) AND $_POST["accountID"] != "0"){
 		$id = $ep->remove($_POST["accountID"]);

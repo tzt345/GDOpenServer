@@ -140,5 +140,6 @@ foreach($people as $user => $cp){
 	$query4->execute([':userID' => $user, ':creatorpoints' => $cp]);
 }
 echo "<hr>done";
+touch("../logs/cplog.txt",$cplog);
 file_put_contents("../logs/cplog.txt",$cplog);
 ?>

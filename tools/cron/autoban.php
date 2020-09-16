@@ -71,18 +71,8 @@ foreach($result as $user){
 	$query->execute([':id' => $user["userID"]]);
 	echo "Banned ".htmlspecialchars($user["userName"],ENT_QUOTES)." - ".$user["userID"]."<br>";
 }
-<<<<<<< HEAD
 //counting coins
 echo "<h3>User coins based bans</h3>";
-ob_flush();
-flush();
-<<<<<<< HEAD
-$coins = 0;
-=======
-echo $coins;
->>>>>>> f33bf6737b7a52c0dbea80a5bf22aa6659e37e82
-=======
->>>>>>> c1316cffeee6ff794f09f2c36ed8e7029ba568f7
 $quarter = floor($coins / 4);
 $coins = $coins + 10 + $quarter;
 $query = $db->prepare("SELECT userID, userName FROM users WHERE userCoins > :coins");
