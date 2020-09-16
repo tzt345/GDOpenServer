@@ -13,4 +13,6 @@ Currently, tests are done on a Linux server, with MariaDB and PHP 7.3 installed.
 4. Edit the links in the application (some links are encoded in Base64 since update 2.1)
 
 ### Credits
-Most said code changes are already credited in https://github.com/Cvolton/GMDprivateServer. Additional Credits to Intelligent-Cat and Wyliemaster for helping me working on this project.
+Most said code changes are already credited in https://github.com/Cvolton/GMDprivateServer.  
+Big thanks to Intelligent-Cat and Wyliemaster for helping me working on this project.  
+Additional credits to Alex1304 for letting me take some code from https://github.com/Alex1304/gdps/.

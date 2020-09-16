@@ -8,7 +8,6 @@ require_once "../lib/mainLib.php";
 $gs = new mainLib();
 require "../lib/generateHash.php";
 $hash = new generateHash();
-//$levelID = 2632;
 if(empty($_POST["gameVersion"])){
 	$gameVersion = 1;
 }else{
@@ -48,7 +47,7 @@ if(!is_numeric($levelID)){
 	$query=$db->prepare("SELECT * FROM levels WHERE levelID = :levelID");
 	$query->execute([':levelID' => $levelID]);
 	$lvls = $query->rowCount();
-	if($lvls!=0){
+	if($lvls != 0){
 		$result = $query->fetch();
 		//adding the download
 		$query6 = $db->prepare("SELECT count(*) FROM actions WHERE type=:type AND value=:itemID AND value2=:ip");
@@ -62,7 +61,7 @@ if(!is_numeric($levelID)){
 		}
 		//getting the days since uploaded... or outputting the date in Y-M-D format at least for now...
 		$uploadDate = date("d-m-Y G-i", $result["uploadDate"]);
-		$updateDate = date("d-m-Y G-i", $result["updateDate"]);
+		$uploadDate = date("d-m-Y G-i", $result["uploadDate"]);
 		//password xor
 		$pass = $result["password"];
 		$desc = $result["levelDesc"];

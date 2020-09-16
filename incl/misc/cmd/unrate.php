@@ -16,11 +16,11 @@ function unrate($gs, $commentarray, $uploadDate, $accountID, $levelID) {
     if ($keepDiff == 1) {
         $query = $db->prepare("UPDATE levels SET starStars='0', starDemon='0', starAuto='0' WHERE levelID=:levelID");
         $query->execute([':levelID' => $levelID]);
-        $query = $db->prepare("SELECT starStars, starDemon, starAuto FROM levels WHERE levelID=:levelID");
+        $query = $db->prepare("SELECT starDifficulty FROM levels WHERE levelID=:levelID");
         $query->execute([':levelID' => $levelID]);
         $levelDiff = $query->fetchColumn();
         $query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('1', :value, '0', :levelID, :timestamp, :id)");
-        $query->execute([':value' => $gs->getDifficulty($levelDiff["starStars"], $levelDiff["starAuto"], $levelDiff["starDemon"]),':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+        $query->execute([':value' => $gs->getDifficulty($levelDiff, 0, 0),':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
     } else {
         $query = $db->prepare("UPDATE levels SET starStars='0', starDifficulty='0', starDemon='0', starAuto='0' WHERE levelID=:levelID");
         $query->execute([':levelID' => $levelID]);
