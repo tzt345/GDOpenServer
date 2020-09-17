@@ -11,7 +11,7 @@ $string["unlistedLevels"] = "Neuvedené levely";
 
 $string["modTools"] = "Nástroje pro moderátory";
 $string["leaderboardBan"] = "Zabanovat uživatele";
-$string["packCreate"] = "Vytvořit Map Pack";
+$string["packManage"] = "Vytvořit Map Pack";
 
 $string["reuploadSection"] = "Reupload";
 $string["levelReupload"] = "Level Reupload";

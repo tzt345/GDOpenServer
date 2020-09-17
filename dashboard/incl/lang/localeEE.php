@@ -11,7 +11,7 @@ $string["unlistedLevels"] = "Noteerimata levelid";
 
 $string["modTools"] = "Moderaatori tööriistad";
 $string["leaderboardBan"] = "Keela kasutajat";
-$string["packCreate"] = "Loo map packi";
+$string["packManage"] = "Loo map packi";
 
 $string["reuploadSection"] = "Uuesti laadida";
 $string["levelReupload"] = "Uuesti laadida levelit";

@@ -11,7 +11,7 @@ $string["unlistedLevels"] = "เลเวลที่ไม่ปรากฏแ
 
 $string["modTools"] = "เครื่องมือสำหรับผู้ดูแล";
 $string["leaderboardBan"] = "ระงับการใช้งานผู้เล่น";
-$string["packCreate"] = "สร้างแมพแพ็ค";
+$string["packManage"] = "สร้างแมพแพ็ค";
 
 $string["reuploadSection"] = "การอัพโหลดใหม่";
 $string["levelReupload"] = "การโอนย้ายเลเวล";

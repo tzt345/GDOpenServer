@@ -11,7 +11,7 @@ $string["unlistedLevels"] = "Unlisted leveli";
 
 $string["modTools"] = "Moderatorski alati";
 $string["leaderboardBan"] = "Ban korisnika";
-$string["packCreate"] = "Kreiraj map pack";
+$string["packManage"] = "Kreiraj map pack";
 
 $string["reuploadSection"] = "Presjedanje";
 $string["levelReupload"] = "Presjedanje level";

@@ -11,7 +11,7 @@ $string["unlistedLevels"] = "Nivele Nelistate";
 
 $string["modTools"] = "Uneltele Moderatorului";
 $string["leaderboardBan"] = "Interzice un Utilizator";
-$string["packCreate"] = "Crează un Pachet de Hărți";
+$string["packManage"] = "Crează un Pachet de Hărți";
 
 $string["reuploadSection"] = "Reîncărcare";
 $string["levelReupload"] = "Reîncărcare Nivel";

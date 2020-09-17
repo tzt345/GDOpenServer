@@ -11,7 +11,7 @@ $string["unlistedLevels"] = "Ukryte poziomy";
 
 $string["modTools"] = "Narzędzia moderatorskie";
 $string["leaderboardBan"] = "Zbanuj użytkownika";
-$string["packCreate"] = "Stwórz paczkę map";
+$string["packManage"] = "Stwórz paczkę map";
 
 $string["reuploadSection"] = "Przerzut";
 $string["levelReupload"] = "Przerzut poziomu";

@@ -11,7 +11,7 @@ $string["unlistedLevels"] = "Livelli non in elenco";
 
 $string["modTools"] = "Strumenti di moderazione";
 $string["leaderboardBan"] = "Bandisci utente";
-$string["packCreate"] = "Crea un Map Pack";
+$string["packManage"] = "Crea un Map Pack";
 
 $string["reuploadSection"] = "Reupload";
 $string["levelReupload"] = "Reupload Livello";

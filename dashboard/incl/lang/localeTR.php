@@ -11,7 +11,7 @@ $string["unlistedLevels"] = "Liste Dışı Bölümler";
 
 $string["modTools"] = "Mod Araçları";
 $string["leaderboardBan"] = "Kullanıcı Banla";
-$string["packCreate"] = "Harita Paketi Yarat";
+$string["packManage"] = "Harita Paketi Yarat";
 
 $string["reuploadSection"] = "Transfer";
 $string["levelReupload"] = "Bölüm Transfer Et";

@@ -27,7 +27,7 @@ $string["unlistedLevels"] = "Скрытые уровни";
 
 $string["modTools"] = "Меню модератора";
 $string["leaderboardBan"] = "Бан";
-$string["packCreate"] = "Создать набор карт";
+$string["packManage"] = "Создать набор карт";
 
 $string["reuploadSection"] = "Загрузить";
 $string["levelReupload"] = "Уровень с другого сервера";

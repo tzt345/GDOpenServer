@@ -11,7 +11,7 @@ $string["unlistedLevels"] = "Μην-Καταχωρισμένες πίστες";
 
 $string["modTools"] = "Εργαλεία Διαχειρηστή";
 $string["leaderboardBan"] = "Διώξιμο Χρήστη";
-$string["packCreate"] = "Δημιουργία Πακέτου-Πιστών";
+$string["packManage"] = "Δημιουργία Πακέτου-Πιστών";
 
 $string["reuploadSection"] = "Αναδημοσιεύσεις";
 $string["levelReupload"] = "Αναδιμοσίευση Πίστας";

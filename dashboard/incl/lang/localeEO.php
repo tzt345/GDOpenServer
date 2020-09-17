@@ -11,7 +11,7 @@ $string["unlistedLevels"] = "Privataj Niveloj";
 
 $string["modTools"] = "Moderatoro Iloj";
 $string["leaderboardBan"] = "'Forigi' Uzanton";
-$string["packCreate"] = "Krei Mapo Packsa";
+$string["packManage"] = "Krei Mapo Packsa";
 
 $string["reuploadSection"] = "Re Alŝuti";
 $string["levelReupload"] = "Nivelo Re Alŝuti";

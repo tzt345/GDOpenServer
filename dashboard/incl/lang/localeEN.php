@@ -11,7 +11,7 @@ $string["unlistedLevels"] = "Unlisted Levels";
 
 $string["modTools"] = "Mod Tools";
 $string["leaderboardBan"] = "Ban A User";
-$string["packCreate"] = "Create a Map Pack";
+$string["packManage"] = "Manage Map Packs";
 
 $string["reuploadSection"] = "Reupload";
 $string["levelReupload"] = "Level Reupload";

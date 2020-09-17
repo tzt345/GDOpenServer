@@ -11,7 +11,7 @@ $string["unlistedLevels"] = "Níveis Não Listados";
 
 $string["modTools"] = "Ferramentas de Moderadores";
 $string["leaderboardBan"] = "Banir um Usuário";
-$string["packCreate"] = "Criar um Pacote de Níveis";
+$string["packManage"] = "Criar um Pacote de Níveis";
 
 $string["reuploadSection"] = "Transferir";
 $string["levelReupload"] = "Transferir Nível";
