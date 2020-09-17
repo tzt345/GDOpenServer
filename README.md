@@ -1,5 +1,5 @@
 # GDOpenServer
-Basically a "server emulator" for Geometry Dash, except it's rewritten now... soon.
+Basically a "server emulator" for Geometry Dash, except it's rewritten now.
 
 ### WARNING
 There haven't been made lots of tests so far, and it's currently still under development.
@@ -16,3 +16,6 @@ Currently, tests are done on a Linux server, with MariaDB and PHP 7.3 installed.
 Most said code changes are already credited in https://github.com/Cvolton/GMDprivateServer.  
 Big thanks to Intelligent-Cat and Wyliemaster for helping me working on this project.  
 Additional credits to Alex1304 and DonAlex0 for some code they made that's included in here.
+
+### Discord
+(yes)[https://discord.gg/PjFXRf5]
