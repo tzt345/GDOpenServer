@@ -1,7 +1,7 @@
 <?php
 class dashboardLib{
 	public function printHeader($isSubdirectory = true){
-		include "../../config/metadata.php";
+		include dirname(__FILE__) . "../../config/metadata.php";
 		$this->handleLangStart();
 		echo '<!DOCTYPE html>
 				<html lang="en">
