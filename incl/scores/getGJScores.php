@@ -13,7 +13,7 @@ $xi = 0;
 $lbstring = "";
 $date = date("d-m");
 $gameVersion = $ep->number($_POST["gameVersion"]);
-if(empty($_POST["gameVersion"])){
+if(empty($gameVersion)){
 	$sign = "< 20 AND gameVersion <> 0";
 }else{
 	$sign = "> 19";
