@@ -29,13 +29,13 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 			$query = $db->prepare("INSERT INTO modactions (type, value, timestamp, account, value2, value3, value4) VALUES ('17',:value,:timestamp,:account,:amount,:reward,:name)");
 			$query->execute([':value' => $type, ':timestamp' => time(), ':account' => $accountID, ':amount' => $amount, ':reward' => $reward, ':name' => $name]);
 			if($db->lastInsertId() < 3) {
-				exit("Successfully added Quest! It's recommended that you should add a few more.");
+				exit("Successfully added the quest! It's recommended to <a href='addQuest.php'>add</a> a few more.");
 			} else {
-				exit("Successfully added Quest!");
+				exit("Successfully added the quest!");
 			}
 		}
 	}else{
-        echo "Invalid password or nonexistant account. <a href='addQuest.php'>Try again</a>";
+        echo "Invalid password or non-existant account. <a href='addQuest.php'>Try again</a>";
     }
 }else{
 	echo '<form action="addQuest.php" method="post">Username: <input type="text" name="userName">
