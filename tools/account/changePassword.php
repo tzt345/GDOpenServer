@@ -14,7 +14,9 @@ if(!empty($_POST["userName"]) AND !empty($_POST["oldpassword"]), !empty($_POST["
 	$newpass = $_POST["newpassword"];
 	$salt = "";
 	$generatePass = new generatePass();
-	if ($generatePass->isValidUsrname($userName, $newpass)) exit("This is already your password. <a href='changePassword.php'>Try again.</a>");
+	if ($generatePass->isValidUsrname($userName, $newpass)) {
+		exit("This is already your password. <a href='changePassword.php'>Try again.</a>");
+	}
 	$pass = $generatePass->isValidUsrname($userName, $oldpass);
 	if ($pass == 1) {
 		if($cloudSaveEncryption == 1){
