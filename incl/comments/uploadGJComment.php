@@ -43,7 +43,7 @@ $userID = $mainLib->getUserID($id, $userName);
 $uploadDate = time();
 $decodecomment = base64_decode($comment);
 if($cmds->doCommands($id, $decodecomment, $levelID)){
-	exit("-1");
+	exit("temp_0_Successfully executed the command.");
 }
 if($id != "" AND $comment != ""){
 	$permaBan = $db->prepare("SELECT isCommentBanned FROM users WHERE userID = :userID");

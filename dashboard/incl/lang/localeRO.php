@@ -2,45 +2,45 @@
 /*
 	NAVBAR
 */
-$string["homeNavbar"] = "Home";
+$string["homeNavbar"] = "Casă";
 
-$string["accountManagement"] = "Account Management";
-$string["changePassword"] = "Change Password";
-$string["changeUsername"] = "Change Username";
-$string["unlistedLevels"] = "Unlisted Levels";
+$string["accountManagement"] = "Administrează Contul";
+$string["changePassword"] = "Schimbă Parola";
+$string["changeUsername"] = "Schimbă Numele";
+$string["unlistedLevels"] = "Nivele Nelistate";
 
-$string["modTools"] = "Mod Tools";
-$string["leaderboardBan"] = "Ban A User";
-$string["packCreate"] = "Create a Map Pack";
+$string["modTools"] = "Uneltele Moderatorului";
+$string["leaderboardBan"] = "Interzice un Utilizator";
+$string["packCreate"] = "Crează un Pachet de Hărți";
 
-$string["reuploadSection"] = "Reupload";
-$string["levelReupload"] = "Level Reupload";
-$string["songAdd"] = "Add a Song";
+$string["reuploadSection"] = "Reîncărcare";
+$string["levelReupload"] = "Reîncărcare Nivel";
+$string["songAdd"] = "Adaugă o Melodie";
 
-$string["browse"] = "Browse";
-$string["statsSection"] = "Stats";
-$string["dailyTable"] = "Daily Levels";
-$string["modActions"] = "Mod Actions";
-$string["gauntletTable"] = "List of Gauntlets";
-$string["packTable"] = "List of Map Packs";
-$string["leaderboardTime"] = "Leaderboards Progress";
+$string["browse"] = "Navigă";
+$string["statsSection"] = "Statistici";
+$string["dailyTable"] = "Nivele Zilnice";
+$string["modActions"] = "Actiunile Moderatorului";
+$string["gauntletTable"] = "Lista Gauntlet-urilor";
+$string["packTable"] = "Lista Pachetelor de Nivele";
+$string["leaderboardTime"] = "Progresul Clasamentelor";
 
-$string["language"] = "Language";
+$string["language"] = "Limbă";
 
-$string["loginHeader"] = "Welcome, %s";
-$string["logout"] = "Log Out";
-$string["login"] = "Log In";
+$string["loginHeader"] = "Bun Venit, %s";
+$string["logout"] = "Deconectează-te";
+$string["login"] = "Conectează-te";
 
 /*
 	REUPLOAD
 */
-$string["reuploadBTN"] = "Reupload";
-$string["errorGeneric"] = "An error has occured:";
-$string["tryAgainBTN"] = "Try Again";
+$string["reuploadBTN"] = "Reîncărcare";
+$string["errorGeneric"] = "O eroare a apărut:";
+$string["tryAgainBTN"] = "Încearcă Din Nou";
 //songAdd.php
-$string["songAddUrlFieldLabel"] = "Song URL: (Direct, Dropbox or Soundcloud Links Only)";
-$string["songAddUrlFieldPlaceholder"] = "Song URL";
-$string["songAddAnotherBTN"] = "Another Song";
+$string["songAddUrlFieldLabel"] = "URL-ul Muzicii: (Direct, Dropbox sau Soundcloud Link-uri Doar)";
+$string["songAddUrlFieldPlaceholder"] = "URL-ul Muzicii";
+$string["songAddAnotherBTN"] = "Altă Muzică";
 ///errors
 $string["songAddError-2"] = "Invalid URL";
 $string["songAddError-3"] = "This song has been reuploaded already";
@@ -74,7 +74,7 @@ $string["last"] = "Last";
 $string["action"] = "Action";
 $string["value"] = "1st Value";
 $string["value2"] = "2nd Value";
-$string["modAction1"] = "Un/Rated a level";
+$string["modAction1"] = "Rated a level";
 $string["modAction2"] = "Un/featured a level";
 $string["modAction3"] = "Un/verified coins";
 $string["modAction4"] = "Un/epiced a level";

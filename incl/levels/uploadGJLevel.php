@@ -100,11 +100,18 @@ if(!empty($_POST["udid"])){
 	}
 }
 if ($gameVersion >= 20) {
-	if(!empty($_POST["accountID"]) AND $_POST["accountID"]!="0"){
+	if(!empty($_POST["accountID"]) AND $_POST["accountID"] != "0"){
 		$id = $ep->remove($_POST["accountID"]);
 		$GJPCheck = new GJPCheck();
 		$gjpresult = $GJPCheck->check($gjp,$id);
 		if($gjpresult != 1){
+			exit("-1");
+		}
+	}
+} else {
+	if(!empty($_POST["accountID"]) AND $_POST["accountID"] != "0"){
+		$id = $ep->remove($_POST["accountID"]);
+		if ($mainLib->getAccountName($id) != $userName) {
 			exit("-1");
 		}
 	}

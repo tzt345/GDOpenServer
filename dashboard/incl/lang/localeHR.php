@@ -89,5 +89,8 @@ $string["modAction12"] = "Un/published";
 $string["modAction13"] = "Changed level description";
 $string["modAction14"] = "Enabled/disabled LDM";
 $string["modAction15"] = "Leaderboard un/banned";
+$string["modAction16"] = "Un/magiced a level";
+$string["modAction17"] = "Quest added";
 //errors
 $string["errorNoAccWithPerm"] = "Error: No accounts with the '%s' permission have been found";
+?>

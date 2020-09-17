@@ -92,7 +92,7 @@ $string["go"] = "Перейти";
 $string["action"] = "Функция";
 $string["value"] = "1-е значение";
 $string["value2"] = "2-е значение";
-$string["modAction1"] = "Оценили уровень";
+$string["modAction1"] = "Изменение ставки";
 $string["modAction2"] = "Убрали/добавили к Звёздным Уровням";
 $string["modAction3"] = "Проверили монеты";
 $string["modAction4"] = "Убрали/Добавили к Эпик Уровням";
@@ -107,7 +107,10 @@ $string["modAction12"] = "Опубликовали";
 $string["modAction13"] = "Изменили описание";
 $string["modAction14"] = "Включили/выключили ЛДМ";
 $string["modAction15"] = "Бан по лидербордам";
+$string["modAction16"] = "Магическая изменения";
+$string["modAction17"] = "Квест добавлен";
 //errors
 $string["errorNoAccWithPerm"] = "Ошибка: никаких аккаунтов с возмоюностью '%s' были найдены.";
 
-//Translation done by TheFox#5812 and bit0r1n#1707
+// Translation done by TheFox#5812 and bit0r1n#1707
+// Special thanks to TheCreeperyXYZ#7363

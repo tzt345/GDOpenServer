@@ -89,5 +89,8 @@ $string["modAction12"] = "Δημοσίευσε/Απέκρυψε";
 $string["modAction13"] = "Άλλαξε τη περιγραφή πίστας";
 $string["modAction14"] = "Ενεργοποίησε LDM";
 $string["modAction15"] = "Leaderboard un/banned";
+$string["modAction16"] = "Un/magiced a level";
+$string["modAction17"] = "Quest added";
 //errors
-$string["errorNoAccWithPerm"] = "Error: No accounts with the '%s' permission have been found";
+$string["errorNoAccWithPerm"] = "Σφάλμα: Δεν βρέθηκαν λογαριασμοί με την λεγόμενη άδεια '%s'";
+?>

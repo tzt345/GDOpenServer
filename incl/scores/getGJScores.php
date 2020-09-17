@@ -4,6 +4,8 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/GJPCheck.php";
+require_once "../lib/mainLib.php";
+$gs = new mainLib();
 $ep = new exploitPatch();
 $stars = 0;
 $count = 0;
@@ -28,6 +30,13 @@ if ($gameVersion >= 20){
 	}else{
 		$accountID = $ep->remove($_POST["udid"]);
 		if(!is_numeric($accountID)){
+			exit("-1");
+		}
+	}
+} else {
+	if(!empty($_POST["accountID"]) AND $_POST["accountID"] != "0"){
+		$id = $ep->remove($_POST["accountID"]);
+		if ($gs->getAccountName($id) != $userName) {
 			exit("-1");
 		}
 	}

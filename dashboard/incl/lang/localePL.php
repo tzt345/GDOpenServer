@@ -41,7 +41,7 @@ $string["tryAgainBTN"] = "Spróbuj ponownie.";
 $string["songAddUrlFieldLabel"] = "Link URL piosenki: (DOZWOLONE TYLKO DROPBOX, SOUNDCLOUD, LUB BEZPOŚREDNIE)";
 $string["songAddUrlFieldPlaceholder"] = "Link URL piosenki";
 $string["songAddAnotherBTN"] = "Kolejna piosenka";
-///errors
+//errors
 $string["songAddError-2"] = "Nieprawidłowy link URL.";
 $string["songAddError-3"] = "Ktoś już przerzucił tę piosenkę.";
 $string["songAddError-4"] = "Tej piosenki nie ma jak przerzucić.";
@@ -74,21 +74,23 @@ $string["last"] = "Ostatni";
 $string["action"] = "Akcja";
 $string["value"] = "Pierwsza wartość";
 $string["value2"] = "Druga wartość";
-$string["modAction1"] = "ocenił poziom";
-$string["modAction2"] = "nadał/odebrał poziomowi featured";
-$string["modAction3"] = "z/odweryfikował monety";
-$string["modAction4"] = "nadał/odebrał poziomowi epic";
-$string["modAction5"] = "ustawił jako dzienny poziom";
-$string["modAction6"] = "usunął poziom";
-$string["modAction7"] = "zmienił twórcę";
-$string["modAction8"] = "zmienił nazwę poziomu";
-$string["modAction9"] = "zmienił hasło poziomu";
-$string["modAction10"] = "zmienił trudność demona";
-$string["modAction11"] = "rozdzielił CP";
-$string["modAction12"] = "opublikował/schował";
-$string["modAction13"] = "zmienił opis poziomu";
-$string["modAction14"] = "włączył/wyłączył LDM";
-$string["modAction15"] = "zbanował/odbanował na tabeli wyników";
+$string["modAction1"] = "Zmieniono ocenę poziomu";
+$string["modAction2"] = "Nadał/odebrał poziomowi featured";
+$string["modAction3"] = "Z/odweryfikował monety";
+$string["modAction4"] = "Nadał/odebrał poziomowi epic";
+$string["modAction5"] = "Ustawił jako dzienny poziom";
+$string["modAction6"] = "Usunął poziom";
+$string["modAction7"] = "Zmienił twórcę";
+$string["modAction8"] = "Zmienił nazwę poziomu";
+$string["modAction9"] = "Zmienił hasło poziomu";
+$string["modAction10"] = "Zmienił trudność demona";
+$string["modAction11"] = "Rozdzielił CP";
+$string["modAction12"] = "Opublikował/schował";
+$string["modAction13"] = "Zmienił opis poziomu";
+$string["modAction14"] = "Włączył/wyłączył LDM";
+$string["modAction15"] = "Zbanował/odbanował na tabeli wyników";
+$string["modAction16"] = "Zmieniono status magic";
+$string["modAction17"] = "Dodano zadanie";
 //errors
 $string["errorNoAccWithPerm"] = "Błąd: Nie znaleziono żadnych kont z zezwoleniem '%s'";
 /*
