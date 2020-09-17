@@ -6,8 +6,12 @@ require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
-$binaryVersion = $ep->remove($_POST["binaryVersion"]);
 $gameVersion = $ep->remove($_POST["gameVersion"]);
+if ($gameVersion <= 19) {
+	$binaryVersion = 31;
+} else {
+	$binaryVersion = $ep->remove($_POST["binaryVersion"]);
+}
 $commentstring = "";
 $userstring = "";
 $users = array();

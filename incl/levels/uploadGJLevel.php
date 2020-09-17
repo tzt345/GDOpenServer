@@ -8,8 +8,12 @@ require_once "../lib/mainLib.php";
 $mainLib = new mainLib();
 $ep = new exploitPatch();
 //here im getting all the data
-$gjp = $ep->remove($_POST["gjp"]);
 $gameVersion = $ep->remove($_POST["gameVersion"]);
+if ($gameVersion <= 19) {
+	$gjp = "";
+} else {
+	$gjp = $ep->remove($_POST["gjp"]);
+}
 if(!empty($_POST["binaryVersion"])){
 	$binaryVersion = $ep->remove($_POST["binaryVersion"]);	
 }else{
