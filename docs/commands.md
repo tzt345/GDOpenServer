@@ -8,7 +8,7 @@ Additionally, commands can have "parameters", meaning that they can/should have 
 Another example, **!rate insane 9 1** will rate the level with the insane difficulty, 9 stars and make it featured.  
 You can probably guess where it goes for other commands.
 
-Note when commenting a command: You WILL recieve a "Comment Upload failed!" message. This is intentional and just tells you that you did everything correct.
+Note when commenting a command: You WILL recieve a "You have been banned from commenting for: 0sec" message. This is intentional and just tells you that you did everything correct.
 
 ### Configuration
 You must create a new "role" using the **Role Creation Tool** in the Dashboard.  
