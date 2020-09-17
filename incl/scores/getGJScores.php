@@ -12,12 +12,12 @@ $count = 0;
 $xi = 0;
 $lbstring = "";
 $date = date("d-m");
+$gameVersion = $ep->number($_POST["gameVersion"]);
 if(empty($_POST["gameVersion"])){
 	$sign = "< 20 AND gameVersion <> 0";
 }else{
 	$sign = "> 19";
 }
-$gameVersion = $ep->number($_POST["gameVersion"]);
 if ($gameVersion >= 20){
 	if(!empty($_POST["accountID"])){
 		$accountID = $ep->remove($_POST["accountID"]);
