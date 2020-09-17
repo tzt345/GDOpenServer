@@ -18,4 +18,4 @@ Big thanks to Intelligent-Cat and Wyliemaster for helping me working on this pro
 Additional credits to Alex1304 and DonAlex0 for some code they made that's included in here.
 
 ### Discord
-(yes)[https://discord.gg/PjFXRf5]
+https://discord.gg/PjFXRf5
