@@ -1,5 +1,5 @@
 # GDOpenServer
-Basically a "server emulator" for Geometry Dash, except it's rewritten now.
+Basically a "server emulator" for Geometry Dash, except it's rewritten now... soon.
 
 ### WARNING
 There haven't been made lots of tests so far, and it's currently still under development.
