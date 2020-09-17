@@ -8,8 +8,8 @@ Currently, tests are done on a Linux server, with MariaDB and PHP 7.3 installed.
 
 ### Setup (extremely simplified)
 1. Upload all files to your webserver
-2. Import the database into an existing MySQL database
-3. Configurate files in /config
+2. Import the database into an existing MySQL/MariaDB database
+3. Configurate files in /config (at least connection.php or your GDPS will completely fail)
 4. Edit the links in the application (some links are encoded in Base64 since update 2.1)
 
 ### Credits
