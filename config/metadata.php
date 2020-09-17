@@ -1,5 +1,5 @@
 <?php
-$name = "OpenGDPS"; // The name of your GDPS, displayed on the dashboard
+$gdps_name = "OpenGDPS"; // The name of your GDPS, displayed on the dashboard
 $discord_invite = ""; // The Discord invite link of your GDPS, displayed on the dashboard
 $pc_download = ""; // The PC download link of your GDPS, displayed on the dashboard
 $macos_download = ""; // The macOS download link of your GDPS, displayed on the dashboard
