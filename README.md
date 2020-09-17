@@ -16,3 +16,6 @@ Currently, tests are done on a Linux server, with MariaDB and PHP 7.3 installed.
 Most said code changes are already credited in https://github.com/Cvolton/GMDprivateServer.  
 Big thanks to Intelligent-Cat and Wyliemaster for helping me working on this project.  
 Additional credits to Alex1304 and DonAlex0 for some code they made that's included in here.
+
+### Discord
+https://discord.gg/PjFXRf5
