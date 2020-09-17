@@ -1,11 +1,4 @@
 <?php
-/*
-	QUESTS
-*/
-//NOW SET IN THE QUESTS TABLE IN THE MYSQL DATABASE
-/*
-	REWARDS
-*/
 //SMALL CHEST
 $chest1minOrbs = 200;
 $chest1maxOrbs = 400;

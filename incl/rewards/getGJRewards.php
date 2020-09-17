@@ -1,7 +1,7 @@
 <?php
 chdir(dirname(__FILE__));
 include "../lib/connection.php";
-include "../../config/dailyChests.php";
+include "../../config/chests.php";
 require "../lib/XORCipher.php";
 require "../lib/GJPCheck.php";
 require "../lib/generateHash.php";
@@ -83,9 +83,9 @@ $chk = $XORCipher->cipher(base64_decode(substr($chk, 5)),59182);
 		$query->execute([':chest2count' => $chest2count, ':userID' => $userid, ':currenttime' => $currenttime]);
 		$chest2left = $chest2wait;
 	}
-	$string = base64_encode($XORCipher->cipher("1:".$userid.":".$chk.":".$udid.":".$accountID.":".$chest1left.":".$chest1stuff.":".$chest1count.":".$chest2left.":".$chest2stuff.":".$chest2count.":".$rewardType."",59182));
-	$string = str_replace("/","_",$string);
-	$string = str_replace("+","-",$string);
+	$string = base64_encode($XORCipher->cipher("1:".$userid.":".$chk.":".$udid.":".$accountID.":".$chest1left.":".$chest1stuff.":".$chest1count.":".$chest2left.":".$chest2stuff.":".$chest2count.":".$rewardType."", 59182));
+	$string = str_replace("/","_", $string);
+	$string = str_replace("+","-", $string);
 $hash = $generateHash->genSolo4($string);
 echo "SaKuJ".$string . "|".$hash;
 ?>
