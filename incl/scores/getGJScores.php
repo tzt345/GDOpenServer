@@ -17,7 +17,7 @@ if(empty($_POST["gameVersion"])){
 }else{
 	$sign = "> 19";
 }
-$gameVersion = $ep->number($_POST["gameVersion"])
+$gameVersion = $ep->number($_POST["gameVersion"]);
 if ($gameVersion >= 20){
 	if(!empty($_POST["accountID"])){
 		$accountID = $ep->remove($_POST["accountID"]);
