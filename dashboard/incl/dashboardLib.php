@@ -162,10 +162,10 @@ class dashboardLib{
 							<a class="dropdown-item" href="lang/switchLang.php?lang=IT">Italiano</a>
 							<a class="dropdown-item" href="lang/switchLang.php?lang=PL">Polski</a>
 							<a class="dropdown-item" href="lang/switchLang.php?lang=PT">Português</a>
+							<a class="dropdown-item" href="lang/switchLang.php?lang=RO">Română</a>
 							<a class="dropdown-item" href="lang/switchLang.php?lang=RU">Русский</a>
 							<a class="dropdown-item" href="lang/switchLang.php?lang=TH">ภาษาไทย</a>
 							<a class="dropdown-item" href="lang/switchLang.php?lang=TR">Türkçe</a>
-							<a class="dropdown-item" href="lang/switchLang.php?lang=test">translTest</a>
 						</div>';
 		if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 			$userName = $gs->getAccountName($_SESSION["accountID"]);

@@ -9,7 +9,7 @@ $chartdata = array();
 for($x = 7; $x >= 0;){
 	$timeBefore = time() - (86400 * $x);
 	$timeAfter = time() - (86400 * ($x + 1));
-	$query = $db->prepare("SELECT count(*) FROM levels WHERE uploadDate < :timeBefore AND uploadDate > :timeAfter AND userID != 388");
+	$query = $db->prepare("SELECT count(*) FROM levels WHERE uploadDate < :timeBefore AND uploadDate > :timeAfter");
 	$query->execute([':timeBefore' => $timeBefore, ':timeAfter' => $timeAfter]);
 	switch($x){
 		case 1:
@@ -27,7 +27,7 @@ for($x = 7; $x >= 0;){
 }
 
 $levelsChart2 = array();
-$months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+$months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 $x = 0;
 foreach($months as &$month){
 	$x++;
@@ -39,7 +39,7 @@ foreach($months as &$month){
 	$nextMonth = $months[$x];
 	$timeBefore = strtotime("first day of $month ".date('Y'));
 	$timeAfter = strtotime("first day of $nextMonth ".$nextMonthYear);
-	$query = $db->prepare("SELECT count(*) FROM levels WHERE uploadDate > :timeBefore AND uploadDate < :timeAfter AND userID != 388");
+	$query = $db->prepare("SELECT count(*) FROM levels WHERE uploadDate > :timeBefore AND uploadDate < :timeAfter");
 	$query->execute([':timeBefore' => $timeBefore, ':timeAfter' => $timeAfter]);
 	$amount = $query->fetchColumn();
 	if($amount != 0){
