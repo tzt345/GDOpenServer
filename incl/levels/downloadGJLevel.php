@@ -55,8 +55,7 @@ if(!is_numeric($levelID)){
 		if($query6->fetchColumn() < 2){
 			$query2=$db->prepare("UPDATE levels SET downloads = downloads + 1 WHERE levelID = :levelID");
 			$query2->execute([':levelID' => $levelID]);
-			$query6 = $db->prepare("INSERT INTO actions (type, value, timestamp, value2) VALUES 
-														(:type,:itemID, :time, :ip)");
+			$query6 = $db->prepare("INSERT INTO actions (type, value, timestamp, value2) VALUES (:type, :itemID, :time, :ip)");
 			$query6->execute([':type' => 7, ':itemID' => $levelID, ':time' => time(), ':ip' => $ip]);
 		}
 		//getting the days since uploaded... or outputting the date in Y-M-D format at least for now...
