@@ -85,7 +85,6 @@ foreach($result as $level){
 	}
 	$people[$level["userID"]] += $addcp;
 }
-$addcp = round($addcp);
 /*
 	NOW to update GAUNTLETS CP
 */
@@ -112,7 +111,6 @@ foreach($result as $gauntlet){
 $query = $db->prepare("SELECT levelID FROM dailyfeatures WHERE timestamp < :time");
 $query->execute([':time' => time()]);
 $result = $query->fetchAll();
-//getting gauntlets
 foreach($result as $daily){
 	//getting lvls
 	$query = $db->prepare("SELECT userID, levelID FROM levels WHERE levelID = :levelID");
@@ -134,11 +132,12 @@ if ($nocpppl != "") {
 	echo "Reset CP of $nocpppl <br>";
 }
 foreach($people as $user => $cp){
-	echo "$user now has $cp creator points... <br>";
+	$newcp = round($cp);
+	$query4 = $db->prepare("UPDATE users SET creatorPoints = :creatorpoints WHERE userID=:userID");
+	$query4->execute([':userID' => $user, ':creatorpoints' => $newcp]);
+	echo "$user now has $newcp creator points... <br>";
 	ob_flush();
 	flush();
-	$query4 = $db->prepare("UPDATE users SET creatorPoints = :creatorpoints WHERE userID=:userID");
-	$query4->execute([':userID' => $user, ':creatorpoints' => $cp]);
 }
 echo "<hr>done";
 touch("../logs/cplog.txt");
