@@ -77,7 +77,7 @@ foreach($result as $level){
 	if ($CPSharedWhole == 1) {
 		$addcp = $deservedcp;
 	} else {
-		$addcp = round($deservedcp / $sharecount);
+		$addcp = $deservedcp / $sharecount;
 	}
 	$shares = $query->fetchAll();
 	foreach($shares as &$share){
@@ -85,6 +85,7 @@ foreach($result as $level){
 	}
 	$people[$level["userID"]] += $addcp;
 }
+$addcp = round($addcp);
 /*
 	NOW to update GAUNTLETS CP
 */
