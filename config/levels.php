@@ -11,4 +11,6 @@ $epicInHall = 1; // 1 = Epic levels can be seen in Hall of Fame, 0 = Only levels
 
 $isMagicSectionManual = 0; // Enables magic command and gives creator points for levels that go into that section
 $CPSharedWhole = 0; // Indicates if shared level creator points are added equally to each creator, or split between the creators; 0 for no and 1 for yes
+
+$uploadRateLimit = 120; // Time in seconds; indicates how much time an account or a user depending on the restrictions should wait until it can upload a level again
 ?>
