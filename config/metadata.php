@@ -1,8 +1,37 @@
 <?php
-$gdps_name = "OpenGDPS"; // The name of your GDPS, displayed on the dashboard
-$discord_invite = ""; // The Discord invite link of your GDPS, displayed on the dashboard
-$pc_download = ""; // The PC download link of your GDPS, displayed on the dashboard
-$macos_download = ""; // The macOS download link of your GDPS, displayed on the dashboard
-$android_download = ""; // The Android download link of your GDPS, displayed on the dashboard
-$ios_download = ""; // The iOS download link of your GDPS, displayed on the dashboard
+
+// Some of the settings provided here will be shown on various pages like dashboard/tools.
+
+/* -- Settings and Links -- */
+$gdps_name = "GDOpenServer"; // The name of your GDPS.
+$discord_invite = ""; // The Discord invite link of your GDPS.
+$registerMethod = 0; // 0 = All, 1 = In-Game only, 2 = Website only.
+$verifyMail = 0; // DON'T USE THIS YET! - 0 = No verification, 1 = Send link to verify account.
+
+/* -- GDPS Patcher -- */
+$usePatcher = 0; // Redirects the PC download to a patching tool. 1 = Redirect, 0 = Don't redirect.
+
+$gdps_url = "http://my.very_cool.gdps/database"; // Should be less than or exactly 33 characters!
+$youtube = "https://www.youtube.com/user/RobTopGames"; // Should be less than or exactly 40 characters!
+$twitter = "https://twitter.com/robtopgames"; // Should be less than or exactly 31 characters!
+$facebook = "https://www.facebook.com/geometrydash"; // Should be less than or exactly 37 characters!
+$robtopWebsite = "http://www.robtopgames.com"; // Should be less than or exactly 26 characters!
+
+// Tip: If an URL is too long, use bit.ly to shorten it.
+// Important Note: All URL's provided for the GDPS Patcher should not end with a forward slash!
+
+/* -- Download --
+NOTE: WE, THE DEVELOPERS OF GDOpenServer, DO NOT TAKE *ANY* RESPONSIBILITY
+OF ANY DOWNLOAD LINKS PROVIDED IN HERE. IF YOU HOST A PUBLIC SERVER, YOU
+MAY WANT TO PROMPT OTHER USERS TO SHOW A PROOF OF HAVING A LEGITIMATE COPY
+OF THE ORIGINAL GAME BEFORE DOWNLOADING THE GDPS. SHARING PIRATED GAMES IS ILLEGAL!
+*/
+// Replace following empty fields with the download url. Preferrably a direct link.
+// Leave it empty to let it not show a download link in the dashboard.
+$pc_download = "";
+$macos_download = "";
+$android_download = "";
+$ios_download = "";
+
 ?>
+
