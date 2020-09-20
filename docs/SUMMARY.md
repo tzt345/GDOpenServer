@@ -1,3 +1,0 @@
-# Summary
-
-- [Commands](./commands.md)
