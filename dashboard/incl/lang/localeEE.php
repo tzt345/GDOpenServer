@@ -91,6 +91,7 @@ $string["modAction14"] = "Lubas/Keelas LDM'i";
 $string["modAction15"] = "Edetabel Mitte unbannitud/bannitud";
 $string["modAction16"] = "Un/magiced a level";
 $string["modAction17"] = "Quest added";
+$string["modAction18"] = "Song Enabled/Disabled";
 //errors
 $string["errorNoAccWithPerm"] = "Error: Mitte ühtegi kontot' %s' lubadega on leitud.";
 ?>

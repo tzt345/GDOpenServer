@@ -15,8 +15,8 @@ function daily($uploadDate, $accountID, $levelID) {
 	}
 	$query = $db->prepare("INSERT INTO dailyfeatures (levelID, timestamp, type) VALUES (:levelID, :uploadDate, 0)");
 	$query->execute([':levelID' => $levelID, ':uploadDate' => $timestamp]);
-    $query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account, value2, value4) VALUES ('5', :value, :levelID, :timestamp, :id, :dailytime, 0)");
-	$query->execute([':value' => "1", ':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID, ':dailytime' => $timestamp]);
+    $query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account, value2, value4) VALUES (5, 1, :levelID, :timestamp, :id, :dailytime, 0)");
+	$query->execute([':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID, ':dailytime' => $timestamp]);
 	return true;
 }
 ?>

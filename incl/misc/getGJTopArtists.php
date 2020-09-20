@@ -2,7 +2,7 @@
 chdir(dirname(__FILE__));
 require "../lib/connection.php";
 require "../lib/exploitPatch.php";
-require "../../config/topArtists.php";
+require "../../config/misc.php";
 $ep = new exploitPatch();
 $str = "";
 

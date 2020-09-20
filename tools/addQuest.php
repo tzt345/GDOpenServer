@@ -11,18 +11,18 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 	$password = $ep->remove($_POST["password"]);
 	$type = $ep->number($_POST["type"]);
 	$amount = $ep->number($_POST["amount"]);
-    $reward = $ep->number($_POST["reward"]);
-    $name = $ep->remove($_POST["questName"]);
+	$reward = $ep->number($_POST["reward"]);
+	$name = $ep->remove($_POST["questName"]);
 	$pass = $gp->isValidUsrname($userName, $password);
 	if ($pass == 1) {
 		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName=:userName");	
 		$query->execute([':userName' => $userName]);
 		$accountID = $query->fetchColumn();
 		if($gs->checkPermission($accountID, "toolAddquest") == false){
-			echo "This account doesn't have the permissions to access this tool. <a href='addQuest.php'>Try again</a>";
+			echo "This account doesn't have permission to access this tool. <a href='addQuest.php'>Try again.</a>";
 		}else{
 			if(!is_numeric($type) OR !is_numeric($amount) OR !is_numeric($reward) OR $type > 3){
-				exit("Type/Amount/Reward invalid");
+				exit("Invalid Type/Amount/Reward. <a href='addQuest.php'>Try again.</a>");
 			}
 			$query = $db->prepare("INSERT INTO quests (type, amount, reward, name) VALUES (:type,:amount,:reward,:name)");
 			$query->execute([':type' => $type, ':amount' => $amount, ':reward' => $reward, ':name' => $name]);
@@ -31,12 +31,12 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 			if($db->lastInsertId() < 3) {
 				exit("Successfully added the quest! It's recommended to <a href='addQuest.php'>add</a> a few more.");
 			} else {
-				exit("Successfully added the quest!");
+				exit("Successfully added the quest! <a href='addQuest.php'>Add another?</a>");
 			}
 		}
 	}else{
-        echo "Invalid password or non-existant account. <a href='addQuest.php'>Try again</a>";
-    }
+		echo "Invalid password or non-existant account. <a href='addQuest.php'>Try again.</a>";
+	}
 }else{
 	echo '<form action="addQuest.php" method="post">Username: <input type="text" name="userName">
 		<br>Password: <input type="password" name="password">

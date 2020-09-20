@@ -91,6 +91,7 @@ $string["modAction14"] = "Włączył/wyłączył LDM";
 $string["modAction15"] = "Zbanował/odbanował na tabeli wyników";
 $string["modAction16"] = "Zmieniono status magic";
 $string["modAction17"] = "Dodano zadanie";
+$string["modAction18"] = "Zmieniono używalność piosenki";
 //errors
 $string["errorNoAccWithPerm"] = "Błąd: Nie znaleziono żadnych kont z zezwoleniem '%s'";
 /*

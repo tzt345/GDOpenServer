@@ -91,6 +91,7 @@ $string["modAction14"] = "Enabled/disabled LDM";
 $string["modAction15"] = "Leaderboard un/banned";
 $string["modAction16"] = "Un/magiced a level";
 $string["modAction17"] = "Quest added";
+$string["modAction18"] = "Melodie Dezactivată/Activată";
 //errors
 $string["errorNoAccWithPerm"] = "Error: No accounts with the '%s' permission have been found";
 ?>

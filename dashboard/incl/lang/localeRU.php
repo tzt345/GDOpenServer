@@ -109,6 +109,7 @@ $string["modAction14"] = "Включили/выключили ЛДМ";
 $string["modAction15"] = "Бан по лидербордам";
 $string["modAction16"] = "Магическая изменения";
 $string["modAction17"] = "Квест добавлен";
+$string["modAction18"] = "Song Enabled/Disabled";
 //errors
 $string["errorNoAccWithPerm"] = "Ошибка: никаких аккаунтов с возмоюностью '%s' были найдены.";
 

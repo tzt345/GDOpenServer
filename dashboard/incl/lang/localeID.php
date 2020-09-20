@@ -83,6 +83,7 @@ $string["modAction14"] = "Menambah/Menghapus LDM";
 $string["modAction15"] = "Menetapkan/Mencabut Tangguhan pada Akun";
 $string["modAction16"] = "Un/magiced a level";
 $string["modAction17"] = "Quest added";
+$string["modAction18"] = "Song Enabled/Disabled";
 //errors
 $string["errorNoAccWithPerm"] = "Error: Tidak ada akun yang mempunyai izin '%s'.";
 ?>

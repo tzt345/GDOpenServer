@@ -91,6 +91,7 @@ $string["modAction14"] = "Ενεργοποίησε LDM";
 $string["modAction15"] = "Leaderboard un/banned";
 $string["modAction16"] = "Un/magiced a level";
 $string["modAction17"] = "Quest added";
+$string["modAction18"] = "Τραγούδι είναι Ενεργοποιημένο/Απενεργοποιημένο";
 //errors
 $string["errorNoAccWithPerm"] = "Σφάλμα: Δεν βρέθηκαν λογαριασμοί με την λεγόμενη άδεια '%s'";
 ?>
