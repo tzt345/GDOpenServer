@@ -1,5 +1,4 @@
 <?php
-// Don't forget bin2hex and add 0's rya
 ob_start();
 require "../config/metadata.php";
 if ($usePatcher == 0) {
