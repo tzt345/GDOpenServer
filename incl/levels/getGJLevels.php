@@ -13,7 +13,12 @@ require "../lib/generateHash.php";
 $hash = new generateHash();
 
 //initializing variables
-$lvlstring = ""; $userstring = ""; $songsstring = ""; $lvlsmultistring = ""; $str = ""; $order = "uploadDate";
+$lvlstring = "";
+$userstring = "";
+$songsstring = "";
+$lvlsmultistring = "";
+$str = "";
+$order = "uploadDate";
 $orderenabled = true;
 $params = array("NOT unlisted = 1");
 
@@ -44,28 +49,28 @@ if(!empty($_POST["diff"])){
 
 
 //ADDITIONAL PARAMETERS
-if($gameVersion==0){
+if($gameVersion == 0){
 	$params[] = "gameVersion <= 18";
 }else{
 	$params[] = "gameVersion <= '$gameVersion'";
 }
-if(!empty($_POST["featured"]) AND $_POST["featured"]==1){
+if(!empty($_POST["featured"]) AND $_POST["featured"] == 1){
 	$params[] = "starFeatured = 1";
 }
-if(!empty($_POST["original"]) AND $_POST["original"]==1){
+if(!empty($_POST["original"]) AND $_POST["original"] == 1){
 	$params[] = "original = 0";
 }
-if(!empty($_POST["coins"]) AND $_POST["coins"]==1){
-		$params[] = "starCoins = 1 AND NOT coins = 0";
+if(!empty($_POST["coins"]) AND $_POST["coins"] == 1){
+	$params[] = "starCoins = 1 AND NOT coins = 0";
 }
-if(!empty($_POST["epic"]) AND $_POST["epic"]==1){
+if(!empty($_POST["epic"]) AND $_POST["epic"] == 1){
 	$params[] = "starEpic = 1";
 }
-if(!empty($_POST["uncompleted"]) AND $_POST["uncompleted"]==1){
+if(!empty($_POST["uncompleted"]) AND $_POST["uncompleted"] == 1){
 	$completedLevels = $ep->numbercolon($_POST["completedLevels"]);
 	$params[] = "NOT levelID IN ($completedLevels)";
 }
-if(!empty($_POST["onlyCompleted"]) AND $_POST["onlyCompleted"]==1){
+if(!empty($_POST["onlyCompleted"]) AND $_POST["onlyCompleted"] == 1){
 	$completedLevels = $ep->numbercolon($_POST["completedLevels"]);
 	$params[] = "levelID IN ($completedLevels)";
 }
@@ -160,7 +165,7 @@ if(isset($_POST["page"]) AND is_numeric($_POST["page"])){
 }else{
 	$offset = 0;
 }
-if($type==0 OR $type==15){ //most liked, changed to 15 in GDW for whatever reason
+if($type == 0 OR $type == 15){ //most liked, changed to 15 in GDW for whatever reason
 	$order = "likes";
 	if(!empty($str)){
 		if(is_numeric($str)){
@@ -170,25 +175,25 @@ if($type==0 OR $type==15){ //most liked, changed to 15 in GDW for whatever reaso
 		}
 	}
 }
-if($type==1){
+if($type == 1){
 	$order = "downloads";
 }
-if($type==2){
+if($type == 2){
 	$order = "likes";
 }
-if($type==3){ //TRENDING
+if($type == 3){ //TRENDING
 	$uploadDate = time() - (7 * 24 * 60 * 60);
 	$params[] = "uploadDate > $uploadDate ";
 	$order = "likes";
 }
-if($type==5){
+if($type == 5){
 	$params[] = "userID = '$str'";
 }
-if($type==6 OR $type==17){ //featured
+if($type == 6 OR $type == 17){ //featured
 	$params[] = "NOT starFeatured = 0";
 	$order = "rateDate DESC,uploadDate";
 }
-if($type==16){ //HALL OF FAME
+if($type == 16){ //HALL OF FAME
 	if ($epicInHall == 1) {
 		$params[] = "NOT starEpic = 0";
 	} else {
@@ -196,29 +201,29 @@ if($type==16){ //HALL OF FAME
 	}
 	$order = "rateDate DESC,uploadDate";
 }
-if($type==7){ //MAGIC
+if($type == 7){ //MAGIC
 	if ($isMagicSectionManual == 1) {
 		$params[] = "NOT starMagic = 0";
 	} else {
 		$params[] = "objects > 4999";
 	}
 }
-if($type==10){ //MAP PACKS
+if($type == 10){ //MAP PACKS
 	$order = false;
 	$params[] = "levelID IN ($str)";
 }
-if($type==11){ //AWARDED
+if($type == 11){ //AWARDED
 	$params[] = "NOT starStars = 0";
-	$order = "rateDate DESC,uploadDate";
+	$order = "rateDate DESC, uploadDate";
 }
-if($type==12){ //FOLLOWED
+if($type == 12){ //FOLLOWED
 	$followed = $ep->numbercolon($_POST["followed"]);
 	$params[] = "extID IN ($followed)";
 }
-if($type==13){ //FRIENDS
+if($type == 13){ //FRIENDS
 	$accountID = $ep->remove($_POST["accountID"]);
 	$gjp = $ep->remove($_POST["gjp"]);
-	$gjpresult = $GJPCheck->check($gjp,$accountID);
+	$gjpresult = $GJPCheck->check($gjp, $accountID);
 	if($gjpresult == 1){
 		$peoplearray = $gs->getFriends($accountID);
 		$whereor = implode(",", $peoplearray);
@@ -232,16 +237,19 @@ if(!empty($params)){
 	$querybase .= " WHERE (" . implode(" ) AND ( ", $params) . ")";
 }
 $query = "SELECT * $querybase ";
-if($order){
-	$query .= "ORDER BY $order DESC";
+if ($showCreatorBannedPeoplesLevels == 0) {
+	$query2 = $db->prepare("SELECT userID FROM users WHERE isCreatorBanned = 1");
+	$query2->execute();
+	$bannedPeople = $query2->fetch();
+	$query .= "WHERE userID NOT IN ($bannedPeople) ";
 }
-$query .= " LIMIT 10 OFFSET $offset";
-//echo $query;
+if ($order) {
+	$query .= "ORDER BY $order DESC ";
+}
+$query .= "LIMIT 10 OFFSET $offset";
 $countquery = "SELECT count(*) $querybase";
-//echo $query;
 $query = $db->prepare($query);
 $query->execute();
-//echo $countquery;
 $countquery = $db->prepare($countquery);
 $countquery->execute();
 $totallvlcount = $countquery->fetchColumn();

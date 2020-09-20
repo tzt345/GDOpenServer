@@ -24,8 +24,21 @@ class Commands {
 		require_once "../lib/mainLib.php";
 		$ep = new exploitPatch();
 		$gs = new mainLib();
-		$comment = strtolower($comment);
+		if (!is_numeric($accountID) AND !is_numeric($levelID)) {
+			return false;
+		}
+		$query = $db->prepare("SELECT isBanned FROM users WHERE extID = :id");
+		$query->execute([':id' => $accountID]);
+		if ($query->fetchColumn() == 1) {
+			return false;
+		}
+		$comment = $ep->remove(strtolower($comment));
 		$commentarray = explode(' ', $comment);
+		try {
+			$commentarray = str_replace($prefix, "", $commentarray[0]);
+		} catch (Exception $e) {
+			return false;
+		}
 		$uploadDate = time();
 		$prefixLen = strlen($prefix);
 		//LEVEL INFO
@@ -33,6 +46,7 @@ class Commands {
 		$query2->execute([':id' => $levelID]);
 		$targetExtID = $query2->fetchColumn();
 		//ADMIN COMMANDS
+		// disablesong($commentarray, $uploadDate, $accountID, $levelID)
 		if(substr($comment, 0, 4 + $prefixLen) == $prefix.'rate' AND $gs->checkPermission($accountID, "commandRate") AND $commandRate == 1){
 			return rate($gs, $commentarray, $uploadDate, $accountID, $levelID);
 		}
@@ -53,6 +67,9 @@ class Commands {
 		}
 		if(substr($comment, 0, 4 + $prefixLen) == $prefix.'hall' AND $gs->checkPermission($accountID, "commandEpic") AND $commandHall == 1 AND $epicInHall == 0){
 			return hall($uploadDate, $accountID, $levelID);
+		}
+		if(substr($comment, 0, 6 + $prefixLen) == $prefix.'unhall' AND $gs->checkPermission($accountID, "commandEpic") AND $commandHall == 1 AND $epicInHall == 0){
+			return unhall($uploadDate, $accountID, $levelID);
 		}
 		if(substr($comment, 0, 5 + $prefixLen) == $prefix.'magic' AND $gs->checkPermission($accountID, "commandMagic") AND $commandMagic == 1 AND $isMagicSectionManual == 1){
 			return magic($uploadDate, $accountID, $levelID);
@@ -78,18 +95,36 @@ class Commands {
 		if(substr($comment, 0, 6 + $prefixLen) == $prefix.'setacc' AND $gs->checkPermission($accountID, "commandSetacc") AND $commandSetAcc == 1){
 			return setacc($commentarray, $uploadDate, $accountID, $levelID);
 		}
+		if(substr($comment, 0, 11 + $prefixLen) == $prefix.'disablesong' AND $gs->checkPermission($accountID, "commandRate") AND $commandRate == 1){
+			return disablesong($commentarray, $uploadDate, $accountID, $levelID);
+		}
+		if(substr($comment, 0, 10 + $prefixLen) == $prefix.'enablesong' AND $gs->checkPermission($accountID, "commandRate") AND $commandRate == 1){
+			return enablesong($commentarray, $uploadDate, $accountID, $levelID);
+		}
+		if(substr($comment, 0, 3 + $prefixLen) == $prefix.'ban' AND $gs->checkPermission($accountID, "commandRate") AND $commandRate == 1){
+			return ban($comment, $commentarray, $uploadDate, $accountID, $levelID);
+		}
+		if(substr($comment, 0, 10 + $prefixLen) == $prefix.'commentban' AND $gs->checkPermission($accountID, "commandRate") AND $commandRate == 1){
+			return commentban($comment, $commentarray, $uploadDate, $accountID, $levelID);
+		}
+		if(substr($comment, 0, 3 + $prefixLen) == $prefix.'unban' AND $gs->checkPermission($accountID, "commandRate") AND $commandRate == 1){
+			return unban($commentarray, $uploadDate, $accountID, $levelID);
+		}
+		if(substr($comment, 0, 10 + $prefixLen) == $prefix.'uncommentban' AND $gs->checkPermission($accountID, "commandRate") AND $commandRate == 1){
+			return uncommentban($commentarray, $uploadDate, $accountID, $levelID);
+		}
 		//NON-ADMIN COMMANDS
 		if($this->ownCommand($comment, "rename", $accountID, $targetExtID) AND $commandRename == 1){
 			return renamelevel($comment, $uploadDate, $accountID, $levelID);
 		}
 		if($this->ownCommand($comment, "pass", $accountID, $targetExtID) AND $commandPass == 1){
-			return pass($comment, $uploadDate, $accountID, $levelID);
+			return pass($commentarray, $uploadDate, $accountID, $levelID);
 		}
 		if($this->ownCommand($comment, "song", $accountID, $targetExtID) AND $commandSong == 1){
 			return song($comment, $uploadDate, $accountID, $levelID);
 		}
 		if($this->ownCommand($comment, "description", $accountID, $targetExtID) AND $commandDescription == 1){
-			return description($comment, $uploadDate, $accountID, $levelID);
+			return description($comment, $commentarray, $uploadDate, $accountID, $levelID);
 		}
 		if($this->ownCommand($comment, "public", $accountID, $targetExtID) AND $commandPublic == 1){
 			return publiclevel($uploadDate, $accountID, $levelID);
@@ -98,7 +133,10 @@ class Commands {
 			return unlist($uploadDate, $accountID, $levelID);
 		}
 		if($this->ownCommand($comment, "sharecp", $accountID, $targetExtID) AND $commandShareCP == 1){
-			return sharecp($commentarray, $uploadDate, $accountID, $levelID);
+			return sharecp($targetExtID, $commentarray, $uploadDate, $accountID, $levelID);
+		}
+		if($this->ownCommand($comment, "noshare", $accountID, $targetExtID) AND $commandShareCP == 1){
+			return noshare($uploadDate, $accountID, $levelID);
 		}
 		if($this->ownCommand($comment, "ldm", $accountID, $targetExtID) AND $commandLDM == 1){
 			return ldm($uploadDate, $accountID, $levelID);

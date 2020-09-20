@@ -18,7 +18,7 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 		$query->execute([':userName' => $userName]);
 		$accountID = $query->fetchColumn();
 		if($gs->checkPermission($accountID, "toolCommentban") == false){
-			exit ("This account doesn't have the permissions to access this tool. <a href='commentBan.php'>Try again</a>");
+			exit ("This account doesn't have the permissions to access this tool. <a href='commentBan.php'>Try again.</a>");
 		}else{
 			$query = $db->prepare("UPDATE users SET isCommentBanned = :ban, commentBanReason = :banReason WHERE userID = :id");
 			$query->execute([':id' => $userID, ':ban' => $banType, ':banReason' => $banReason]);
@@ -31,7 +31,7 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
             }
 		}
 	} else {
-		exit ("Wrong password! <a href='commentBan.php'>Try again</a>.");
+		exit ("Wrong password! <a href='commentBan.php'>Try again.</a>");
 	}
 } else {
 	echo '<form action="commentBan.php" method="post">Your Username: <input type="text" name="userName">

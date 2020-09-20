@@ -91,6 +91,7 @@ $string["modAction14"] = "เปิด/ปิด ปุ่ม LDM";
 $string["modAction15"] = "แบน/ปลดแบนบนกระดานคะแนน";
 $string["modAction16"] = "Un/magiced a level";
 $string["modAction17"] = "Quest added";
+$string["modAction18"] = "Song Enabled/Disabled";
 //errors ข้อผิดพลาด
 $string["errorNoAccWithPerm"] = "ข้อผิดพลาด : ไม่พบบัญชีที่มีสิทธิ '%s'";
 ?>

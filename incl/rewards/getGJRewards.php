@@ -47,7 +47,7 @@ if ($query->rowCount() == 0) {
 }
 $user = $result[0];
 $userid = $user["userID"];
-$chk = $XORCipher->cipher(base64_decode(substr($chk, 5)),59182);
+$chk = $XORCipher->cipher(base64_decode(substr($chk, 5)), 59182);
 //rewards
 	//Time left
 	$currenttime = time();

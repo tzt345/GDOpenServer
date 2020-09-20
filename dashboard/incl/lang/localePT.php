@@ -91,6 +91,7 @@ $string["modAction14"] = "Des/abilitou LDM";
 $string["modAction15"] = "Des/banido do ranking";
 $string["modAction16"] = "Un/magiced a level";
 $string["modAction17"] = "Quest added";
+$string["modAction18"] = "Song Enabled/Disabled";
 //errors
 $string["errorNoAccWithPerm"] = "Erro: Nenhuma conta com a permissão '%s' foi encontrada";
 ?>

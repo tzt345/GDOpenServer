@@ -6,8 +6,8 @@ class generatePass
 		require_once dirname(__FILE__)."/mainLib.php";
 		$gs = new mainLib();
 		$ip = $gs->getIP();
-		$newtime = time() - (60*60);
-		$query6 = $db->prepare("SELECT count(*) FROM actions WHERE type = '6' AND timestamp > :time AND value2 = :ip");
+		$newtime = time() - (60 * 60);
+		$query6 = $db->prepare("SELECT count(*) FROM actions WHERE type = 6 AND timestamp > :time AND value2 = :ip");
 		$query6->execute([':time' => $newtime, ':ip' => $ip]);
 		if($query6->fetchColumn() > 7){
 			return -1;
@@ -51,8 +51,7 @@ class generatePass
 						$query->execute([':userName' => $userName, ':password' => $pass]);
 						return 1;
 					} else {
-						$query6 = $db->prepare("INSERT INTO actions (type, value, timestamp, value2) VALUES 
-																	('6',:username,:time,:ip)");
+						$query6 = $db->prepare("INSERT INTO actions (type, value, timestamp, value2) VALUES (6, :username, :time, :ip)");
 						$query6->execute([':username' => $userName, ':time' => time(), ':ip' => $ip]);
 						return 0;
 					}

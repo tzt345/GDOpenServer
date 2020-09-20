@@ -12,7 +12,7 @@ $extid = $ep->number($_POST["targetAccountID"]);
 if(!empty($_POST["accountID"])){
 	$me = $ep->number($_POST["accountID"]);
 	$GJPCheck = new GJPCheck(); //gjp check
-	$gjpresult = $GJPCheck->check($gjp,$me);
+	$gjpresult = $GJPCheck->check($gjp, $me);
 	if($gjpresult != 1){
 		exit("-1");
 	}
@@ -23,18 +23,22 @@ if(!empty($_POST["accountID"])){
 $query = "SELECT count(*) FROM blocks WHERE (person1 = :extid AND person2 = :me) OR (person2 = :extid AND person1 = :me)";
 $query = $db->prepare($query);
 $query->execute([':extid' => $extid, ':me' => $me]);
-if($query->fetchColumn() > 0)
+if($query->fetchColumn() > 0){
 	exit("-1");
-
+}
 $query = "SELECT * FROM users WHERE extID = :extid";
 $query = $db->prepare($query);
 $query->execute([':extid' => $extid]);
-if($query->rowCount() == 0)
+if($query->rowCount() == 0){
 	exit("-1");
-
+}
 $user = $query->fetch();
 //placeholders
-$creatorpoints = round($user["creatorPoints"], PHP_ROUND_HALF_DOWN);
+if ($user["isCreatorBanned"] == 1) {
+	$creatorpoints = 0;
+} else {
+	$creatorpoints = round($user["creatorPoints"], PHP_ROUND_HALF_DOWN);
+}
 // GET POSITION
 $e = "SET @rownum := 0;";
 $query = $db->prepare($e);
@@ -53,7 +57,7 @@ if($query->rowCount() > 0){
 }
 //var_dump($leaderboard);
 	//accinfo
-		$query = "SELECT youtubeurl,twitter,twitch, frS, mS, cS FROM accounts WHERE accountID = :extID";
+		$query = "SELECT youtubeurl, twitter, twitch, frS, mS, cS FROM accounts WHERE accountID = :extID";
 		$query = $db->prepare($query);
 		$query->execute([':extID' => $extid]);
 		$accinfo = $query->fetch();

@@ -94,6 +94,9 @@ foreach($result as &$action){
 		case 17:
 			$actionname = "Quest Added";
 			break;
+		case 18:
+			$actionname = "Song Disabled";
+			break;
 		default:
 			$actionname = $action["type"];
 			break;

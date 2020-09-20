@@ -17,10 +17,10 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName=:userName");	
 		$query->execute([':userName' => $userName]);
 		$accountID = $query->fetchColumn();
-		if($gs->checkPermission($accountID, "toolLeaderboardsban")){ //TODO: create a permission for this
-			if(!is_numeric($levelID))
-				exit("Invalid level ID");
-
+		if($gs->checkPermission($accountID, "toolRevertlikes")){
+			if(!is_numeric($levelID)) {
+				exit("Invalid level ID. <a href='revertLikes.php'>Try again.</a>");
+			}
 			$query = $db->prepare("SELECT count(*) FROM actions WHERE value = :levelID AND type = 3 AND timestamp >= :timestamp");
 			$query->execute([':levelID' => $levelID, ':timestamp' => $timestamp]);
 			$count = $query->fetchColumn();
@@ -29,14 +29,13 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 			$query->execute([':levelID' => $levelID, ':count' => $count]);
 
 			if($query->rowCount() != 0){
-				echo "Banned succesfully.";
+				echo "Reverted likes succesfully. <a href='revertLikes.php'>Go back.</a>";
 			}else{
-				echo "Ban failed.";
+				echo "Reverting likes failed. <a href='revertLikes.php'>Try again.</a>";
 			}
 
-			$query = $db->prepare("INSERT INTO modactions  (type, value, value2, value3, timestamp, account) 
-													VALUES ('18',:levelID, '1',  :now,:account)");
-			$query->execute([':levelID' => $levelID,':timestamp' => $timestamp, ':now' => time(), ':account' => $accountID]);
+			$query = $db->prepare("INSERT INTO modactions  (type, value, value2, value3, timestamp, account) VALUES (19, :levelID, 1,  :now, :account)");
+			$query->execute([':levelID' => $levelID, ':timestamp' => $timestamp, ':now' => time(), ':account' => $accountID]);
 
 		}else{
 			exit("You do not have the permission to do this action. <a href='revertLikes.php'>Try again</a>");

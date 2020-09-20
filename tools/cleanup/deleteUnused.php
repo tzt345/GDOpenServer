@@ -15,7 +15,7 @@ foreach($users as $user){
 	if($count == 0){
 		$query = $db->prepare("DELETE FROM users WHERE userID = :userID");
 		$query->execute([':userID' => $user["userID"]]);
-		echo "Deleted ".htmlspecialchars($user["userName"],ENT_QUOTES)." - ".$user["userID"]." - ".$user["extID"]." - ".date("d-m-Y G-i", $user["lastPlayed"])."<br>";
+		echo "Deleted ".htmlspecialchars($user["userName"], ENT_QUOTES)." - ".$user["userID"]." - ".$user["extID"]." - ".date("d-m-Y G-i", $user["lastPlayed"])."<br>";
 		ob_flush();
 		flush();
 		$x++;

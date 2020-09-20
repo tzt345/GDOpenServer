@@ -6,6 +6,7 @@ require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
 include "../../config/levels.php";
+include "../../config/users.php";
 $mainLib = new mainLib();
 $ep = new exploitPatch();
 //here im getting all the data
@@ -13,35 +14,54 @@ $gameVersion = $ep->remove($_POST["gameVersion"]);
 if ($gameVersion <= 19) {
 	$gjp = "";
 } else {
-	$gjp = $ep->remove($_POST["gjp"]);
+	if(!empty($_POST["gjp"]){
+		$gjp = $ep->remove($_POST["gjp"]);
+	} elseif ($unregisteredUploadLevels == 0) {
+		exit("-1");
+	} else {
+		$gjp = "";
+	}
+}
+if(!empty($_POST["accountID"]) AND $_POST["accountID"] != "0"){
+	$id = $ep->remove($_POST["accountID"]);
+	$register = 1;
+} elseif ($unregisteredUploadLevels == 0) {
+	exit("-1")
+} else {
+	if(!empty($_POST["udid"])){
+		$id = $ep->remove($_POST["udid"]);
+		if(is_numeric($id)){
+			exit("-1");
+		}
+	}
 }
 if ($gameVersion >= 20) {
-	if(!empty($_POST["accountID"]) AND $_POST["accountID"] != "0"){
-		$id = $ep->remove($_POST["accountID"]);
-		$GJPCheck = new GJPCheck();
-		$gjpresult = $GJPCheck->check($gjp,$id);
-		if($gjpresult != 1){
-			exit("-1");
-		}
+	$GJPCheck = new GJPCheck();
+	$gjpresult = $GJPCheck->check($gjp, $id);
+	if($gjpresult != 1){
+		exit("-1");
 	}
 } else {
-	if(!empty($_POST["accountID"]) AND $_POST["accountID"] != "0"){
-		$id = $ep->remove($_POST["accountID"]);
-		if ($mainLib->getAccountName($id) != $userName) {
-			exit("-1");
-		}
-	}
-}
-if(!empty($_POST["udid"])){
-	$id = $ep->remove($_POST["udid"]);
-	if(is_numeric($id)){
+	if ($mainLib->getAccountName($id) != $userName) {
 		exit("-1");
 	}
 }
 $userName = $ep->remove($_POST["userName"]);
 $userName = $ep->charclean($userName);
 $hostname = $mainLib->getIP();
-$userID = $mainLib->getUserID($id, $userName);
+$query = $db->prepare("SELECT userID, isCreatorBanned FROM users WHERE extID = :id");
+$query->execute([':id' => $id]);
+if ($query->rowCount() > 0) {
+	$result = $query->fetchAll();
+	$userID = $result["userID"];
+	if ($result["isCreatorBanned"] == 1) {
+		exit("-1");
+	}
+} else {
+	$query = $db->prepare("INSERT INTO users (isRegistered, extID, userName, lastPlayed) VALUES (:register, :id, :userName, :uploadDate)");
+	$query->execute([':id' => $id, ':register' => $register, ':userName' => $userName, ':uploadDate' => time()]);
+	$userID = $db->lastInsertId();
+}
 $query = $db->prepare("SELECT count(*) FROM levels WHERE uploadDate > :time AND (userID = :userID OR hostname = :ip)");
 $query->execute([':time' => $uploadDate - $uploadRateLimit, ':userID' => $userID, ':ip' => $hostname]);
 if($query->fetchColumn() > 0){

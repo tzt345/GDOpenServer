@@ -2,7 +2,11 @@
 include "../incl/lib/connection.php";
 require_once "../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
+include "../config/security.php";
 if($_POST["userName"] != ""){
+	if ($onlyWebRegistration == 1) {
+		exit("-1");
+	}
 	//here im getting all the data
 	$userName = $ep->remove($_POST["userName"]);
 	$password = $ep->remove($_POST["password"]);

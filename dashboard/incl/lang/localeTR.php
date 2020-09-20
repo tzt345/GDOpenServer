@@ -91,6 +91,7 @@ $string["modAction14"] = "(14)LDM Açıldı/Açılmadı";
 $string["modAction15"] = "(15)Kullanıcı Banlandı/Unbanlandı";
 $string["modAction16"] = "Un/magiced a level";
 $string["modAction17"] = "Quest added";
+$string["modAction18"] = "Song Enabled/Disabled";
 //errors
 $string["errorNoAccWithPerm"] = "HATA: '%s' adlı hesabın bu sisteme erişimi yok.";
 
