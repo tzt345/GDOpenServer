@@ -14,9 +14,6 @@ class Commands {
 	}
 	public function doCommands($accountID, $comment, $levelID) {
 		chdir(dirname(__FILE__));
-		foreach (glob("cmd/*.php") as $filename) {
-			include $filename;
-		}
 		include "../lib/connection.php";
 		include "../../config/commands.php";
 		include "../../config/levels.php";
@@ -35,7 +32,7 @@ class Commands {
 		$comment = $ep->remove(strtolower($comment));
 		$commentarray = explode(' ', $comment);
 		try {
-			$commentarray = str_replace($prefix, "", $commentarray[0]);
+			$commentarray[0] = str_replace($prefix, "", $commentarray[0]);
 		} catch (Exception $e) {
 			return false;
 		}
@@ -46,8 +43,12 @@ class Commands {
 		$query2->execute([':id' => $levelID]);
 		$targetExtID = $query2->fetchColumn();
 		//ADMIN COMMANDS
-		// disablesong($commentarray, $uploadDate, $accountID, $levelID)
-		if(substr($comment, 0, 4 + $prefixLen) == $prefix.'rate' AND $gs->checkPermission($accountID, "commandRate") AND $commandRate == 1){
+		if (file_exists("cmd/".$commentarray[0])) {
+			include "cmd/".$commentarray[0].".php";
+		} else {
+			$aliases = yaml_parse("cmd/aliases.yaml");
+		}
+		/* if(substr($comment, 0, 4 + $prefixLen) == $prefix.'rate' AND $gs->checkPermission($accountID, "commandRate") AND $commandRate == 1){
 			return rate($gs, $commentarray, $uploadDate, $accountID, $levelID);
 		}
 		if(substr($comment, 0, 6 + $prefixLen) == $prefix.'unrate' AND $gs->checkPermission($accountID, "commandRate") AND $commandUnrate == 1){
@@ -144,7 +145,7 @@ class Commands {
 		if($this->ownCommand($comment, "unldm", $accountID, $targetExtID) AND $commandUnLDM == 1){
 			return unldm($uploadDate, $accountID, $levelID);
 		}
-		return false;
+		return false; */
 	}
 	public function doProfileCommands($accountID, $command){
 		include dirname(__FILE__)."/../lib/connection.php";

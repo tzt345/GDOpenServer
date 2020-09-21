@@ -38,22 +38,57 @@ public:
   - list
 rate:
   - rate
+  - starrate
 rename:
   - rename
   - renamelevel
-ldm:
-  - ldm
-ldm:
-  - ldm
-ldm:
-  - ldm
-ldm:
-  - ldm
-ldm:
-  - ldm
-ldm:
-  - ldm
-ldm:
-  - ldm
-ldm:
-  - ldm
+revertlikes:
+  - revertlikes
+setacc:
+  - setacc
+  - setaccount
+  - setcreator
+  - setowner
+  - setlevelowner
+  - makecreator
+  - makeowner
+  - makelevelowner
+sharecp:
+  - sharecp
+  - sharecps
+  - sharecreatorpoint
+  - sharecreatorpoints
+song:
+  - song
+  - setsong
+  - songset
+  - setlevelsong
+  - levelsongset
+unban:
+  - unban
+uncommentban:
+  - uncommentban
+unepic:
+  - unepic
+unfeature:
+  - unfeature
+unhall:
+  - unhall
+  - unhalloffame
+unldm:
+  - unldm
+unlist:
+  - unlist
+unmagic:
+  - unmagic
+unrate:
+  - unrate
+  - unstarrate
+unsharecp:
+  - unsharecp
+unverifycoins:
+  - unverifycoins
+verifycoins:
+  - verifycoins
+weekly:
+  - weekly
