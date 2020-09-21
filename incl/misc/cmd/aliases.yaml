@@ -23,7 +23,6 @@ feature:
 hall:
   - hall
 ldm:
-<<<<<<< Updated upstream
   - ldm
 magic:
   - magic
@@ -57,6 +56,4 @@ ldm:
 ldm:
   - ldm
 ldm:
-=======
->>>>>>> Stashed changes
   - ldm
