@@ -19,11 +19,11 @@ $subject = $ep->remove($_POST["subject"]);
 $toAccountID = $ep->number($_POST["toAccountID"]);
 $body = $ep->remove($_POST["body"]);
 
-$query2 = $db->prepare("SELECT count(*) FROM `blocks` WHERE person1 = :toAccountID AND person2 = :accountID LIMIT 1");
-$query3 = $db->prepare("SELECT mS FROM `accounts` WHERE accountID = :toAccountID AND mS != 0 LIMIT 1");
-$query4 = $db->prepare("SELECT count(*) FROM `friendships` WHERE (person1 = :accountID AND person2 = :toAccountID) AND (person2 = :accountID AND person1 = :toAccountID) LIMIT 1");
+$query2 = $db->prepare("SELECT count(*) FROM blocks WHERE person1 = :toAccountID AND person2 = :accountID LIMIT 1");
+$query3 = $db->prepare("SELECT mS FROM accounts WHERE accountID = :toAccountID AND mS != 0 LIMIT 1");
+$query4 = $db->prepare("SELECT count(*) FROM friendships WHERE (person1 = :accountID AND person2 = :toAccountID) AND (person2 = :accountID AND person1 = :toAccountID) LIMIT 1");
 $query2->execute([':toAccountID' => $toAccountID, ':accountID' => $accountID]);
-$query3->execute([':toAccountID' => $toAccountID, ':accountID' => $accountID]);
+$query3->execute([':toAccountID' => $toAccountID]);
 $query4->execute([':toAccountID' => $toAccountID, ':accountID' => $accountID]);
 $blocked = $query2->fetchColumn();
 $mSOnly = $query3->fetchColumn();
