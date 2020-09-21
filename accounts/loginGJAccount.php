@@ -6,7 +6,7 @@ require_once "../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../incl/lib/mainLib.php";
 $gs = new mainLib();
-include "../config/users.php"
+include "../config/users.php";
 //here im getting all the data
 $ip = $gs->getIP();
 $udid = $ep->remove($_POST["udid"]);
