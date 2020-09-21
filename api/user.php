@@ -1,5 +1,5 @@
 <?php
-class banAPI {
+class userAPI {
     function Select(){
         include "../incl/lib/connection.php";
         require_once "../incl/lib/mainLib.php";
@@ -45,7 +45,7 @@ class banAPI {
     }
 }
 
-$API = new banAPI;
+$API = new userAPI;
 header('Content-Type: Application/json');
 echo $API->Select();
 ?>
