@@ -241,7 +241,7 @@ if ($showCreatorBannedPeoplesLevels == 0) {
 	$query2 = $db->prepare("SELECT userID FROM users WHERE isCreatorBanned = 1");
 	$query2->execute();
 	$bannedPeople = $query2->fetch();
-	$query .= "WHERE userID NOT IN ($bannedPeople) ";
+	$query .= "AND ( userID NOT IN ($bannedPeople) ) ";
 }
 if ($order) {
 	$query .= "ORDER BY $order DESC ";

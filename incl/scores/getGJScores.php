@@ -23,7 +23,7 @@ if ($gameVersion >= 20){
 		$accountID = $ep->remove($_POST["accountID"]);
 		$gjp = $ep->remove($_POST["gjp"]);
 		$GJPCheck = new GJPCheck(); //gjp check
-		$gjpresult = $GJPCheck->check($gjp,$accountID);
+		$gjpresult = $GJPCheck->check($gjp, $accountID);
 		if($gjpresult != 1){
 			exit("-1");
 		}

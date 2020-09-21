@@ -14,7 +14,7 @@ $gameVersion = $ep->remove($_POST["gameVersion"]);
 if ($gameVersion <= 19) {
 	$gjp = "";
 } else {
-	if(!empty($_POST["gjp"]){
+	if(!empty($_POST["gjp"])){
 		$gjp = $ep->remove($_POST["gjp"]);
 	} elseif ($unregisteredUploadLevels == 0) {
 		exit("-1");
