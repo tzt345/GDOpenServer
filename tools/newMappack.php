@@ -19,27 +19,27 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName=:userName");	
 		$query->execute([':userName' => $userName]);
 		$accountID = $query->fetchColumn();
-		if($gs->checkPermission($accountID, "toolPackcreate") == false){
-			echo "This account doesn't have the permissions to access this tool. <a href='packCreate.php'>Try again</a>";
+		if($gs->checkPermission($accountID, "toolNewmappack") == false){
+			echo "This account doesn't have the permissions to access this tool. <a href='newMappack.php'>Try again</a>";
 		}else{
 			if(!is_numeric($stars) OR !is_numeric($coins) OR $stars > 10 OR $coins > 2){
-				exit("Invalid stars/coins value");
+				exit("Invalid stars/coins value. <a href='newMappack.php'>Try again</a>");
 			}
 			if(strlen($color) != 6){
-				exit("Unknown color value");
+				exit("Unknown color value. <a href='newMappack.php'>Try again</a>");
 			}
-			$rgb = hexdec(substr($color,0,2)).
-				",".hexdec(substr($color,2,2)).
-				",".hexdec(substr($color,4,2));
+			$rgb = hexdec(substr($color, 0, 2)).
+				",".hexdec(substr($color, 2, 2)).
+				",".hexdec(substr($color, 4, 2));
 			$lvlsarray = explode(",", $levels);
 			foreach($lvlsarray AS &$level){
 				if(!is_numeric($level)){
-					exit("$level isn't a number");
+					exit("$level isn't a number. <a href='newMappack.php'>Try again</a>");
 				}
 				$query = $db->prepare("SELECT levelName FROM levels WHERE levelID=:levelID");	
 				$query->execute([':levelID' => $level]);
 				if($query->rowCount() == 0){
-					exit("Level #$level doesn't exist.");
+					exit("Level #$level doesn't exist. <a href='newMappack.php'>Try again</a>");
 				}
 				$levelName = $query->fetchColumn();
 				$levelstring .= $levelName . ", ";
@@ -87,19 +87,22 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 				Stars: $stars <br>
 				Coins: $coins <br>
 				RGB Color: $rgb";
+<<<<<<< Updated upstream
 			$query = $db->prepare("INSERT INTO mappacks	 (name, levels, stars, coins, difficulty, rgbcolors)
 													VALUES (:name,:levels,:stars,:coins,:difficulty,:rgbcolors)");
+=======
+			$query = $db->prepare("INSERT INTO mappacks (name, levels, stars, coins, difficulty, rgbcolors) VALUES (:name,:levels,:stars,:coins,:difficulty,:rgbcolors)");
+>>>>>>> Stashed changes
 			$query->execute([':name' => $packName, ':levels' => $levels, ':stars' => $stars, ':coins' => $coins, ':difficulty' => $diff, ':rgbcolors' => $rgb]);
-			$query = $db->prepare("INSERT INTO modactions  (type, value, timestamp, account, value2, value3, value4, value7) 
-													VALUES ('11',:value,:timestamp,:account,:levels, :stars, :coins, :rgb)");
+			$query = $db->prepare("INSERT INTO modactions  (type, value, timestamp, account, value2, value3, value4, value7) VALUES ('11',:value,:timestamp,:account,:levels, :stars, :coins, :rgb)");
 			$query->execute([':value' => $packName, ':timestamp' => time(), ':account' => $accountID, ':levels' => $levels, ':stars' => $stars, ':coins' => $coins, ':rgb' => $rgb]);
 		}
 	}else{
-		echo "Invalid password or nonexistant account. <a href='packCreate.php'>Try again</a>";
+		echo "Invalid password or nonexistant account. <a href='newMappack.php'>Try again</a>";
 	}
 }else{
 	echo '<script src="incl/jscolor/jscolor.js"></script>
-		<form action="packCreate.php" method="post">Username: <input type="text" name="userName">
+		<form action="newMappack.php" method="post">Username: <input type="text" name="userName">
 		<br>Password: <input type="password" name="password">
 		<br>Pack Name: <input type="text" name="packName">
 		<br>Level IDs: <input type="text" name="levels"> (separate by commas)
