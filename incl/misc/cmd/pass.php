@@ -8,9 +8,10 @@ function pass($commentarray, $uploadDate, $accountID, $levelID) {
 	}
 	$pass = sprintf("%06d", $pass);
 	if($pass == "000000"){
-		$pass = "1";
+		$pass = "0";
+	} else {
+		$pass = "1".$pass;
 	}
-	$pass = "1".$pass;
 	$query = $db->prepare("UPDATE levels SET password=:password WHERE levelID=:levelID");
 	$query->execute([':levelID' => $levelID, ':password' => $pass]);
 	$query = $db->prepare("INSERT INTO modactions (type, value, timestamp, account, value3) VALUES (9, :value, :timestamp, :id, :levelID)");
