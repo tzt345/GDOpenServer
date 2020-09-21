@@ -347,7 +347,7 @@ class mainLib {
 							}
 							else
 							{
-                        					$rounded = floor($delta / 60);
+											$rounded = floor($delta / 60);
 								return $rounded." minute".($rounded == 1 ? "" : "s");
 							}
 						}
@@ -478,14 +478,14 @@ class mainLib {
 			return false;
 		}
 		//findind the channel id
-		$data = array("recipient_id" => $receiver);                                                                    
+		$data = array("recipient_id" => $receiver);																	
 		$data_string = json_encode($data);
 		$url = "https://discordapp.com/api/v6/users/@me/channels";
 		//echo $url;
 		$crl = curl_init($url);
 		$headr = array();
 		$headr['User-Agent'] = 'CvoltonGDPS (http://pi.michaelbrabec.cz:9010, 1.0)';
-		curl_setopt($crl, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
+		curl_setopt($crl, CURLOPT_CUSTOMREQUEST, "POST");																	 
 		curl_setopt($crl, CURLOPT_POSTFIELDS, $data_string);
 		$headr[] = 'Content-type: application/json';
 		$headr[] = 'Authorization: Bot '.$bottoken;
@@ -496,14 +496,14 @@ class mainLib {
 		$responseDecode = json_decode($response, true);
 		$channelID = $responseDecode["id"];
 		//sending the msg
-		$data = array("content" => $message);                                                                    
+		$data = array("content" => $message);																	
 		$data_string = json_encode($data);
 		$url = "https://discordapp.com/api/v6/channels/".$channelID."/messages";
 		//echo $url;
 		$crl = curl_init($url);
 		$headr = array();
 		$headr['User-Agent'] = 'CvoltonGDPS (http://pi.michaelbrabec.cz:9010, 1.0)';
-		curl_setopt($crl, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
+		curl_setopt($crl, CURLOPT_CUSTOMREQUEST, "POST");																	 
 		curl_setopt($crl, CURLOPT_POSTFIELDS, $data_string);
 		$headr[] = 'Content-type: application/json';
 		$headr[] = 'Authorization: Bot '.$bottoken;
@@ -603,8 +603,8 @@ class mainLib {
 		return false;
 	}
 	public function isCloudFlareIP($ip) {
-    	$cf_ips = array(
-	        '173.245.48.0/20',
+		$cf_ips = array(
+			'173.245.48.0/20',
 			'103.21.244.0/22',
 			'103.22.200.0/22',
 			'103.31.4.0/22',
@@ -618,13 +618,13 @@ class mainLib {
 			'104.16.0.0/12',
 			'172.64.0.0/13',
 			'131.0.72.0/22'
-	    );
-	    foreach ($cf_ips as $cf_ip) {
-	        if (ip_in_range($ip, $cf_ip)) {
-	            return true;
-	        }
-	    }
-	    return false;
+		);
+		foreach ($cf_ips as $cf_ip) {
+			if (ip_in_range($ip, $cf_ip)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	public function getIP(){
 		include __DIR__ . "/../../config/security.php";
@@ -828,9 +828,9 @@ class mainLib {
 			} else {
 				$reuploads = -1;
 			}
-            if($count != 0){
-                return "-3";
-            }else{
+			if($count != 0){
+				return "-3";
+			}else{
 				if ($reuploads < $song_reupload) {
 					$query = $db->prepare("INSERT INTO songs (name, authorID, authorName, size, download, hash) VALUES (:name, '9', :author, :size, :download, :hash)");
 					$query->execute([':name' => $name, ':download' => $song, ':author' => $author, ':size' => $size, ':hash' => $hash]);
@@ -838,7 +838,7 @@ class mainLib {
 				} else {
 					return "-3";
 				}
-            }
+			}
 		}else{
 			return "-2";
 		}

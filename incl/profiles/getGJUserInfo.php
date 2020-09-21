@@ -44,9 +44,9 @@ $e = "SET @rownum := 0;";
 $query = $db->prepare($e);
 $query->execute();
 /*$f = "SELECT rank FROM (
-                  SELECT @rownum := @rownum + 1 AS rank, extID
-                  FROM users WHERE isBanned = '0' AND gameVersion > 19 AND stars > 25 ORDER BY stars DESC
-                  ) as result WHERE extID=:extid";*/
+				  SELECT @rownum := @rownum + 1 AS rank, extID
+				  FROM users WHERE isBanned = '0' AND gameVersion > 19 AND stars > 25 ORDER BY stars DESC
+				  ) as result WHERE extID=:extid";*/
 $f = "SELECT count(*) FROM users WHERE stars > :stars AND isBanned = 0"; //I can do this, since I already know the stars amount beforehand
 $query = $db->prepare($f);
 $query->execute([':stars' => $user["stars"]]);

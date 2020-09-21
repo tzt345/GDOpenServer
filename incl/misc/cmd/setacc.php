@@ -6,7 +6,7 @@ function setacc($commentarray, $uploadDate, $accountID, $levelID) {
 	} else {
 		return false;
 	}
-    $query = $db->prepare("SELECT accountID FROM accounts WHERE userName = :userName OR accountID = :userName LIMIT 1");
+	$query = $db->prepare("SELECT accountID FROM accounts WHERE userName = :userName OR accountID = :userName LIMIT 1");
 	$query->execute([':userName' => $userName]);
 	if($query->rowCount() == 0){
 		return false;

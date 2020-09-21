@@ -15,7 +15,7 @@ class Commands {
 	public function doCommands($accountID, $comment, $levelID) {
 		chdir(dirname(__FILE__));
 		foreach (glob("cmd/*.php") as $filename) {
-    		include $filename;
+			include $filename;
 		}
 		include "../lib/connection.php";
 		include "../../config/commands.php";

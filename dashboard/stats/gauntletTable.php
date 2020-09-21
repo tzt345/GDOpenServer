@@ -79,14 +79,14 @@ $bottomrow = $dl->generateBottomRow($pagecount, $actualpage);
 */
 $dl->printPage('<table class="table table-inverse">
   <thead>
-    <tr>
-      <th>#</th>
-      <th>'.$dl->getLocalizedString("name").'</th>
-      <th>'.$dl->getLocalizedString("levels").'</th>
-    </tr>
+	<tr>
+	  <th>#</th>
+	  <th>'.$dl->getLocalizedString("name").'</th>
+	  <th>'.$dl->getLocalizedString("levels").'</th>
+	</tr>
   </thead>
   <tbody>
-    '.$gauntlettable.'
+	'.$gauntlettable.'
   </tbody>
 </table>'
 .$bottomrow, true, "stats");

@@ -1,5 +1,5 @@
 Mod actions:
-`|            Name | Actions count | Levels count | Last time online | Linked? |`
+`|			Name | Actions count | Levels count | Last time online | Linked? |`
 `|-----------------|---------------|--------------|------------------|---------|`
 <?php
 //error_reporting(0);

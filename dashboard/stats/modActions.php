@@ -37,16 +37,16 @@ foreach($result as &$mod){
 */
 $dl->printPage('<table class="table table-inverse">
   <thead>
-    <tr>
-      <th>#</th>
-      <th>'.$dl->getLocalizedString("mod").'</th>
-      <th>'.$dl->getLocalizedString("count").'</th>
-      <th>'.$dl->getLocalizedString("ratedLevels").'</th>
+	<tr>
+	  <th>#</th>
+	  <th>'.$dl->getLocalizedString("mod").'</th>
+	  <th>'.$dl->getLocalizedString("count").'</th>
+	  <th>'.$dl->getLocalizedString("ratedLevels").'</th>
 	<th>'.$dl->getLocalizedString("lastSeen").'</th>
-    </tr>
+	</tr>
   </thead>
   <tbody>
-    '.$modtable.'
+	'.$modtable.'
   </tbody>
 </table>', true, "stats");
 ?>

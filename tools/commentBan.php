@@ -23,12 +23,12 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 			$query = $db->prepare("UPDATE users SET isCommentBanned = :ban, commentBanReason = :banReason WHERE userID = :id");
 			$query->execute([':id' => $userID, ':ban' => $banType, ':banReason' => $banReason]);
 			$query = $db->prepare("INSERT INTO modactions (type, value, timestamp, account, value2, value4) VALUES ('15', :value, :timestamp, :userID, :banType, :banReason)");
-            $query->execute([':value' => $userName, ':timestamp' => time(), ':userID' => $userID, ':banType' => $banType, ':banReason' => $banReason]);
-            if($banType == 3){
-                echo "Unban successful";
-            } else {
-            	echo "Comment ban successful<br>";
-            }
+			$query->execute([':value' => $userName, ':timestamp' => time(), ':userID' => $userID, ':banType' => $banType, ':banReason' => $banReason]);
+			if($banType == 3){
+				echo "Unban successful";
+			} else {
+				echo "Comment ban successful<br>";
+			}
 		}
 	} else {
 		exit ("Wrong password! <a href='commentBan.php'>Try again.</a>");

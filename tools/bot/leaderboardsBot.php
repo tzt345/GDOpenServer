@@ -54,7 +54,7 @@ if($type =="stars" OR $type == "diamonds" OR $type == "usrcoins" OR $type == "co
 	$query = $db->prepare($query);
 	$query->execute([':page' => $page]);
 	$result = $query->fetchAll();
-	echo "`#    |        Username | ".str_pad($typename, 16, " ", STR_PAD_LEFT)." | Linked? |`\r\n";
+	echo "`#	|		Username | ".str_pad($typename, 16, " ", STR_PAD_LEFT)." | Linked? |`\r\n";
 	echo "`-----|-----------------|------------------|---------|`\r\n";
 	$xi = $page;
 	foreach($result as &$user){

@@ -33,61 +33,61 @@ if(!empty($_POST["songLink"])){
 		$pass = 1;
 	}
 	if ($pass == 1) {
-        $song = str_replace("www.dropbox.com","dl.dropboxusercontent.com", $_POST["songLink"]);
-        if (filter_var($song, FILTER_VALIDATE_URL) == true) {
-            $soundcloud = false;
-            if(strpos($song, 'soundcloud.com') !== false){
-                $soundcloud = true;
-                $songinfo = file_get_contents("https://api.soundcloud.com/resolve.json?url=".$song."&client_id=".$api_key);
-                $array = json_decode($songinfo);
-                if($array->downloadable == true){
-                    $song = trim($array->download_url . "?client_id=".$api_key);
-                    $name = $ep->remove($array->title);
-                    $author = $array->user->username;
-                    $author = preg_replace("/[^A-Za-z0-9 ]/", '', $author);
-                    echo "Processing Soundcloud song ".htmlspecialchars($name,ENT_QUOTES)." by ".htmlspecialchars($author,ENT_QUOTES)." with the download link ".htmlspecialchars($song,ENT_QUOTES)." <br>";
-                }else{
-                    if(!$array->id){
-                        exit("This song is neither downloadable, nor streamable. <a href='songAdd.php'>Try again.</a>");
-                    }
-                    $song = trim("https://api.soundcloud.com/tracks/".$array->id."/stream?client_id=".$api_key);
-                    $name = $ep->remove($array->title);
-                    $author = $array->user->username;
-                    $author = preg_replace("/[^A-Za-z0-9 ]/", '', $author);
-                    echo "This song isn't downloadable, attempting to insert it anyways...<br>";
-                }
-            }else{
-                $song = str_replace("?dl=0","",$song);
-                $song = str_replace("?dl=1","",$song);
-                $song = trim($song);
-                $name = str_replace(".mp3", "", basename($song));
-                $name = str_replace(".webm", "", $name);
-                $name = str_replace(".mp4", "", $name);
-                $name = urldecode($name);
-                $name = $ep->remove($name);
-                $author = "Reupload";
-            }
-            if (!$soundcloud AND $can_reupload_from_direct_links == 0) {
-                exit("Reuploading from direct links is disabled in this GDPS. <a href='songAdd.php'>Try again.</a>");
-            }
-            $ch = curl_init($song);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-            curl_setopt($ch, CURLOPT_HEADER, TRUE);
-            curl_setopt($ch, CURLOPT_NOBODY, TRUE);
-            $data = curl_exec($ch);
-            $size = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
-            curl_close($ch);
-            $size = round($size / 1024 / 1024, 2);
-            $hash = "";
-            //$hash = sha1_file($song);
-            $count = 0;
-            $query = $db->prepare("SELECT count(*) FROM songs WHERE download = :download");
-            $query->execute([':download' => $song]);	
-            $count = $query->fetchColumn();
-            /* if(!$soundcloud){
-                //$query = $db->prepare("SELECT count(*) FROM songs WHERE hash = :hash");
-                //$query->execute([':hash' => $hash]);
-                //$count += $query->fetchColumn();
+		$song = str_replace("www.dropbox.com","dl.dropboxusercontent.com", $_POST["songLink"]);
+		if (filter_var($song, FILTER_VALIDATE_URL) == true) {
+			$soundcloud = false;
+			if(strpos($song, 'soundcloud.com') !== false){
+				$soundcloud = true;
+				$songinfo = file_get_contents("https://api.soundcloud.com/resolve.json?url=".$song."&client_id=".$api_key);
+				$array = json_decode($songinfo);
+				if($array->downloadable == true){
+					$song = trim($array->download_url . "?client_id=".$api_key);
+					$name = $ep->remove($array->title);
+					$author = $array->user->username;
+					$author = preg_replace("/[^A-Za-z0-9 ]/", '', $author);
+					echo "Processing Soundcloud song ".htmlspecialchars($name,ENT_QUOTES)." by ".htmlspecialchars($author,ENT_QUOTES)." with the download link ".htmlspecialchars($song,ENT_QUOTES)." <br>";
+				}else{
+					if(!$array->id){
+						exit("This song is neither downloadable, nor streamable. <a href='songAdd.php'>Try again.</a>");
+					}
+					$song = trim("https://api.soundcloud.com/tracks/".$array->id."/stream?client_id=".$api_key);
+					$name = $ep->remove($array->title);
+					$author = $array->user->username;
+					$author = preg_replace("/[^A-Za-z0-9 ]/", '', $author);
+					echo "This song isn't downloadable, attempting to insert it anyways...<br>";
+				}
+			}else{
+				$song = str_replace("?dl=0","",$song);
+				$song = str_replace("?dl=1","",$song);
+				$song = trim($song);
+				$name = str_replace(".mp3", "", basename($song));
+				$name = str_replace(".webm", "", $name);
+				$name = str_replace(".mp4", "", $name);
+				$name = urldecode($name);
+				$name = $ep->remove($name);
+				$author = "Reupload";
+			}
+			if (!$soundcloud AND $can_reupload_from_direct_links == 0) {
+				exit("Reuploading from direct links is disabled in this GDPS. <a href='songAdd.php'>Try again.</a>");
+			}
+			$ch = curl_init($song);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+			curl_setopt($ch, CURLOPT_HEADER, TRUE);
+			curl_setopt($ch, CURLOPT_NOBODY, TRUE);
+			$data = curl_exec($ch);
+			$size = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
+			curl_close($ch);
+			$size = round($size / 1024 / 1024, 2);
+			$hash = "";
+			//$hash = sha1_file($song);
+			$count = 0;
+			$query = $db->prepare("SELECT count(*) FROM songs WHERE download = :download");
+			$query->execute([':download' => $song]);	
+			$count = $query->fetchColumn();
+			/* if(!$soundcloud){
+				//$query = $db->prepare("SELECT count(*) FROM songs WHERE hash = :hash");
+				//$query->execute([':hash' => $hash]);
+				//$count += $query->fetchColumn();
 			} */
 			if ($song_reupload != 0) {
 				//checking the amount of reuploads
@@ -116,9 +116,9 @@ if(!empty($_POST["songLink"])){
 			} else {
 				$reuploads = -1;
 			}
-            if($count != 0){
-                echo "This song already exists in our database.";
-            }else{
+			if($count != 0){
+				echo "This song already exists in our database.";
+			}else{
 				if ($reuploads < $song_reupload) {
 					$query = $db->prepare("INSERT INTO songs (name, authorID, authorName, size, download, hash)
 					VALUES (:name, '9', :author, :size, :download, :hash)");
@@ -127,10 +127,10 @@ if(!empty($_POST["songLink"])){
 				} else {
 					echo "You have reached the maximum amount of reuploading songs to this GDPS.";
 				}
-            }
-        }else{
-            echo "The download link isn't a valid URL.";
-        }
+			}
+		}else{
+			echo "The download link isn't a valid URL.";
+		}
 	}else{
 		echo "Incorrect password. <a href='songAdd.php'>Try again.</a>";
 	}
@@ -144,9 +144,9 @@ if(!empty($_POST["songLink"])){
 			</form>';
 	} else {
 		echo '<form action="songAdd.php" method="post">
-        	Link: <input type="text" name="songLink">
-        	<br><input type="submit" value="Add Song">
-        	</form>';
+			Link: <input type="text" name="songLink">
+			<br><input type="submit" value="Add Song">
+			</form>';
 	}
 }
 ?>

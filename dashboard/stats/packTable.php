@@ -77,16 +77,16 @@ $bottomrow = $dl->generateBottomRow($pagecount, $actualpage);
 */
 $dl->printPage('<table class="table table-inverse">
   <thead>
-    <tr>
-      <th>#</th>
-      <th>'.$dl->getLocalizedString("name").'</th>
-      <th>'.$dl->getLocalizedString("stars").'</th>
-      <th>'.$dl->getLocalizedString("coins").'</th>
+	<tr>
+	  <th>#</th>
+	  <th>'.$dl->getLocalizedString("name").'</th>
+	  <th>'.$dl->getLocalizedString("stars").'</th>
+	  <th>'.$dl->getLocalizedString("coins").'</th>
 	  <th>'.$dl->getLocalizedString("levels").'</th>
-    </tr>
+	</tr>
   </thead>
   <tbody>
-    '.$packtable.'
+	'.$packtable.'
   </tbody>
 </table>'
 .$bottomrow, true, "stats");
