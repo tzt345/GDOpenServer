@@ -7,7 +7,7 @@ class Commands {
 		$commandInComment = strtolower($prefix.$command);
 		$commandInPerms = ucfirst(strtolower($command));
 		$commandlength = strlen($commandInComment);
-		if(substr($comment,0,$commandlength) == $commandInComment AND (($gs->checkPermission($accountID, "command".$commandInPerms."All") OR ($targetExtID == $accountID AND $gs->checkPermission($accountID, "command".$commandInPerms."Own"))))){
+		if(substr($comment, 0, $commandlength) == $commandInComment AND (($gs->checkPermission($accountID, "command".$commandInPerms."All") OR ($targetExtID == $accountID AND $gs->checkPermission($accountID, "command".$commandInPerms."Own"))))){
 			return true;
 		}
 		return false;
@@ -68,7 +68,7 @@ class Commands {
 		if(substr($comment, 0, 4 + $prefixLen) == $prefix.'hall' AND $gs->checkPermission($accountID, "commandEpic") AND $commandHall == 1 AND $epicInHall == 0){
 			return hall($uploadDate, $accountID, $levelID);
 		}
-		if(substr($comment, 0, 6 + $prefixLen) == $prefix.'unhall' AND $gs->checkPermission($accountID, "commandEpic") AND $commandHall == 1 AND $epicInHall == 0){
+		if(substr($comment, 0, 6 + $prefixLen) == $prefix.'unhall' AND $gs->checkPermission($accountID, "commandEpic") AND $commandUnhall == 1 AND $epicInHall == 0){
 			return unhall($uploadDate, $accountID, $levelID);
 		}
 		if(substr($comment, 0, 5 + $prefixLen) == $prefix.'magic' AND $gs->checkPermission($accountID, "commandMagic") AND $commandMagic == 1 AND $isMagicSectionManual == 1){
@@ -95,22 +95,22 @@ class Commands {
 		if(substr($comment, 0, 6 + $prefixLen) == $prefix.'setacc' AND $gs->checkPermission($accountID, "commandSetacc") AND $commandSetAcc == 1){
 			return setacc($commentarray, $uploadDate, $accountID, $levelID);
 		}
-		if(substr($comment, 0, 11 + $prefixLen) == $prefix.'disablesong' AND $gs->checkPermission($accountID, "commandRate") AND $commandRate == 1){
+		if(substr($comment, 0, 11 + $prefixLen) == $prefix.'disablesong' AND $gs->checkPermission($accountID, "commandDisablesong") AND $commandDisableSong == 1){
 			return disablesong($commentarray, $uploadDate, $accountID, $levelID);
 		}
-		if(substr($comment, 0, 10 + $prefixLen) == $prefix.'enablesong' AND $gs->checkPermission($accountID, "commandRate") AND $commandRate == 1){
+		if(substr($comment, 0, 10 + $prefixLen) == $prefix.'enablesong' AND $gs->checkPermission($accountID, "commandDisablesong") AND $commandEnableSong == 1){
 			return enablesong($commentarray, $uploadDate, $accountID, $levelID);
 		}
-		if(substr($comment, 0, 3 + $prefixLen) == $prefix.'ban' AND $gs->checkPermission($accountID, "commandRate") AND $commandRate == 1){
+		if(substr($comment, 0, 3 + $prefixLen) == $prefix.'ban' AND $gs->checkPermission($accountID, "commandBan") AND $commandBan == 1){
 			return ban($comment, $commentarray, $uploadDate, $accountID, $levelID);
 		}
-		if(substr($comment, 0, 10 + $prefixLen) == $prefix.'commentban' AND $gs->checkPermission($accountID, "commandRate") AND $commandRate == 1){
+		if(substr($comment, 0, 10 + $prefixLen) == $prefix.'commentban' AND $gs->checkPermission($accountID, "commandCommentban") AND $commandCommentBan == 1){
 			return commentban($comment, $commentarray, $uploadDate, $accountID, $levelID);
 		}
-		if(substr($comment, 0, 3 + $prefixLen) == $prefix.'unban' AND $gs->checkPermission($accountID, "commandRate") AND $commandRate == 1){
+		if(substr($comment, 0, 5 + $prefixLen) == $prefix.'unban' AND $gs->checkPermission($accountID, "commandBan") AND $commandUnban == 1){
 			return unban($commentarray, $uploadDate, $accountID, $levelID);
 		}
-		if(substr($comment, 0, 10 + $prefixLen) == $prefix.'uncommentban' AND $gs->checkPermission($accountID, "commandRate") AND $commandRate == 1){
+		if(substr($comment, 0, 12 + $prefixLen) == $prefix.'uncommentban' AND $gs->checkPermission($accountID, "commandCommentban") AND $commandUncommentBan == 1){
 			return uncommentban($commentarray, $uploadDate, $accountID, $levelID);
 		}
 		//NON-ADMIN COMMANDS
@@ -135,7 +135,7 @@ class Commands {
 		if($this->ownCommand($comment, "sharecp", $accountID, $targetExtID) AND $commandShareCP == 1){
 			return sharecp($targetExtID, $commentarray, $uploadDate, $accountID, $levelID);
 		}
-		if($this->ownCommand($comment, "noshare", $accountID, $targetExtID) AND $commandShareCP == 1){
+		if($this->ownCommand($comment, "noshare", $accountID, $targetExtID) AND $commandNoShare == 1){
 			return noshare($uploadDate, $accountID, $levelID);
 		}
 		if($this->ownCommand($comment, "ldm", $accountID, $targetExtID) AND $commandLDM == 1){

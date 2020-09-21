@@ -429,13 +429,17 @@ CREATE TABLE `roles` (
   `roleName` varchar(255) NOT NULL,
   `commandRate` int(11) NOT NULL DEFAULT 0,
   `commandFeature` int(11) NOT NULL DEFAULT 0,
-  `commandEpic` int(11) NOT NULL DEFAULT 0,
-  `commandMagic` int(11) NOT NULL DEFAULT 0,
   `commandVerifycoins` int(11) NOT NULL DEFAULT 0,
+  `commandEpic` int(11) NOT NULL DEFAULT 0,
+  `commandHall` int(11) NOT NULL DEFAULT 0,
+  `commandMagic` int(11) NOT NULL DEFAULT 0,
   `commandDaily` int(11) NOT NULL DEFAULT 0,
   `commandWeekly` int(11) NOT NULL DEFAULT 0,
   `commandDelete` int(11) NOT NULL DEFAULT 0,
   `commandSetacc` int(11) NOT NULL DEFAULT 0,
+  `commandBan` int(11) NOT NULL DEFAULT 0,
+  `commandCommentban` int(11) NOT NULL DEFAULT 0,
+  `commandDisablesong` int(11) NOT NULL DEFAULT 0,
   `commandRenameOwn` int(11) NOT NULL DEFAULT 1,
   `commandRenameAll` int(11) NOT NULL DEFAULT 0,
   `commandPassOwn` int(11) NOT NULL DEFAULT 1,
@@ -559,10 +563,10 @@ CREATE TABLE `users` (
   `leaderboardBanReason` varchar(87),
   `creatorBanReason` varchar(87),
   `commentBanReason` varchar(91),
-  `banTime` varchar(11),
+  `banTime` int(11),
   `leaderboardBanTime` int(11),
-  `creatorBanTime` varchar(11),
-  `commentBanTime` varchar(11)
+  `creatorBanTime` int(11),
+  `commentBanTime` int(11)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --

@@ -826,14 +826,13 @@ class mainLib {
 					}
 				}
 			} else {
-				$reuploads = -2;
+				$reuploads = -1;
 			}
             if($count != 0){
                 return "-3";
             }else{
 				if ($reuploads < $song_reupload) {
-					$query = $db->prepare("INSERT INTO songs (name, authorID, authorName, size, download, hash)
-					VALUES (:name, '9', :author, :size, :download, :hash)");
+					$query = $db->prepare("INSERT INTO songs (name, authorID, authorName, size, download, hash) VALUES (:name, '9', :author, :size, :download, :hash)");
 					$query->execute([':name' => $name, ':download' => $song, ':author' => $author, ':size' => $size, ':hash' => $hash]);
 					return $db->lastInsertId();
 				} else {

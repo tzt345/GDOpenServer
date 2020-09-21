@@ -114,7 +114,7 @@ if(!empty($_POST["songLink"])){
 					}
 				}
 			} else {
-				$reuploads = -2;
+				$reuploads = -1;
 			}
             if($count != 0){
                 echo "This song already exists in our database.";
