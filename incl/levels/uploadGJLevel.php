@@ -26,7 +26,7 @@ if(!empty($_POST["accountID"]) AND $_POST["accountID"] != "0"){
 	$id = $ep->remove($_POST["accountID"]);
 	$register = 1;
 } elseif ($unregisteredUploadLevels == 0) {
-	exit("-1")
+	exit("-1");
 } else {
 	if(!empty($_POST["udid"])){
 		$id = $ep->remove($_POST["udid"]);
@@ -46,21 +46,22 @@ if ($gameVersion >= 20) {
 		exit("-1");
 	}
 }
+$uploadDate = time();
 $userName = $ep->remove($_POST["userName"]);
 $userName = $ep->charclean($userName);
 $hostname = $mainLib->getIP();
-$query = $db->prepare("SELECT userID, isCreatorBanned FROM users WHERE extID = :id");
-$query->execute([':id' => $id]);
-if ($query->rowCount() > 0) {
-	$result = $query->fetchAll();
+$query2 = $db->prepare("SELECT userID, isBanned, isCreatorBanned FROM users WHERE extID = :id");
+$query2->execute([':id' => $id]);
+if ($query2->rowCount() > 0) {
+	$result = $query2->fetch();
 	$userID = $result["userID"];
-	if ($result["isCreatorBanned"] == 1) {
+	if ($result["isBanned"] == 1 OR $result["isCreatorBanned"] == 1) {
 		exit("-1");
 	}
 } else {
-	$query = $db->prepare("INSERT INTO users (isRegistered, extID, userName, lastPlayed) VALUES (:register, :id, :userName, :uploadDate)");
-	$query->execute([':id' => $id, ':register' => $register, ':userName' => $userName, ':uploadDate' => time()]);
-	$userID = $db->lastInsertId();
+$query = $db->prepare("INSERT INTO users (isRegistered, extID, userName, lastPlayed) VALUES (:register, :id, :userName, :uploadDate)");
+$query->execute([':id' => $id, ':register' => $register, ':userName' => $userName, ':uploadDate' => time()]);
+$userID = $db->lastInsertId();
 }
 $query = $db->prepare("SELECT count(*) FROM levels WHERE uploadDate > :time AND (userID = :userID OR hostname = :ip)");
 $query->execute([':time' => $uploadDate - $uploadRateLimit, ':userID' => $userID, ':ip' => $hostname]);
@@ -148,7 +149,6 @@ if(!empty($_POST["ldm"])){
 }else{
 	$ldm = 0;
 }
-$uploadDate = time();
 
 if($levelString != "" AND $levelName != ""){
 	$querye = $db->prepare("SELECT levelID FROM levels WHERE levelName = :levelName AND userID = :userID");

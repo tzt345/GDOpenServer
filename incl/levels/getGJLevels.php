@@ -240,8 +240,10 @@ $query = "SELECT * $querybase ";
 if ($showCreatorBannedPeoplesLevels == 0) {
 	$query2 = $db->prepare("SELECT userID FROM users WHERE isCreatorBanned = 1");
 	$query2->execute();
-	$bannedPeople = $query2->fetch();
-	$query .= "AND ( userID NOT IN ($bannedPeople) ) ";
+	$bannedPeople = $query2->fetchColumn();
+	if ($query2->rowCount() > 0) {
+		$query .= "AND ( userID NOT IN ($bannedPeople) ) ";
+	}
 }
 if ($order) {
 	$query .= "ORDER BY $order DESC ";
@@ -254,7 +256,7 @@ $countquery = $db->prepare($countquery);
 $countquery->execute();
 $totallvlcount = $countquery->fetchColumn();
 $result = $query->fetchAll();
-$levelcount = $query->rowCount();
+//$levelcount = $query->rowCount();
 foreach($result as &$level1) {
 	if($level1["levelID"]!=""){
 		$lvlsmultistring .= $level1["levelID"].",";
