@@ -34,7 +34,7 @@ if ($pass == 1) { //success
 	$query2 = $db->prepare("SELECT userID, isBanned, isDisabled FROM users WHERE extID = :id");
 	$query2->execute([':id' => $id]);
 	if ($query2->rowCount() > 0) {
-		$result = $query2->fetchAll();
+		$result = $query2->fetch();
 		$userID = $result["userID"];
 		if ($result["isBanned"] == 1 OR $result["isDisabled"] == 1) {
 			exit("-12");

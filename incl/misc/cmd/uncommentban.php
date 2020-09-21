@@ -1,5 +1,5 @@
 <?php
-function commentban($comment, $commentarray, $uploadDate, $accountID, $levelID) {
+function uncommentban($comment, $commentarray, $uploadDate, $accountID, $levelID) {
     include dirname(__FILE__)."/../../lib/connection.php";
     $commandName = $commentarray[0];
 	if (isset($commentarray[1])) {

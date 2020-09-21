@@ -71,7 +71,7 @@ if(!is_numeric($levelID)){
 		if($gameVersion > 19){
 			$xor = new XORCipher();
 			if($pass != 0){
-				$xorPass = base64_encode($xor->cipher($pass,26364));
+				$xorPass = base64_encode($xor->cipher($pass, 26364));
 			}
 		}else{
 			$desc = $ep->remove(base64_decode($desc));
