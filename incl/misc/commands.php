@@ -1,6 +1,6 @@
 <?php
 class Commands {
-	public function ownCommand($comment, $command, $accountID, $targetExtID){
+	private function ownCommand($comment, $command, $accountID, $targetExtID){
 		include "../../config/commands.php";
 		require_once "../lib/mainLib.php";
 		$gs = new mainLib();
@@ -26,27 +26,64 @@ class Commands {
 		}
 		$query = $db->prepare("SELECT isBanned FROM users WHERE extID = :id");
 		$query->execute([':id' => $accountID]);
-		if ($query->fetchColumn() == 1) {
+		if ($query->fetchColumn() != 0) {
 			return false;
 		}
 		$comment = $ep->remove(strtolower($comment));
 		$commentarray = explode(' ', $comment);
-		try {
+		$prefixLen = strlen($prefix);
+		if (substr($comment, 0, $prefixLen) == $prefix) {
 			$commentarray[0] = str_replace($prefix, "", $commentarray[0]);
-		} catch (Exception $e) {
+		} else {
 			return false;
 		}
 		$uploadDate = time();
-		$prefixLen = strlen($prefix);
-		//LEVEL INFO
+		// Getting level owner's account ID
 		$query2 = $db->prepare("SELECT extID FROM levels WHERE levelID = :id");
 		$query2->execute([':id' => $levelID]);
 		$targetExtID = $query2->fetchColumn();
-		//ADMIN COMMANDS
-		if (file_exists("cmd/".$commentarray[0])) {
-			include "cmd/".$commentarray[0].".php";
+		$commands = yaml_parse("cmd/commands.yaml");
+		if (file_exists("cmd/".$commentarray[0].".php")) {
+			if ($commands[$commentarray[0]] == "admin") {
+				$commandFirstUpper = ucfirst($commentarray[0]);
+				$commandConfig = "$"."command".$commandFirstUpper;
+				if ($gs->checkPermission($accountID, "command".$commandFirstUpper) AND (eval($commandConfig) == 1) {
+					include "cmd/".$commentarray[0].".php";
+				} else {
+					return false;
+				}
+			} else {
+				$commandFirstUpper = ucfirst($commentarray[0]);
+				$commandConfig = "$"."command".$commandFirstUpper;
+				if ($this->ownCommand($comment, $commentarray[0], $accountID, $targetExtID) AND (eval($commandConfig) == 1) {
+					include "cmd/".$commentarray[0].".php";
+				} else {
+					return false;
+				}
+			}
 		} else {
-			$aliases = yaml_parse("cmd/aliases.yaml");
+			foreach($aliases as $command => $alias) {
+				if ($aliases[$command][$commentarray[0]]) {
+					if ($commands[$command] == "admin") {
+						$commandFirstUpper = ucfirst($command);
+						$commandConfig = "$"."command".$commandFirstUpper;
+						if ($gs->checkPermission($accountID, "command".$commandFirstUpper) AND (eval($commandConfig) == 1) {
+							include "cmd/".$command.".php";
+						} else {
+							return false;
+						}
+					} else {
+						$commandFirstUpper = ucfirst($command);
+						$commandConfig = "$"."command".$commandFirstUpper;
+						if ($this->ownCommand($comment, $command, $accountID, $targetExtID) AND (eval($commandConfig) == 1) {
+							include "cmd/".$command.".php";
+						} else {
+							return false;
+						}
+					}
+				}
+			}
+			return false;
 		}
 		/* if(substr($comment, 0, 4 + $prefixLen) == $prefix.'rate' AND $gs->checkPermission($accountID, "commandRate") AND $commandRate == 1){
 			return rate($gs, $commentarray, $uploadDate, $accountID, $levelID);
@@ -114,7 +151,6 @@ class Commands {
 		if(substr($comment, 0, 12 + $prefixLen) == $prefix.'uncommentban' AND $gs->checkPermission($accountID, "commandCommentban") AND $commandUncommentBan == 1){
 			return uncommentban($commentarray, $uploadDate, $accountID, $levelID);
 		}
-		//NON-ADMIN COMMANDS
 		if($this->ownCommand($comment, "rename", $accountID, $targetExtID) AND $commandRename == 1){
 			return renamelevel($comment, $uploadDate, $accountID, $levelID);
 		}
