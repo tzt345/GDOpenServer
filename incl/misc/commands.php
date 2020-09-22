@@ -45,7 +45,7 @@ class Commands {
 		$commands = yaml_parse("cmd/commands.yaml");
 		if (file_exists("cmd/".$commentarray[0].".php")) {
 			if ($commands[$commentarray[0]] == "admin") {
-				$commandFirstUpper = ucfirst($commentarray[0]);
+				$commandFirstUpper = ucfirst(str_replace("un", "", $commentarray[0]));
 				$commandConfig = "$"."command".$commandFirstUpper;
 				if ($gs->checkPermission($accountID, "command".$commandFirstUpper) AND (eval($commandConfig) == 1) {
 					include "cmd/".$commentarray[0].".php";
@@ -53,7 +53,7 @@ class Commands {
 					return false;
 				}
 			} else {
-				$commandFirstUpper = ucfirst($commentarray[0]);
+				$commandFirstUpper = ucfirst(str_replace("un", "", $commentarray[0]));
 				$commandConfig = "$"."command".$commandFirstUpper;
 				if ($this->ownCommand($comment, $commentarray[0], $accountID, $targetExtID) AND (eval($commandConfig) == 1) {
 					include "cmd/".$commentarray[0].".php";
@@ -64,8 +64,8 @@ class Commands {
 		} else {
 			foreach($aliases as $command => $alias) {
 				if ($aliases[$command][$commentarray[0]]) {
-					if ($commands[$command] == "admin") {
-						$commandFirstUpper = ucfirst($command);
+					if ($alias == "admin") {
+						$commandFirstUpper = ucfirst(str_replace("un", "", $command));
 						$commandConfig = "$"."command".$commandFirstUpper;
 						if ($gs->checkPermission($accountID, "command".$commandFirstUpper) AND (eval($commandConfig) == 1) {
 							include "cmd/".$command.".php";
@@ -73,7 +73,7 @@ class Commands {
 							return false;
 						}
 					} else {
-						$commandFirstUpper = ucfirst($command);
+						$commandFirstUpper = ucfirst(str_replace("un", "", $command));
 						$commandConfig = "$"."command".$commandFirstUpper;
 						if ($this->ownCommand($comment, $command, $accountID, $targetExtID) AND (eval($commandConfig) == 1) {
 							include "cmd/".$command.".php";
