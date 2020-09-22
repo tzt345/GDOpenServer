@@ -1,8 +1,9 @@
 <?php
 class Commands {
 	private function ownCommand($comment, $command, $accountID, $targetExtID){
-		include "../../config/commands.php";
-		require_once "../lib/mainLib.php";
+		chdir(dirname(__FILE__));
+		include_once "../../config/commands.php";
+		require_once "../../lib/mainLib.php";
 		$gs = new mainLib();
 		$commandInComment = strtolower($prefix.$command);
 		$commandInPerms = ucfirst(strtolower($command));
