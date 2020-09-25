@@ -16,7 +16,7 @@ function chkarray($source){
 include "../incl/lib/connection.php";
 require "../incl/lib/XORCipher.php";
 $xc = new XORCipher();
-require "../config/reupload.php";
+require "../config/users.php";
 require "../incl/lib/mainLib.php";
 $gs = new mainLib();
 if ($level_reupload == -1) {
@@ -112,8 +112,8 @@ if(!empty($_POST["levelid"])){
 			$query->execute([':target' => $targetUserID, ':url' => $parsedurl["host"]]);
 			if($query->rowCount() == 0){
 				if ($level_reupload == 0){
-					$userID = $reupUID;
-					$extID = $reupAID;
+					$userID = $botUID;
+					$extID = $botAID;
 				}else{
 					exit("Please link your account at <a href='linkAcc.php'>here</a> and to the same server you gave(if you didn\'t change the URL box just link your account) before reuploading.");
 				}

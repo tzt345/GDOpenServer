@@ -1,7 +1,7 @@
 <?php
 //error_reporting(0);
 include "../../config/discord.php";
-include "../../config/reupload.php";
+include "../../config/users.php";
 include "../../incl/lib/connection.php";
 require "../../incl/lib/XORCipher.php";
 $xc = new XORCipher();
@@ -38,6 +38,6 @@ $message = $xc->cipher("The Discord account '$accinfo' has attempted to link to 
 $message = base64_encode($message);
 $query = $db->prepare("INSERT INTO messages (subject, body, accID, userID, userName, toAccountID, timestamp)
 VALUES ('TmV3IEFjY291bnQgTGluayBSZXF1ZXN0', :body, :ru, :ra, 'GDPS Bot', :toAccountID, :uploadDate)");
-$query->execute([':body' => $message, ':toAccountID' => $accountID, ':ru' => $reupUID, ':ra' => $reupAID, ':uploadDate' => time()]);
+$query->execute([':body' => $message, ':toAccountID' => $accountID, ':ru' => $botUID, ':ra' => $botAID, ':uploadDate' => time()]);
 echo "Link request has been succesfully sent, please check your in-game messages";
 ?>
