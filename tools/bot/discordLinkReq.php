@@ -1,6 +1,7 @@
 <?php
 //error_reporting(0);
 include "../../config/discord.php";
+include "../../config/reupload.php";
 include "../../incl/lib/connection.php";
 require "../../incl/lib/XORCipher.php";
 $xc = new XORCipher();
@@ -8,9 +9,6 @@ require "../../incl/lib/mainLib.php";
 $gs = new mainLib();
 if($discordEnabled != 1){
 	exit("Discord integration is disabled.");
-}
-if($_GET["secret"] != $secret){
-	exit("-1");
 }
 $discordID = $_GET["discordID"];
 $account = $_GET["account"];
@@ -38,8 +36,8 @@ $query->execute([':account' => $account]);
 $accountID = $query->fetchColumn();
 $message = $xc->cipher("The Discord account '$accinfo' has attempted to link to this GDPS account. If that was you, please comment '!discord accept' on your profile. If it wasn't you, please comment '!discord deny'. If you ever wish to unlink, please comment '!discord unlink' on your profile.", 14251);
 $message = base64_encode($message);
-$query = $db->prepare("INSERT INTO messages (subject, body, accID, userID, userName, toAccountID, secret, timestamp)
-VALUES ('TmV3IEFjY291bnQgTGluayBSZXF1ZXN0', :body, 263, 388, 'GDPS Bot', :toAccountID, 'Automatic Message', :uploadDate)");
-$query->execute([':body' => $message, ':toAccountID' => $accountID, ':uploadDate' => time()]);
+$query = $db->prepare("INSERT INTO messages (subject, body, accID, userID, userName, toAccountID, timestamp)
+VALUES ('TmV3IEFjY291bnQgTGluayBSZXF1ZXN0', :body, :ru, :ra, 'GDPS Bot', :toAccountID, :uploadDate)");
+$query->execute([':body' => $message, ':toAccountID' => $accountID, ':ru' => $reupUID, ':ra' => $reupAID, ':uploadDate' => time()]);
 echo "Link request has been succesfully sent, please check your in-game messages";
 ?>

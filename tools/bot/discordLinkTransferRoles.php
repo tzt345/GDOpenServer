@@ -4,9 +4,6 @@ include "../../incl/lib/connection.php";
 if($discordEnabled != 1){
 	exit("Discord integration is disabled.");
 }
-if($_GET["secret"] != $secret){
-	exit("-1");
-}
 $discordID = $_GET["discordID"];
 $roles = $_GET["roles"];
 $rolesarray = explode(",", $roles);

@@ -11,7 +11,6 @@ if($_POST["userName"] != ""){
 	$userName = $ep->remove($_POST["userName"]);
 	$password = $ep->remove($_POST["password"]);
 	$email = $ep->remove($_POST["email"]);
-	$secret = "";
 	//checking if name is taken
 	$query2 = $db->prepare("SELECT count(*) FROM accounts WHERE userName LIKE :userName");
 	$query2->execute([':userName' => $userName]);
@@ -20,9 +19,9 @@ if($_POST["userName"] != ""){
 		echo "-2";
 	}else{
 		$hashpass = password_hash($password, PASSWORD_DEFAULT);
-		$query = $db->prepare("INSERT INTO accounts (userName, password, email, secret, saveData, registerDate, saveKey)
-		VALUES (:userName, :password, :email, :secret, '', :time, '')");
-		$query->execute([':userName' => $userName, ':password' => $hashpass, ':email' => $email, ':secret' => $secret, ':time' => time()]);
+		$query = $db->prepare("INSERT INTO accounts (userName, password, email, saveData, registerDate, saveKey)
+		VALUES (:userName, :password, :email, '', :time, '')");
+		$query->execute([':userName' => $userName, ':password' => $hashpass, ':email' => $email, ':time' => time()]);
 		echo "1";
 	}
 }

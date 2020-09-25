@@ -13,7 +13,6 @@ $ep = new exploitPatch();
 //here im getting all the data
 $userName = $ep->remove($_POST["userName"]);
 $password = $_POST["password"];
-$secret = "";
 $generatePass = new generatePass();
 $pass = $generatePass->isValidUsrname($userName, $password);
 if ($pass == 1) {

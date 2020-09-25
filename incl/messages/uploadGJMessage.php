@@ -14,7 +14,6 @@ $gjpresult = $GJPCheck->check($gjp, $accountID);
 if ($gjpresult != 1) {
 	exit("-1");
 }
-$secret = $ep->remove($_POST["secret"]);
 $subject = $ep->remove($_POST["subject"]);
 $toAccountID = $ep->number($_POST["toAccountID"]);
 $body = $ep->remove($_POST["body"]);
@@ -37,8 +36,8 @@ if ($blocked == 1 OR $mSOnly == 2) {
 	$userName = $query->fetchColumn();
 	$userID = $gs->getUserID($accountID);
 	$uploadDate = time();
-	$query = $db->prepare("INSERT INTO messages (subject, body, accID, userID, userName, toAccountID, secret, timestamp) VALUES (:subject, :body, :accID, :userID, :userName, :toAccountID, :secret, :uploadDate)");
-	$query->execute([':subject' => $subject, ':body' => $body, ':accID' => $accountID, ':userID' => $userID, ':userName' => $userName, ':toAccountID' => $toAccountID, ':secret' => $secret, ':uploadDate' => $uploadDate]);
+	$query = $db->prepare("INSERT INTO messages (subject, body, accID, userID, userName, toAccountID, timestamp) VALUES (:subject, :body, :accID, :userID, :userName, :toAccountID, :uploadDate)");
+	$query->execute([':subject' => $subject, ':body' => $body, ':accID' => $accountID, ':userID' => $userID, ':userName' => $userName, ':toAccountID' => $toAccountID, ':uploadDate' => $uploadDate]);
 	echo 1;
 }
 ?>

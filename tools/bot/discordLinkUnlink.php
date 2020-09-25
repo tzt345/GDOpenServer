@@ -5,9 +5,6 @@ $gs = new mainLib();
 if($discordEnabled != 1){
 	exit("Discord integration is disabled.");
 }
-if($_GET["secret"] != $secret){
-	exit("-1");
-}
 $discordID = $_GET["discordID"];
 include "../../incl/lib/connection.php";
 $message = "You're not linked to an account.";
