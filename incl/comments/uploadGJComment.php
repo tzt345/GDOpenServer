@@ -1,6 +1,5 @@
 <?php
 chdir(dirname(__FILE__));
-ini_set('display_errors', 1); 
 error_reporting(E_ALL);
 include "../lib/connection.php";
 require_once "../lib/mainLib.php";
@@ -11,11 +10,12 @@ require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../misc/commands.php";
 $cmds = new Commands();
+include "../../config/users.php";
 $gjp = $ep->remove($_POST["gjp"]);
 $userName = $ep->remove($_POST["userName"]);
 $comment = $ep->remove($_POST["comment"]);
-$gameversion = $_POST["gameVersion"];
-if($gameversion < 20){
+$gameVersion = $_POST["gameVersion"];
+if($gameVersion < 20){
 	$comment = base64_encode($comment);
 }
 $levelID = $ep->remove($_POST["levelID"]);
@@ -28,7 +28,7 @@ if(!empty($_POST["accountID"]) AND $_POST["accountID"]!="0"){
 	$id = $ep->remove($_POST["accountID"]);
 	$register = 1;
 	$GJPCheck = new GJPCheck();
-	$gjpresult = $GJPCheck->check($gjp,$id);
+	$gjpresult = $GJPCheck->check($gjp, $id);
 	if($gjpresult == 0){
 		exit("-1");
 	}
@@ -46,11 +46,43 @@ if($cmds->doCommands($id, $decodecomment, $levelID)){
 	exit("temp_0_Successfully executed the command.");
 }
 if($id != "" AND $comment != ""){
-	$permaBan = $db->prepare("SELECT isCommentBanned FROM users WHERE userID = :userID");
-	$permaBan->execute([':userID' => $userID]);
-	$permaBan_result = $permaBan->fetchColumn(); 
-	if ($permaBan_result == 2) {
-		exit("-10");
+	$banCheck = $db->prepare("SELECT isCommentBanned, commentBanTime, commentBanReason FROM users WHERE userID = :userID");
+	$banCheck->execute([':userID' => $userID]);
+	$result = $banCheck->fetch(); 
+	if ($result["isCommentBanned"] == 1) {
+		if ($result["commentBanTime"] - time() <= 0 AND $result["commentBanTime"] != 0) {
+			$banExpired = $db->prepare("UPDATE users SET isCommentBanned=0, commentBanTime=NULL, commentBanReason=NULL WHERE userID = :userID");
+			$banExpired->execute([':userID' => $userID]);
+			$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES (15, 4, :value, 0, :timestamp, :id)");
+			$query->execute([':value' => $userName, ':timestamp' => $uploadDate, ':id' => $botAID]);
+		} else {
+			if ($gameVersion >= 21) {
+				if (isset($result["commentBanTime"])) {
+					$time = $result["commentBanTime"];
+				} else {
+					$time = 0;
+				}
+				if (isset($result["commentBanReason"])) {
+					$reason = $result["commentBanReason"];
+				} else {
+					$reason = "No reason specified";
+				}
+				exit("temp_".$time."_".$reason);
+			} else {
+				exit("-1");
+			}
+		}
+	} elseif ($result["isCommentBanned"] == 2) {
+		if ($gameVersion >= 21) {
+			if (isset($result["commentBanReason"])) {
+				$reason = $result["commentBanReason"];
+			} else {
+				$reason = "No reason specified";
+			}
+			exit("temp_0_".$reason);
+		} else {
+			exit("-1");
+		}
 	}
 	$query = $db->prepare("INSERT INTO comments (userName, comment, levelID, userID, timeStamp, percent) VALUES (:userName, :comment, :levelID, :userID, :uploadDate, :percent)");
 	if($register == 1){
