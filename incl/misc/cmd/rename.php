@@ -8,7 +8,7 @@ function renamelevel($comment, $commentarray, $uploadDate, $accountID, $levelID)
 	} else {
 		return false;
 	}
-	if (strlen($name) > 50) {
+	if (strlen($name) > 40) {
 		return false;
 	}
 	$query = $db->prepare("UPDATE levels SET levelName=:levelName WHERE levelID=:levelID");
