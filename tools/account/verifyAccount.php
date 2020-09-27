@@ -26,11 +26,17 @@ if(isset($_GET["secret"]) AND isset($_GET["ID"])) {
 	$usr = $ep->remove($_POST["username"]);
 	$psw = $_POST["password"];
 	if($gp->isValidUsrname($usr,$psw) AND $_POST["captcha"] != "" AND $_SESSION["code"] == $_POST["captcha"]) {
-		$query = $db->prepare("UPDATE accounts SET isVerified = 1 WHERE username = :usr");
+		$query = $db->prepare("SELECT verifySecret FROM accounts WHERE username = :usr");
 		$query->execute([':usr' => $usr]);
-		echo "Account verified successfully, you can now login. <a href='..'>Go back to the Tools page.</a>";
+		if ($query->fetchColumn() != "") {
+			echo "You must verify your account by clicking on a link in your E-Mail inbox.";
+		} else {
+			$query = $db->prepare("UPDATE accounts SET isVerified = 1 WHERE username = :usr");
+			$query->execute([':usr' => $usr]);
+			echo "Account verified successfully, you can now login. <a href='..'>Go back to the Tools page.</a>";
+		}
 	} else {
-		echo "Username/Password incorrect. <a href='verifyAccount.php'>Try again.</a>";
+		echo "Password or Captcha incorrect. <a href='verifyAccount.php'>Try again.</a>";
 	}
 } else {
 ?>
