@@ -7,18 +7,23 @@ $ep = new exploitPatch();
 require_once "../incl/lib/mainLib.php";
 $gs = new mainLib();
 include "../config/users.php";
+include "../config/security.php";
 //here im getting all the data
 $ip = $gs->getIP();
 $udid = $ep->remove($_POST["udid"]);
 $userName = $ep->remove($_POST["userName"]);
 $password = $ep->remove($_POST["password"]);
 //registering
-$query = $db->prepare("SELECT accountID FROM accounts WHERE userName LIKE :userName");
+$query = $db->prepare("SELECT accountID, isVerified FROM accounts WHERE userName LIKE :userName");
 $query->execute([':userName' => $userName]);
 if($query->rowCount() == 0){
 	exit("-1");
 }
-$id = $query->fetchColumn();
+$result = $query->fetch();
+if ($accountVerification != 0 AND $result["isVerified"] == 0) {
+	exit("-12");
+}
+$id = $result["accountID"];
 //rate limiting
 if ($loginRateLimitCountToDisable != 0 AND $loginRateLimitDisableTime != 0) {
 	$query6 = $db->prepare("SELECT count(*) FROM actions WHERE type = 1 AND timestamp > :time AND value2 = :ip");
