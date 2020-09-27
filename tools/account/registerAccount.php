@@ -68,6 +68,6 @@ Repeat Password: <input type="password" name="repeatpassword" maxlength=20><br>
 Email: <input type="email" name="email" maxlength=50><br>
 <?php if ($accountVerification >= 1) { ?>
 Verify Captcha: <input name="captcha" type="text"><br>
-<img src="captchagen.php" /><br><br>
+<img src="../../incl/misc/captchaGen.php" /><br><br>
 <?php } ?>
 <input type="submit" value="Register"></form>

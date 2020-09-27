@@ -38,6 +38,6 @@ if(isset($_GET["secret"]) AND isset($_GET["ID"])) {
 Username: <input type="text" name="username" maxlength=15><br>
 Password: <input type="password" name="password" maxlength=20><br>
 Verify Captcha: <input name="captcha" type="text"><br>
-<img src="captchagen.php" /><br><br>
+<img src="../../incl/misc/captchaGen.php" /><br><br>
 <input type="submit" value="Verify"></form>
 <?php } ?>
