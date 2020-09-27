@@ -1,6 +1,7 @@
 <?php
 ob_start();
 require "../config/metadata.php";
+require "../config/security.php";
 if ($usePatcher == 0) {
 	exit("This tool is disabled! Re-enable it in /config/metadata.php");
 }
@@ -23,12 +24,12 @@ if (isset($_FILES['userfile'])) {
 			$lastfolder.= $expl[count($expl) - 1];
 			return substr($str, 0, -(strlen($expl[count($expl) - 1]))) . $lastfolder;
 		}
-		// Fix URL length and convert them to hex if needed
+		// Get the URL instead of fetching it from metadata.php because setting one yourself is too uncool
 		$gdps_url = $_SERVER['HTTP_HOST'];   
 		$gdps_url .= $_SERVER['REQUEST_URI'];
 		$gdps_url_array = explode("/", $gdps_url);
-		unset($gdps_url_array[-1]);
-		unset($gdps_url_array[-1]);
+		array_splice($gdps_url_array, -1);
+		array_splice($gdps_url_array, -1);
 		if(isset($_SERVER['HTTPS']) AND $_SERVER['HTTPS'] === 'on') {
 			$gdps_url = "https://";
 		} else {
@@ -37,26 +38,29 @@ if (isset($_FILES['userfile'])) {
 		foreach($gdps_url_array as $dir) {
 			$gdps_url .= $dir."/";
 		}
+		// Fix URL length and convert them to hex if needed
 		$gdps_url = substr($gdps_url, 0, -1);
 		$gdps_url = fixLength($gdps_url, 33);
-		$youtube = bin2hex(fixLength($youtube, 40)) . "00";
-		$twitter = bin2hex(fixLength($twitter, 31)) . "00";
-		$facebook = bin2hex(fixLength($facebook, 37)) . "00";
-		$robtopWebsite = bin2hex(fixLength($robtopWebsite, 26)) . "00";
+		$youtube = bin2hex(fixLength($youtube, 40)) . "0";
+		$twitter = bin2hex(fixLength($twitter, 31)) . "0";
+		$facebook = bin2hex(fixLength($facebook, 37)) . "0";
+		$robtopWebsite = bin2hex(fixLength($robtopWebsite, 26)) . "0";
 		// Replace Links
 		$content = str_replace("http://www.boomlings.com/database", $gdps_url, $content);
 		$content = str_replace(base64_encode("http://www.boomlings.com/database"), base64_encode($gdps_url), $content);
 		// Replace Hex-Encoded Strings (for compatibility).
 		// YouTube
-		$hexContent = str_replace("68747470733A2F2F7777772E796F75747562652E636F6D2F757365722F526F62546F7047616D657300", $youtube, bin2hex($content));
+		$hexContent = str_replace("68747470733A2F2F7777772E796F75747562652E636F6D2F757365722F526F62546F7047616D65730", $youtube, strtoupper(bin2hex($content)));
 		// Twitter
-		$hexContent = str_replace("68747470733A2F2F747769747465722E636F6D2F726F62746F7067616D657300", $twitter, $hexContent);
+		$hexContent = str_replace("68747470733A2F2F747769747465722E636F6D2F726F62746F7067616D65730", $twitter, $hexContent);
 		// Facebook
-		$hexContent = str_replace("68747470733A2F2F7777772E66616365626F6F6B2E636F6D2F67656F6D657472796461736800", $facebook, $hexContent);
+		$hexContent = str_replace("68747470733A2F2F7777772E66616365626F6F6B2E636F6D2F67656F6D65747279646173680", $facebook, $hexContent);
 		// RobTop's website
-		$hexContent = str_replace("687474703A2F2F7777772E726F62746F7067616D65732E636F6D00", $robtopWebsite, $hexContent);
-		// Check wether you need to verify your E-Mail or not...
-		if ($verifyMail == 0) {
+		$hexContent = str_replace("687474703A2F2F7777772E726F62746F7067616D65732E636F6D0", $robtopWebsite, $hexContent);
+		// Check wether you need to verify your account or not...
+		if ($accountVerification == 1) {
+			$hexContent = str_replace("4120636F6E6669726D6174696F6E20656D61696C20686173206265656E2073656E7420746F20796F757220696E626F78203C63793E25733C2F633E2E0A506C65617365203C63673E61637469766174653C2F633E20796F7572206163636F756E742E", "506C656173652076657269667920796F7572206163636F756E7420696E20746865203C63673E4163636F756E7420546F6F6C733C2F633E20706167652E00000000000000000000000000000000000000000000000000000000000000000000000000", $hexContent);
+		} elseif ($accountVerification == 0) {
 			$hexContent = str_replace("4120636F6E6669726D6174696F6E20656D61696C20686173206265656E2073656E7420746F20796F757220696E626F78203C63793E25733C2F633E2E0A506C65617365203C63673E61637469766174653C2F633E20796F7572206163636F756E742E", "596F7520617265206E6F7420726571756972656420746F2076657269667920796F757220452D4D61696C2E0A596F752063616E206E6F77206C6F67696E2C20656E6A6F7920706C6179696E67206F6E20746865204744505321000000000000000000", $hexContent);
 		}
 		// Finally, download.

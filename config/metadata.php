@@ -9,7 +9,6 @@ $discord_invite = ""; // The Discord invite link of your GDPS.
 /* -- GDPS Patcher -- */
 $usePatcher = 0; // Redirects the PC download to a patching tool. 1 = Redirect, 0 = Don't redirect.
 
-$gdps_url = "http://my.very_cool.gdps/database"; // Should be less than or exactly 33 characters!
 $youtube = "https://www.youtube.com/user/RobTopGames"; // Should be less than or exactly 40 characters!
 $twitter = "https://twitter.com/robtopgames"; // Should be less than or exactly 31 characters!
 $facebook = "https://www.facebook.com/geometrydash"; // Should be less than or exactly 37 characters!
@@ -17,6 +16,7 @@ $robtopWebsite = "http://www.robtopgames.com"; // Should be less than or exactly
 
 // Tip: If an URL is too long, use bit.ly to shorten it.
 // Important Note: All URL's provided for the GDPS Patcher should not end with a forward slash!
+// Important Note 2: The GDPS URL itself (http://.../database...) should not be longer than 33 characters!
 
 /* -- Download --
 NOTE: WE, THE DEVELOPERS OF GDOpenServer, DO NOT TAKE *ANY* RESPONSIBILITY
@@ -32,4 +32,3 @@ $android_download = "";
 $ios_download = "";
 
 ?>
-
