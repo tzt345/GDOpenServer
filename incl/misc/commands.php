@@ -43,9 +43,10 @@ class Commands {
 		$query2 = $db->prepare("SELECT extID FROM levels WHERE levelID = :id");
 		$query2->execute([':id' => $levelID]);
 		$targetExtID = $query2->fetchColumn();
-		$commands = yaml_parse("cmd/commands.yaml");
+		$aliases = yaml_parse("cmd/commands.yaml");
+		$permissions = yaml_parse("cmd/permissions.yaml");
 		if (file_exists("cmd/".$commentarray[0].".php")) {
-			if ($commands[$commentarray[0]] == "admin") {
+			if ($permissions[$commentarray[0]] == "admin" OR $permissions[$commentarray[0]] != "non-admin") {
 				$commandFirstUpper = ucfirst(str_replace("un", "", $commentarray[0]));
 				$commandConfig = "$"."command".$commandFirstUpper;
 				if ($gs->checkPermission($accountID, "command".$commandFirstUpper) AND (eval($commandConfig) == 1) {
@@ -53,7 +54,7 @@ class Commands {
 				} else {
 					return false;
 				}
-			} else {
+			} elseif ($permissions[$commentarray[0]] == "non-admin") {
 				$commandFirstUpper = ucfirst(str_replace("un", "", $commentarray[0]));
 				$commandConfig = "$"."command".$commandFirstUpper;
 				if ($this->ownCommand($comment, $commentarray[0], $accountID, $targetExtID) AND (eval($commandConfig) == 1) {
@@ -65,7 +66,7 @@ class Commands {
 		} else {
 			foreach($aliases as $command => $alias) {
 				if ($aliases[$command][$commentarray[0]]) {
-					if ($alias == "admin") {
+					if ($permissions[$command] == "admin" OR $permissions[$command] != "non-admin") {
 						$commandFirstUpper = ucfirst(str_replace("un", "", $command));
 						$commandConfig = "$"."command".$commandFirstUpper;
 						if ($gs->checkPermission($accountID, "command".$commandFirstUpper) AND (eval($commandConfig) == 1) {
