@@ -1,50 +1,50 @@
-ban: admin
+ban:
   - ban # Fillers
-commentban: admin
+commentban:
   - commentban
-daily: admin
+daily:
   - daily
-delete: admin
+delete:
   - delete
   - delet
-description: non-admin
+description:
   - description
   - desc
   - descript
   - descrip
-disablesong: admin
+disablesong:
   - disablesong
-enablesong: admin
+enablesong:
   - enablesong
-epic: admin
+epic:
   - epic
-feature: admin
+feature:
   - feature
-hall: admin
+hall:
   - hall
-ldm: non-admin
+ldm:
   - ldm
-magic: admin
+magic:
   - magic
-noshare: admin
+noshare:
   - noshare
   - revokeshares
   - revokecpshares
-pass: non-admin
+pass:
   - pass
   - copy
-public: non-admin
+public:
   - public
   - list
-rate: admin
+rate:
   - rate
   - starrate
-rename: non-admin
+rename:
   - rename
   - renamelevel
-revertlikes: admin
+revertlikes:
   - revertlikes
-setacc: non-admin
+setacc:
   - setacc
   - setaccount
   - setcreator
@@ -53,42 +53,42 @@ setacc: non-admin
   - makecreator
   - makeowner
   - makelevelowner
-sharecp: non-admin
+sharecp:
   - sharecp
   - sharecps
   - sharecreatorpoint
   - sharecreatorpoints
-song: non-admin
+song:
   - song
   - setsong
   - songset
   - setlevelsong
   - levelsongset
-unban: admin
+unban:
   - unban
-uncommentban: admin
+uncommentban:
   - uncommentban
-unepic: admin
+unepic:
   - unepic
-unfeature: admin
+unfeature:
   - unfeature
-unhall: admin
+unhall:
   - unhall
   - unhalloffame
-unldm: non-admin
+unldm:
   - unldm
-unlist: non-admin
+unlist:
   - unlist
-unmagic: admin
+unmagic:
   - unmagic
-unrate: admin
+unrate:
   - unrate
   - unstarrate
-unsharecp: non-admin
+unsharecp:
   - unsharecp
-unverifycoins: admin
+unverifycoins:
   - unverifycoins
-verifycoins: admin
+verifycoins:
   - verifycoins
-weekly: admin
+weekly:
   - weekly
