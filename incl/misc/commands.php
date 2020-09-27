@@ -46,7 +46,7 @@ class Commands {
 		$aliases = yaml_parse("cmd/commands.yaml");
 		$permissions = yaml_parse("cmd/permissions.yaml");
 		if (file_exists("cmd/".$commentarray[0].".php")) {
-			if ($permissions[$commentarray[0]] == "admin" OR $permissions[$commentarray[0]] != "non-admin") {
+			if ($permissions[$commentarray[0]] == "admin" OR $permissions[$commentarray[0]] != "non-admin" OR !isset($permissions[$commentarray[0]])) {
 				$commandFirstUpper = ucfirst(str_replace("un", "", $commentarray[0]));
 				$commandConfig = "$"."command".$commandFirstUpper;
 				if ($gs->checkPermission($accountID, "command".$commandFirstUpper) AND (eval($commandConfig) == 1) {
@@ -66,7 +66,7 @@ class Commands {
 		} else {
 			foreach($aliases as $command => $alias) {
 				if ($aliases[$command][$commentarray[0]]) {
-					if ($permissions[$command] == "admin" OR $permissions[$command] != "non-admin") {
+					if ($permissions[$command] == "admin" OR $permissions[$command] != "non-admin" OR !isset($permissions[$command])) {
 						$commandFirstUpper = ucfirst(str_replace("un", "", $command));
 						$commandConfig = "$"."command".$commandFirstUpper;
 						if ($gs->checkPermission($accountID, "command".$commandFirstUpper) AND (eval($commandConfig) == 1) {
