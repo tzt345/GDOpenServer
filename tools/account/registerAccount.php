@@ -2,6 +2,7 @@
 include "../../incl/lib/connection.php";
 require "../../incl/lib/exploitPatch.php";
 $exploit_patch = new exploitPatch();
+include "../../config/security.php";
 // here begins the checks
 if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["repeatemail"]) AND !empty($_POST["password"]) AND !empty($_POST["repeatpassword"])){
 	// catching all the input
@@ -34,11 +35,20 @@ if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["rep
 			}else{
 				// hashing your password and registering your account
 				$hashpass = password_hash($password, PASSWORD_DEFAULT);
-				$query2 = $db->prepare("INSERT INTO accounts (userName, password, email, saveData, registerDate, saveKey)
-				VALUES (:userName, :password, :email, '', :time, '')");
-				$query2->execute([':userName' => $username, ':password' => $hashpass, ':email' => $email, ':time' => time()]);
+				if ($accountVerification == 2) {
+					$query = $db->prepare("INSERT INTO accounts (userName, password, email, saveData, registerDate, saveKey, isVerified) VALUES (:userName, :password, :email, '', :time, '', 0)");
+					$query->execute([':userName' => $userName, ':password' => $hashpass, ':email' => $email, ':time' => time()]);
+					echo "Account registred. Check your email for a link that verifies your account. <a href='..'>Go back to tools</a>";
+				} elseif ($accountVerification == 1) {
+					$query = $db->prepare("INSERT INTO accounts (userName, password, email, saveData, registerDate, saveKey, isVerified) VALUES (:userName, :password, :email, '', :time, '', 0)");
+					$query->execute([':userName' => $userName, ':password' => $hashpass, ':email' => $email, ':time' => time()]);
+					echo "Account registred. Go to <a href='verifyAccount.php'>this tool</a> and login to verify your account. <a href='..'>Go back to tools</a>";
+				} else {
+					$query = $db->prepare("INSERT INTO accounts (userName, password, email, saveData, registerDate, saveKey) VALUES (:userName, :password, :email, '', :time, '')");
+					$query->execute([':userName' => $userName, ':password' => $hashpass, ':email' => $email, ':time' => time()]);
+					echo "Account registred. No e-mail verification required, you can login. <a href='..'>Go back to tools</a>";
+				}
 				// there you go, you are registered.
-				echo "Account registred. No e-mail verification required, you can login. <a href='..'>Go back to tools</a></body>";
 			}
 		}
 	}

@@ -16,12 +16,10 @@ if(!empty($_POST["userhere"]) AND !empty($_POST["passhere"]) AND !empty($_POST["
 	$usertarg = $ep->remove($_POST["usertarg"]);
 	$passtarg = $ep->remove($_POST["passtarg"]);
 	$pass = $generatePass->isValidUsrname($userhere, $passhere);
-	//echo $pass;
 	if ($pass == 1) {
 		$url = $_POST["server"];
 		$udid = "S" . mt_rand(111111111,999999999) . mt_rand(111111111,999999999) . mt_rand(111111111,999999999) . mt_rand(111111111,999999999) . mt_rand(1,9);
 		$sid = mt_rand(111111111,999999999) . mt_rand(11111111,99999999);
-		//echo $udid;
 		$post = ['userName' => $usertarg, 'udid' => $udid, 'password' => $passtarg, 'sID' => $sid, 'secret' => 'Wmfv3899gc9'];
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -29,11 +27,11 @@ if(!empty($_POST["userhere"]) AND !empty($_POST["passhere"]) AND !empty($_POST["
 		$result = curl_exec($ch);
 		curl_close($ch);
 		if($result == "" OR $result == "-1" OR $result == "No no no"){
-			if($result==""){
+			if ($result == "") {
 				echo "An error has occured while connecting to the server.";
-			}else if($result=="-1"){
+			} elseif ($result == "-1") {
 				echo "Login to the target server failed.";
-			}else{
+			} else {
 				echo "RobTop doesn't like you or something...";
 			}
 			echo "<br>Error code: $result";
@@ -52,8 +50,8 @@ if(!empty($_POST["userhere"]) AND !empty($_POST["passhere"]) AND !empty($_POST["
 			$query = $db->prepare("SELECT userID FROM users WHERE extID = :extID LIMIT 1");
 			$query->execute([':extID' => $accountID]);
 			$userID = $query->fetchColumn();
-			$targetAccountID = explode(",",$result)[0];
-			$targetUserID = explode(",",$result)[1];
+			$targetAccountID = explode(",", $result)[0];
+			$targetUserID = explode(",", $result)[1];
 			$query = $db->prepare("SELECT count(*) FROM links WHERE targetAccountID = :targetAccountID LIMIT 1");
 			$query->execute([':targetAccountID' => $targetAccountID]);
 			if($query->fetchColumn() != 0){
@@ -65,8 +63,7 @@ if(!empty($_POST["userhere"]) AND !empty($_POST["passhere"]) AND !empty($_POST["
 			}
 			$server = $parsedurl["host"];
 			//query
-			$query = $db->prepare("INSERT INTO links (accountID, targetAccountID, server, timestamp, userID, targetUserID)
-											 VALUES (:accountID,:targetAccountID,:server,:timestamp,:userID,:targetUserID)");
+			$query = $db->prepare("INSERT INTO links (accountID, targetAccountID, server, timestamp, userID, targetUserID) VALUES (:accountID,:targetAccountID,:server,:timestamp,:userID,:targetUserID)");
 			$query->execute([':accountID' => $accountID, ':targetAccountID' => $targetAccountID, ':server' => $server, ':timestamp' => time(), 'userID' => $userID, 'targetUserID' => $targetUserID]);
 			echo "Account linked succesfully.";
 		}

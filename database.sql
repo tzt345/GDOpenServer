@@ -68,7 +68,9 @@ CREATE TABLE `accounts` (
   `friendsCount` int(11) NOT NULL DEFAULT 0,
   `saveKey` blob NOT NULL,
   `discordID` bigint(20) NOT NULL DEFAULT 0,
-  `discordLinkReq` bigint(20) NOT NULL DEFAULT 0
+  `discordLinkReq` bigint(20) NOT NULL DEFAULT 0,
+  `verifySecret` varchar(255) NOT NULL DEFAULT '',
+  `isVerified` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -559,14 +561,14 @@ CREATE TABLE `users` (
   `isLeaderboardBanned` int(11) NOT NULL DEFAULT 0,
   `isCreatorBanned` int(11) NOT NULL DEFAULT 0,
   `isCommentBanned` int(11) NOT NULL DEFAULT 0,
-  `banReason` varchar(255),
-  `leaderboardBanReason` varchar(255),
-  `creatorBanReason` varchar(255),
-  `commentBanReason` varchar(255),
-  `banTime` int(11),
-  `leaderboardBanTime` int(11),
-  `creatorBanTime` int(11),
-  `commentBanTime` int(11)
+  `banReason` varchar(255) NULL,
+  `leaderboardBanReason` varchar(255) NULL,
+  `creatorBanReason` varchar(255) NULL,
+  `commentBanReason` varchar(255) NULL,
+  `banTime` int(11) NULL,
+  `leaderboardBanTime` int(11) NULL,
+  `creatorBanTime` int(11) NULL,
+  `commentBanTime` int(11) NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --

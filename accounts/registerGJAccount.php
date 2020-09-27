@@ -19,9 +19,16 @@ if($_POST["userName"] != ""){
 		echo "-2";
 	}else{
 		$hashpass = password_hash($password, PASSWORD_DEFAULT);
-		$query = $db->prepare("INSERT INTO accounts (userName, password, email, saveData, registerDate, saveKey)
-		VALUES (:userName, :password, :email, '', :time, '')");
-		$query->execute([':userName' => $userName, ':password' => $hashpass, ':email' => $email, ':time' => time()]);
+		if ($accountVerification == 2) {
+			$query = $db->prepare("INSERT INTO accounts (userName, password, email, saveData, registerDate, saveKey, isVerified) VALUES (:userName, :password, :email, '', :time, '', 0)");
+			$query->execute([':userName' => $userName, ':password' => $hashpass, ':email' => $email, ':time' => time()]);
+		} elseif ($accountVerification == 1) {
+			$query = $db->prepare("INSERT INTO accounts (userName, password, email, saveData, registerDate, saveKey, isVerified) VALUES (:userName, :password, :email, '', :time, '', 0)");
+			$query->execute([':userName' => $userName, ':password' => $hashpass, ':email' => $email, ':time' => time()]);
+		} else {
+			$query = $db->prepare("INSERT INTO accounts (userName, password, email, saveData, registerDate, saveKey) VALUES (:userName, :password, :email, '', :time, '')");
+			$query->execute([':userName' => $userName, ':password' => $hashpass, ':email' => $email, ':time' => time()]);
+		}
 		echo "1";
 	}
 }
