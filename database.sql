@@ -70,7 +70,7 @@ CREATE TABLE `accounts` (
   `discordID` bigint(20) NOT NULL DEFAULT 0,
   `discordLinkReq` bigint(20) NOT NULL DEFAULT 0,
   `verifySecret` varchar(255) NOT NULL DEFAULT '',
-  `isVerified` int(11) NOT NULL DEFAULT 0
+  `isVerified` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------

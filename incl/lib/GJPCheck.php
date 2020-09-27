@@ -33,6 +33,7 @@ class GJPCheck {
 			$ip = $ml->getIP();
 			$query = $db->prepare("INSERT INTO actions (type, value, value2, timestamp) VALUES (16, :accountID, :ip, :timestamp)");
 			$query->execute([':accountID' => $accountID, ':ip' => $ip, ':timestamp' => time()]);
+			return 1;
 		}
 		return $generatePass->isValid($accountID, $gjpdecode);
 	}
