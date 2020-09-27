@@ -42,9 +42,7 @@ if(!empty($_POST["accountID"]) AND $_POST["accountID"]!="0"){
 $userID = $mainLib->getUserID($id, $userName);
 $uploadDate = time();
 $decodecomment = base64_decode($comment);
-if($cmds->doCommands($id, $decodecomment, $levelID)){
-	exit("temp_0_Successfully executed the command.");
-}
+$cmds->doCommands($id, $decodecomment, $levelID);
 if($id != "" AND $comment != ""){
 	$banCheck = $db->prepare("SELECT isCommentBanned, commentBanTime, commentBanReason FROM users WHERE userID = :userID");
 	$banCheck->execute([':userID' => $userID]);

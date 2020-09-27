@@ -77,6 +77,10 @@ foreach($result as &$comment1) {
 				$userstring .=  $user["userID"] . ":" . $user["userName"] . ":" . $extID . "|";
 			}
 			if($binaryVersion > 31){
+				$colorado = $gs->getAccountCommentColor($extID);
+				if ($colorado == "random") {
+					$colorado = rand(0,255).",".rand(0,255).",".rand(0,255);
+				}
 				$commentstring .= "~11~".$gs->getMaxValuePermission($extID, "modBadgeLevel")."~12~".$gs->getAccountCommentColor($extID).":1~".$user["userName"]."~7~1~9~".$user["icon"]."~10~".$user["color1"]."~11~".$user["color2"]."~14~".$user["iconType"]."~15~".$user["special"]."~16~".$user["extID"];
 			}
 			$commentstring .= "|";

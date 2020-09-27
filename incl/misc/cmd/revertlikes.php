@@ -1,5 +1,3 @@
 <?php
-function revertlikes($commentarray, $uploadDate, $accountID, $levelID) {
-	
-}
+exit("temp_0_This command doesn't work yet, sorry.");
 ?>
