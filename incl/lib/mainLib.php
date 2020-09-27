@@ -628,7 +628,7 @@ class mainLib {
 	}
 	public function getIP(){
 		include __DIR__ . "/../../config/security.php";
-		if ($IPchecking == 0) {
+		if ($IPChecking == 0) {
 			if (isset($_POST["accountID"])) {
 				return $_POST["accountID"];
 			}
@@ -649,26 +649,24 @@ class mainLib {
 		$query->execute([':id' => $categoryID]);
 		$permState = $query->fetchColumn();
 		
-		if($permState == 1){
+		if ($permState == 1) {
 			return true;
-		}
-		if($permState == 2){
+		} elseif($permState == 2) {
+			return false;
+		} else {
 			return false;
 		}
-		return false;
 	}
 	public function getFriends($accountID){
 		include __DIR__ . "/connection.php";
 		$friendsarray = array();
-		$query = "SELECT person1,person2 FROM friendships WHERE person1 = :accountID OR person2 = :accountID"; //selecting friendships
+		$query = "SELECT person1, person2 FROM friendships WHERE person1 = :accountID OR person2 = :accountID"; //selecting friendships
 		$query = $db->prepare($query);
 		$query->execute([':accountID' => $accountID]);
-		$result = $query->fetchAll();//getting friends
+		$result = $query->fetchAll(); //getting friends
 		if($query->rowCount() == 0){
 			return array();
-		}
-		else
-		{//oh so you actually have some friends kden
+		} else { //oh so you actually have some friends kden
 			foreach ($result as &$friendship) {
 				$person = $friendship["person1"];
 				if($friendship["person1"] == $accountID){
@@ -740,26 +738,24 @@ class mainLib {
 		$query = $db->prepare($query);	
 		$query->execute([':demon' => $demon, ':auto' => $auto, ':diff' => $difficulty, ':stars' => $stars, ':levelID'=>$levelID, ':now' => time()]);
 		
-		$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('1', :value, :value2, :levelID, :timestamp, :id)");
+		$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES (1, :value, :value2, :levelID, :timestamp, :id)");
 		$query->execute([':value' => $this->getDiffFromStars($stars)["name"], ':timestamp' => time(), ':id' => $accountID, ':value2' => $stars, ':levelID' => $levelID]);
-		
-		
 	}
 	public function featureLevel($accountID, $levelID, $feature){
 		include __DIR__ . "/connection.php";
 		$query = "UPDATE levels SET starFeatured=:feature, rateDate=:now WHERE levelID=:levelID";
 		$query = $db->prepare($query);	
 		$query->execute([':feature' => $feature, ':levelID'=>$levelID, ':now' => time()]);
-		$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
+		$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES (2, :value, :levelID, :timestamp, :id)");
 		$query->execute([':value' => $feature, ':timestamp' => time(), ':id' => $accountID, ':levelID' => $levelID]);
 	}
 	public function verifyCoinsLevel($accountID, $levelID, $coins){
 		include __DIR__ . "/connection.php";
 		$query = "UPDATE levels SET starCoins=:coins WHERE levelID=:levelID";
 		$query = $db->prepare($query);	
-		$query->execute([':coins' => $coins, ':levelID'=>$levelID]);
+		$query->execute([':coins' => $coins, ':levelID' => $levelID]);
 		
-		$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('3', :value, :levelID, :timestamp, :id)");
+		$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES (3, :value, :levelID, :timestamp, :id)");
 		$query->execute([':value' => $coins, ':timestamp' => time(), ':id' => $accountID, ':levelID' => $levelID]);
 	}
 	public function songReupload($accountID, $url){
@@ -818,10 +814,10 @@ class mainLib {
 				} else {
 					$reuploads = $query->fetchColumn();
 					if($isSongReuploadLimitDaily == 1) {
-						$query = $db->prepare("UPDATE actions SET value2 = ".($reuploads + 1)." WHERE type = 17 AND value = :accountID AND timestamp > :timestamp");
+						$query = $db->prepare("UPDATE actions SET value2 = ".($reuploads + 1)." WHERE type = 18 AND value = :accountID AND timestamp > :timestamp");
 						$query->execute([':accountID' => $accountID, ':timestamp' => time() - 86400]);
 					} else {
-						$query = $db->prepare("UPDATE actions SET value2 = ".($reuploads + 1)." WHERE type = 17 AND value = :accountID");
+						$query = $db->prepare("UPDATE actions SET value2 = ".($reuploads + 1)." WHERE type = 18 AND value = :accountID");
 						$query->execute([':accountID' => $accountID]);
 					}
 				}

@@ -3,10 +3,8 @@
 // Some of the settings provided here will be shown on various pages like dashboard/tools.
 
 /* -- Settings and Links -- */
-$gdps_name = "GDOpenServer"; // The name of your GDPS.
+$gdps_name = "OpenGDPS"; // The name of your GDPS.
 $discord_invite = ""; // The Discord invite link of your GDPS.
-$registerMethod = 0; // 0 = All, 1 = In-Game only, 2 = Website only.
-$verifyMail = 0; // DON'T USE THIS YET! - 0 = No verification, 1 = Send link to verify account.
 
 /* -- GDPS Patcher -- */
 $usePatcher = 0; // Redirects the PC download to a patching tool. 1 = Redirect, 0 = Don't redirect.

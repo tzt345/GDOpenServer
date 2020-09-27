@@ -8,6 +8,6 @@ $level_reupload = 0; // any number for applying the limit, isLevelReuploadLimitD
 $api_key = "dc467dd431fc48eb0244b0aead929ccd"; // The soundcloud developer api key to use to reupload songs, better don't change this unless you can provide your own key
 $isSongReuploadLimitDaily = 0; // similar to the $isLevelReuploadLimitDaily setting, for songs
 $song_reupload = 0; // similar to the $level_reupload setting, for songs
-$can_reupload_from_direct_links = 1; // 0 to disable direct links, 1 to keep it enabled. It's good to disable them to avoid possible copyright issues.
+$canReuploadFromDirectLinks = 1; // 0 to disable direct links, 1 to keep it enabled. It's good to disable them to avoid possible copyright issues.
 
 ?>

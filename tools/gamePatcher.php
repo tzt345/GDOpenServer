@@ -24,6 +24,20 @@ if (isset($_FILES['userfile'])) {
 			return substr($str, 0, -(strlen($expl[count($expl) - 1]))) . $lastfolder;
 		}
 		// Fix URL length and convert them to hex if needed
+		$gdps_url = $_SERVER['HTTP_HOST'];   
+		$gdps_url .= $_SERVER['REQUEST_URI'];
+		$gdps_url_array = explode("/", $gdps_url);
+		unset($gdps_url_array[-1]);
+		unset($gdps_url_array[-1]);
+		if(isset($_SERVER['HTTPS']) AND $_SERVER['HTTPS'] === 'on') {
+			$gdps_url = "https://";
+		} else {
+			$gdps_url = "http://";
+		}
+		foreach($gdps_url_array as $dir) {
+			$gdps_url .= $dir."/";
+		}
+		$gdps_url = substr($gdps_url, 0, -1);
 		$gdps_url = fixLength($gdps_url, 33);
 		$youtube = bin2hex(fixLength($youtube, 40)) . "00";
 		$twitter = bin2hex(fixLength($twitter, 31)) . "00";

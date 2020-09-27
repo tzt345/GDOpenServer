@@ -57,8 +57,8 @@ if(!empty($_POST["songLink"])){
 					echo "This song isn't downloadable, attempting to insert it anyways...<br>";
 				}
 			}else{
-				$song = str_replace("?dl=0","",$song);
-				$song = str_replace("?dl=1","",$song);
+				$song = str_replace("?dl=0", "", $song);
+				$song = str_replace("?dl=1", "", $song);
 				$song = trim($song);
 				$name = str_replace(".mp3", "", basename($song));
 				$name = str_replace(".webm", "", $name);
@@ -67,7 +67,7 @@ if(!empty($_POST["songLink"])){
 				$name = $ep->remove($name);
 				$author = "Reupload";
 			}
-			if (!$soundcloud AND $can_reupload_from_direct_links == 0) {
+			if (!$soundcloud AND $canReuploadFromDirectLinks == 0) {
 				exit("Reuploading from direct links is disabled in this GDPS. <a href='songAdd.php'>Try again.</a>");
 			}
 			$ch = curl_init($song);
@@ -106,10 +106,10 @@ if(!empty($_POST["songLink"])){
 				} else {
 					$reuploads = $query->fetchColumn();
 					if($isSongReuploadLimitDaily == 1) {
-						$query = $db->prepare("UPDATE actions SET value2 = ".($reuploads + 1)." WHERE type = 17 AND value = :accountID AND timestamp > :timestamp");
+						$query = $db->prepare("UPDATE actions SET value2 = ".($reuploads + 1)." WHERE type = 18 AND value = :accountID AND timestamp > :timestamp");
 						$query->execute([':accountID' => $accountID, ':timestamp' => time() - 86400]);
 					} else {
-						$query = $db->prepare("UPDATE actions SET value2 = ".($reuploads + 1)." WHERE type = 17 AND value = :accountID");
+						$query = $db->prepare("UPDATE actions SET value2 = ".($reuploads + 1)." WHERE type = 18 AND value = :accountID");
 						$query->execute([':accountID' => $accountID]);
 					}
 				}
@@ -120,12 +120,18 @@ if(!empty($_POST["songLink"])){
 				echo "This song already exists in our database.";
 			}else{
 				if ($reuploads < $song_reupload) {
-					$query = $db->prepare("INSERT INTO songs (name, authorID, authorName, size, download, hash)
-					VALUES (:name, '9', :author, :size, :download, :hash)");
+					$query = $db->prepare("INSERT INTO songs (name, authorID, authorName, size, download, hash) VALUES (:name, '9', :author, :size, :download, :hash)");
 					$query->execute([':name' => $name, ':download' => $song, ':author' => $author, ':size' => $size, ':hash' => $hash]);
 					echo "Song reuploaded: <b>".$db->lastInsertId()."</b><hr>";
+					if ($db->lastInsertId() > 999999) {
+
+					}
 				} else {
-					echo "You have reached the maximum amount of reuploading songs to this GDPS.";
+					if ($isSongReuploadLimitDaily == 1) {
+						echo "You have reached the maximum daily amount of adding songs to this GDPS.";
+					} else {
+						echo "You have reached the maximum amount of adding songs to this GDPS.";
+					}
 				}
 			}
 		}else{
@@ -137,16 +143,16 @@ if(!empty($_POST["songLink"])){
 }else{
 	if ($song_reupload != 0) {
 		echo '<form action="songAdd.php" method="post">
-			Username: <input type="text" name="userName">
-			<br>Password: <input type="password" name="password">
-			<br>Link: <input type="text" name="songLink">
-			<br><input type="submit" value="Add Song">
-			</form>';
+		Username: <input type="text" name="userName">
+		<br>Password: <input type="password" name="password">
+		<br>Link: <input type="text" name="songLink">
+		<br><input type="submit" value="Add Song">
+		</form>';
 	} else {
 		echo '<form action="songAdd.php" method="post">
-			Link: <input type="text" name="songLink">
-			<br><input type="submit" value="Add Song">
-			</form>';
+		Link: <input type="text" name="songLink">
+		<br><input type="submit" value="Add Song">
+		</form>';
 	}
 }
 ?>

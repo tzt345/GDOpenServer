@@ -24,8 +24,8 @@ class GJPCheck {
 		require_once dirname(__FILE__)."/XORCipher.php";
 		require_once dirname(__FILE__)."/generatePass.php";
 		$xor = new XORCipher();
-		$gjpdecode = str_replace("_","/", $gjp);
-		$gjpdecode = str_replace("-","+", $gjpdecode);
+		$gjpdecode = str_replace("_", "/", $gjp);
+		$gjpdecode = str_replace("-", "+", $gjpdecode);
 		$gjpdecode = base64_decode($gjpdecode);
 		$gjpdecode = $xor->cipher($gjpdecode, 37526);
 		$generatePass = new generatePass();

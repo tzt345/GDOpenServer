@@ -13,7 +13,7 @@ if(isset($_POST["page"]) AND is_numeric($_POST["page"])){
 	exit("-1");
 }
 
-if($redirectsMainGD == 1) {
+if($topArtistsRedirectsMainGD == 1) {
 	// send result
 	$url = "http://boomlings.com/database/getGJTopArtists.php";
 	$request = "page=$offset&secret=Wmfd2893gb7";

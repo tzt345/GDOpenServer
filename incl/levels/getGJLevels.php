@@ -240,7 +240,12 @@ $query = "SELECT * $querybase ";
 if ($showCreatorBannedPeoplesLevels == 0) {
 	$query2 = $db->prepare("SELECT userID FROM users WHERE isCreatorBanned = 1");
 	$query2->execute();
-	$bannedPeople = $query2->fetchColumn();
+	$banResult = $query2->fetch();
+	$bannedPeople = "";
+	foreach($banResult as &$bannedPerson){
+		$bannedPeople .= $bannedPerson["roleID"] . ",";
+	}
+	$bannedPeople = substr($bannedPeople, 0, -1);
 	if ($query2->rowCount() > 0) {
 		$query .= "AND ( userID NOT IN ($bannedPeople) ) ";
 	}
@@ -256,15 +261,14 @@ $countquery = $db->prepare($countquery);
 $countquery->execute();
 $totallvlcount = $countquery->fetchColumn();
 $result = $query->fetchAll();
-//$levelcount = $query->rowCount();
 foreach($result as &$level1) {
-	if($level1["levelID"]!=""){
+	if($level1["levelID"] != ""){
 		$lvlsmultistring .= $level1["levelID"].",";
 		if(!empty($gauntlet)){
 			$lvlstring .= "44:$gauntlet:";
 		}
 		$lvlstring .= "1:".$level1["levelID"].":2:".$level1["levelName"].":5:".$level1["levelVersion"].":6:".$level1["userID"].":8:10:9:".$level1["starDifficulty"].":10:".$level1["downloads"].":12:".$level1["audioTrack"].":13:".$level1["gameVersion"].":14:".$level1["likes"].":17:".$level1["starDemon"].":43:".$level1["starDemonDiff"].":25:".$level1["starAuto"].":18:".$level1["starStars"].":19:".$level1["starFeatured"].":42:".$level1["starEpic"].":45:".$level1["objects"].":3:".$level1["levelDesc"].":15:".$level1["levelLength"].":30:".$level1["original"].":31:0:37:".$level1["coins"].":38:".$level1["starCoins"].":39:".$level1["requestedStars"].":46:1:47:2:40:".$level1["isLDM"].":35:".$level1["songID"]."|";
-		if($level1["songID"]!=0){
+		if($level1["songID"] != 0){
 			$song = $gs->getSongString($level1["songID"]);
 			if($song){
 				$songsstring .= $gs->getSongString($level1["songID"]) . "~:~";
