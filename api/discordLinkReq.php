@@ -36,8 +36,11 @@ $query->execute([':account' => $account]);
 $accountID = $query->fetchColumn();
 $message = $xc->cipher("The Discord account '$accinfo' has attempted to link to this GDPS account. If that was you, please comment '!discord accept' on your profile. If it wasn't you, please comment '!discord deny'. If you ever wish to unlink, please comment '!discord unlink' on your profile.", 14251);
 $message = base64_encode($message);
-$query = $db->prepare("INSERT INTO messages (subject, body, accID, userID, userName, toAccountID, timestamp)
-VALUES ('TmV3IEFjY291bnQgTGluayBSZXF1ZXN0', :body, :ru, :ra, 'GDPS Bot', :toAccountID, :uploadDate)");
-$query->execute([':body' => $message, ':toAccountID' => $accountID, ':ru' => $botUID, ':ra' => $botAID, ':uploadDate' => time()]);
+$botUserName = $gs->getAccountName($botAID);
+if ($botUserName == false) {
+	$botUserName = "GDPS Bot";
+}
+$query = $db->prepare("INSERT INTO messages (subject, body, accID, userID, userName, toAccountID, timestamp) VALUES ('TmV3IEFjY291bnQgTGluayBSZXF1ZXN0', :body, :ru, :ra, :username, :toAccountID, :uploadDate)");
+$query->execute([':body' => $message, ':toAccountID' => $accountID, ':ru' => $botUID, ':ra' => $botAID, ':username' => $botUserName, ':uploadDate' => time()]);
 echo "Link request has been succesfully sent, please check your in-game messages";
 ?>

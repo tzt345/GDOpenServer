@@ -43,9 +43,9 @@ class Commands {
 		$query2 = $db->prepare("SELECT extID FROM levels WHERE levelID = :id");
 		$query2->execute([':id' => $levelID]);
 		$targetExtID = $query2->fetchColumn();
-		require_once "spyc.php";
-		$aliases = spyc_load_file("cmd/commands.yaml");
-		$permissions = spyc_load_file("cmd/permissions.yaml");
+		require_once "../lib/spyc.php";
+		$aliases = spyc_load_file("cmd/config/commands.yaml");
+		$permissions = spyc_load_file("cmd/config/permissions.yaml");
 		if (file_exists("cmd/".$commentarray[0].".php")) {
 			if ($permissions[$commentarray[0]] == "admin" OR $permissions[$commentarray[0]] != "non-admin" OR !isset($permissions[$commentarray[0]])) {
 				$commandFirstUpper = ucfirst(str_replace("un", "", $commentarray[0]));
