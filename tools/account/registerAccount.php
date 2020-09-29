@@ -8,9 +8,9 @@ include "../../config/security.php";
 if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["password"]) AND !empty($_POST["repeatpassword"])){
 	// catching all the input
 	$username = $exploit_patch->remove($_POST["username"]);
-	$password = ($_POST["password"]);
-	$repeat_password = ($_POST["repeatpassword"]);
-	$email = FILTER_SANITIZE_EMAIL($_POST["email"]);
+	$password = $_POST["password"];
+	$repeat_password = $_POST["repeatpassword"];
+	$email = $exploit_patch->remove($_POST["email"]);
 	if(strlen($username) < 3){
 		echo 'Username should be more than 3 characters.';
 	}elseif(strlen($password) < 6){
@@ -38,12 +38,12 @@ if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["pas
 					$query = $db->prepare("INSERT INTO accounts (userName, password, email, saveData, registerDate, saveKey, isVerified, verifySecret) VALUES (:userName, :password, :email, '', :time, '', 0, :secret)");
 					$query->execute([':userName' => $userName, ':password' => $hashpass, ':email' => $email, ':time' => time(), ':secret' => $secret]);
 					$accountID = $db->lastInsertId();
-					sendVerificationMail($email,$secret,$accountID);
+					sendVerificationMail($email, $secret, $accountID);
 					echo "Account registred. Check your E-Mail inbox to verify your account. <a href='..'>Go back to the tools page.</a>";
 					*/
 					echo "E-Mail registration is still in work, please check in later.";
 				} elseif ($accountVerification == 1) {
-					if(isset($_POST["captcha"])&&$_POST["captcha"]!=""&&$_SESSION["code"]==$_POST["captcha"]) {
+					if(isset($_POST["captcha"]) AND $_POST["captcha"] != "" AND $_SESSION["code"] == $_POST["captcha"]) {
 						$query = $db->prepare("INSERT INTO accounts (userName, password, email, saveData, registerDate, saveKey, isVerified) VALUES (:userName, :password, :email, '', :time, '', 0)");
 						$query->execute([':userName' => $userName, ':password' => $hashpass, ':email' => $email, ':time' => time()]);
 						echo "Account registred. No E-Mail verification required, you can login. <a href='..'>Go back to the Tools page.</a>";

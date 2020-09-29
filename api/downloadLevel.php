@@ -6,13 +6,10 @@ class levelAPI {
         require_once "../incl/lib/exploitPatch.php";
         $ep = new exploitPatch();
         $mainLib = new mainLib();
-        if(!empty($_GET["levelID"]))
-        {
-                   $response = $_GET["levelID"];
-        }
-        else if(!empty($_POST["levelID"]))
-        {
-                   $response = $_POST["levelID"];
+        if(!empty($_GET["levelID"])) {
+            $response = $_GET["levelID"];
+        } elseif(!empty($_POST["levelID"])) {
+            $response = $_POST["levelID"];
         }
         $levelID = $ep->remove($response);
 		if(file_exists("../data/levels/$levelID")){
@@ -48,7 +45,7 @@ class levelAPI {
     }
 }
 
-$API = new levelAPI;
+$API = new levelAPI();
 header('Content-Type: Application/json');
 echo $API->Select();
 ?>
