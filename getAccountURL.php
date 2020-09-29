@@ -1,3 +1,3 @@
 <?php
-include "incl/misc/getAccountURL.php";
+include "./incl/misc/getAccountURL.php";
 ?>
