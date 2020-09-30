@@ -93,7 +93,7 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 			$query->execute([':value' => $packName, ':timestamp' => time(), ':account' => $accountID, ':levels' => $levels, ':stars' => $stars, ':coins' => $coins, ':rgb' => $rgb]);
 		}
 	}else{
-		echo "Invalid password or nonexistant account. <a href='newMappack.php'>Try again</a>";
+		echo "Invalid password or non-existant account. <a href='newMappack.php'>Try again.</a>";
 	}
 }else{
 	echo '<script src="incl/jscolor/jscolor.js"></script>

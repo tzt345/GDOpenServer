@@ -46,3 +46,5 @@ dashboard/incl/lang/dev/append.php
 dashboard/incl/lang/dev/append.txt
 *.htaccess
 /nbproject/private/
+/nbproject/project.xml
+/nbproject
