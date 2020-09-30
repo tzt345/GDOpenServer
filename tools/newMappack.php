@@ -87,12 +87,7 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 				Stars: $stars <br>
 				Coins: $coins <br>
 				RGB Color: $rgb";
-<<<<<<< Updated upstream
-			$query = $db->prepare("INSERT INTO mappacks	 (name, levels, stars, coins, difficulty, rgbcolors)
-													VALUES (:name,:levels,:stars,:coins,:difficulty,:rgbcolors)");
-=======
 			$query = $db->prepare("INSERT INTO mappacks (name, levels, stars, coins, difficulty, rgbcolors) VALUES (:name,:levels,:stars,:coins,:difficulty,:rgbcolors)");
->>>>>>> Stashed changes
 			$query->execute([':name' => $packName, ':levels' => $levels, ':stars' => $stars, ':coins' => $coins, ':difficulty' => $diff, ':rgbcolors' => $rgb]);
 			$query = $db->prepare("INSERT INTO modactions  (type, value, timestamp, account, value2, value3, value4, value7) VALUES ('11',:value,:timestamp,:account,:levels, :stars, :coins, :rgb)");
 			$query->execute([':value' => $packName, ':timestamp' => time(), ':account' => $accountID, ':levels' => $levels, ':stars' => $stars, ':coins' => $coins, ':rgb' => $rgb]);

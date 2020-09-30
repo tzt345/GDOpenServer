@@ -8,7 +8,7 @@ use Defuse\Crypto\KeyProtectedByPassword;
 use Defuse\Crypto\Crypto;
 use Defuse\Crypto\Key;
 $ep = new exploitPatch();
-if(!empty($_POST["userName"]) AND !empty($_POST["oldpassword"]), !empty($_POST["newpassword"])){
+if(!empty($_POST["userName"]) AND !empty($_POST["oldpassword"]) AND !empty($_POST["newpassword"])){
 	$userName = $ep->remove($_POST["userName"]);
 	$oldpass = $_POST["oldpassword"];
 	$newpass = $_POST["newpassword"];

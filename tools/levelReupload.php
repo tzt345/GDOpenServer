@@ -16,9 +16,10 @@ function chkarray($source){
 include "../incl/lib/connection.php";
 require "../incl/lib/XORCipher.php";
 $xc = new XORCipher();
-require "../config/users.php";
+include "../config/users.php";
 require "../incl/lib/mainLib.php";
 $gs = new mainLib();
+include "../config/reupload.php";
 if ($level_reupload == -1) {
 	exit("Level reuploading to this GDPS is disabled.");
 }
@@ -33,9 +34,9 @@ if(!empty($_POST["levelid"])){
 	$result = curl_exec($ch);
 	curl_close($ch);
 	if($result == "" OR $result == "-1" OR $result == "No no no"){
-		if($result==""){
+		if($result == ""){
 			echo "An error has occured while connecting to the server.";
-		}else if($result=="-1"){
+		}else if($result == "-1"){
 			echo "This level doesn't exist.";
 		}else{
 			echo "RobTop doesn't like you or something...";

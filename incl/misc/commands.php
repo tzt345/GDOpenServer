@@ -93,8 +93,10 @@ class Commands {
 		include dirname(__FILE__)."/../lib/connection.php";
 		require_once "../lib/exploitPatch.php";
 		require_once "../lib/mainLib.php";
+		include "../../config/commands.php";
 		$ep = new exploitPatch();
 		$gs = new mainLib();
+		$prefixLen = strlen($prefix);
 		if(substr($command, 0, 7 + $prefixLen) == $prefix.'discord'){
 			if(substr($command, 8 + $prefixLen, 5) == "accept"){
 				$query = $db->prepare("UPDATE accounts SET discordID = discordLinkReq, discordLinkReq = '0' WHERE accountID = :accountID AND discordLinkReq <> 0");
