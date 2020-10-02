@@ -1,5 +1,4 @@
 <?php
-include "../incl/lib/connection.php";
 if (isset($commentarray[3])) {
 	$timeArg = $commentarray[3];
 	$timeSuffix = substr($timeArg, -1);

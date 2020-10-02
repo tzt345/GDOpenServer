@@ -60,10 +60,10 @@ $result = $query->fetchAll();
 foreach($result as $level){
 	$deservedcp = 0;
 	if($level["starStars"] != 0){
-		$deservedcp++;
+		$deservedcp += $rateCP;
 	}
 	if($level["starFeatured"] != 0){
-		$deservedcp++;
+		$deservedcp += $featureCP;
 	}
 	if($level["starEpic"] != 0){
 		$deservedcp += $epicCP;
@@ -88,7 +88,7 @@ foreach($result as $level){
 /*
 	NOW to update GAUNTLETS CP
 */
-$query = $db->prepare("SELECT level1,level2,level3,level4,level5 FROM gauntlets");
+$query = $db->prepare("SELECT level1, level2, level3, level4, level5 FROM gauntlets");
 $query->execute();
 $result = $query->fetchAll();
 //getting gauntlets

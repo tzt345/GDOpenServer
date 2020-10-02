@@ -19,16 +19,17 @@ class Commands {
 		include "../../config/commands.php";
 		include "../../config/levels.php";
 		require_once "../lib/exploitPatch.php";
-		require_once "../lib/mainLib.php";
 		$ep = new exploitPatch();
+		require_once "../lib/mainLib.php";
 		$gs = new mainLib();
+		require_once "../lib/spyc.php";
 		if (!is_numeric($accountID) AND !is_numeric($levelID)) {
-			return false;
+			exit("temp_0_Error: The level is either corrupted, or you are using hacks as a non-gold user.");
 		}
 		$query = $db->prepare("SELECT isBanned FROM users WHERE extID = :id");
 		$query->execute([':id' => $accountID]);
 		if ($query->fetchColumn() != 0) {
-			return false;
+			exit("temp_0_Error: You are banned, meaning you cannot take any moderational actions.");
 		}
 		$comment = $ep->remove(strtolower($comment));
 		$commentarray = explode(' ', $comment);
@@ -43,7 +44,6 @@ class Commands {
 		$query2 = $db->prepare("SELECT extID FROM levels WHERE levelID = :id");
 		$query2->execute([':id' => $levelID]);
 		$targetExtID = $query2->fetchColumn();
-		require_once "../lib/spyc.php";
 		$aliases = spyc_load_file("cmd/config/commands.yaml");
 		$permissions = spyc_load_file("cmd/config/permissions.yaml");
 		if (file_exists("cmd/".$commentarray[0].".php")) {
@@ -53,7 +53,7 @@ class Commands {
 				if ($gs->checkPermission($accountID, "command".$commandFirstUpper) AND (eval("return $commandConfig == 1;") == 1)) {
 					include "cmd/".$commentarray[0].".php";
 				} else {
-					return false;
+					exit("temp_0_Error: You do not have proper permission to use this command.");
 				}
 			} elseif ($permissions[$commentarray[0]] == "non-admin") {
 				$commandFirstUpper = ucfirst(str_replace("un", "", $commentarray[0]));
@@ -61,7 +61,7 @@ class Commands {
 				if ($this->ownCommand($comment, $commentarray[0], $accountID, $targetExtID) AND (eval("return $commandConfig == 1;") == 1)) {
 					include "cmd/".$commentarray[0].".php";
 				} else {
-					return false;
+					exit("temp_0_Error: You do not have proper permission to use this command.");
 				}
 			}
 		} else {
@@ -73,7 +73,7 @@ class Commands {
 						if ($gs->checkPermission($accountID, "command".$commandFirstUpper) AND (eval("return $commandConfig == 1;") == 1)) {
 							include "cmd/".$command.".php";
 						} else {
-							return false;
+							exit("temp_0_Error: You do not have proper permission to use this command.");
 						}
 					} else {
 						$commandFirstUpper = ucfirst(str_replace("un", "", $command));
@@ -81,7 +81,7 @@ class Commands {
 						if ($this->ownCommand($comment, $command, $accountID, $targetExtID) AND (eval("return $commandConfig == 1;") == 1)) {
 							include "cmd/".$command.".php";
 						} else {
-							return false;
+							exit("temp_0_Error: You do not have proper permission to use this command.");
 						}
 					}
 				}
@@ -92,37 +92,22 @@ class Commands {
 	public function doProfileCommands($accountID, $command){
 		include dirname(__FILE__)."/../lib/connection.php";
 		require_once "../lib/exploitPatch.php";
-		require_once "../lib/mainLib.php";
-		include "../../config/commands.php";
 		$ep = new exploitPatch();
+		require_once "../lib/mainLib.php";
 		$gs = new mainLib();
+		include "../../config/commands.php";
 		$prefixLen = strlen($prefix);
-		if(substr($command, 0, 7 + $prefixLen) == $prefix.'discord'){
-			if(substr($command, 8 + $prefixLen, 5) == "accept"){
-				$query = $db->prepare("UPDATE accounts SET discordID = discordLinkReq, discordLinkReq = '0' WHERE accountID = :accountID AND discordLinkReq <> 0");
-				$query->execute([':accountID' => $accountID]);
-				$query = $db->prepare("SELECT discordID, userName FROM accounts WHERE accountID = :accountID");
-				$query->execute([':accountID' => $accountID]);
-				$account = $query->fetch();
-				$gs->sendDiscordPM($account["discordID"], "Your link request to " . $account["userName"] . " has been accepted!");
+		if(substr($command, 0, 7 + $prefixLen) == $prefix."discord"){
+			if(substr($command, 8 + $prefixLen, 6) == "accept"){
+				include "cmd/discord/accept.php";
 				return true;
 			}
-			if(substr($command, 8 + $prefixLen, 3) == "deny"){
-				$query = $db->prepare("SELECT discordLinkReq, userName FROM accounts WHERE accountID = :accountID");
-				$query->execute([':accountID' => $accountID]);
-				$account = $query->fetch();
-				$gs->sendDiscordPM($account["discordLinkReq"], "Your link request to " . $account["userName"] . " has been denied!");
-				$query = $db->prepare("UPDATE accounts SET discordLinkReq = '0' WHERE accountID = :accountID");
-				$query->execute([':accountID' => $accountID]);
+			if(substr($command, 8 + $prefixLen, 4) == "deny"){
+				include "cmd/discord/deny.php";
 				return true;
 			}
 			if(substr($command, 8 + $prefixLen, 6) == "unlink"){
-				$query = $db->prepare("SELECT discordID, userName FROM accounts WHERE accountID = :accountID");
-				$query->execute([':accountID' => $accountID]);
-				$account = $query->fetch();
-				$gs->sendDiscordPM($account["discordID"], "Your Discord account has been unlinked from " . $account["userName"] . "!");
-				$query = $db->prepare("UPDATE accounts SET discordID = '0' WHERE accountID = :accountID");
-				$query->execute([':accountID' => $accountID]);
+				include "cmd/discord/unlink.php";
 				return true;
 			}
 		}

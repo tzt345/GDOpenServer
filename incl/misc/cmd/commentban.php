@@ -1,5 +1,4 @@
 <?php
-include dirname(__FILE__)."/../../lib/connection.php";
 $commandName = $commentarray[0];
 if (isset($commentarray[1])) {
 	$userName = $commentarray[1];
@@ -59,14 +58,9 @@ $query->execute([':userName' => $userName]);
 if ($query->rowCount() == 0) {
     exit("temp_0_Error: No user found with the name or account ID '$userName'.");
 }
-<<<<<<< HEAD
-$query = $db->prepare("UPDATE users SET isCommentBanned = :type, commentBanTime = :time, commentBanReason = :reason WHERE username LIKE :user");
-$query->execute([':user' => $userName, ':type' => $commentBanType, ':time' => $time, ':reason' => $reason]);
-=======
 $userID = $query->fetchColumn();
 $query = $db->prepare("UPDATE users SET isCommentBanned = :type, commentBanTime = :time, commentBanReason = :reason WHERE userID=:userID");
 $query->execute([':userID' => $userID, ':type' => $commentBanType, ':time' => $time, ':reason' => $reason]);
->>>>>>> 2e74b5a9203ff4b134d945d996fa4e3fc2fcb77f
 $query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES (15, 4, :value, :value2, :timestamp, :id)");
 $query->execute([':value' => $userName, ':value2' => $commentBanType, ':timestamp' => $uploadDate, ':id' => $accountID]);
 if ($time != 0) {

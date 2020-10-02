@@ -1,5 +1,4 @@
 <?php
-include dirname(__FILE__)."/../../lib/connection.php";
 $commandName = $commentarray[0];
 if (isset($commentarray[1])) {
 	$userName = $commentarray[1];

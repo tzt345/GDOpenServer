@@ -1,6 +1,4 @@
 <?php
-include dirname(__FILE__)."/../../lib/connection.php";
-include dirname(__FILE__)."/../../../config/commands.php";
 $commandName = $commentarray[0];
 if (isset($commentarray[1])) {
 	$desc = base64_encode(str_replace($prefix.$commandName." ", "", $comment));

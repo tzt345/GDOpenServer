@@ -1,5 +1,4 @@
 <?php
-include dirname(__FILE__)."/../../lib/connection.php";
 if (isset($commentarray[1]) AND is_numeric($commentarray[1])) {
 	$song = $commentarray[1];
 } else {
