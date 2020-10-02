@@ -35,7 +35,7 @@ if (isset($commentarray[4]) AND is_numeric($commentarray[4])) {
 
 $featureLevel = 0;
 if ($starStars != 0) {
-    $response .= " ".$starStars."*";
+    $response .= ucfirst($commentarray[1])." with $starStars stars";
     $query = $db->prepare("SELECT starStars, starFeatured, isCPShared FROM levels WHERE levelID = :levelID");
     $query->execute([':levelID' => $levelID]);
     $result = $query->fetch();
@@ -87,7 +87,7 @@ if ($starCoins == 1) {
         $query->execute([':levelID' => $levelID]);
         $query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES (3, 1, :levelID, :timestamp, :id)");
         $query->execute([':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
-        $response .= "and has verified coins";
+        $response .= "and verified it's coins";
     }
 }
 exit("temp_0_Level successfully rated to $response.");
