@@ -39,8 +39,10 @@ if (isset($commentarray[2])) {
 			}
 			break;
 	}
+	$commentBanType = 2;
 	if ($time > 0) {
 		$time = time() + $time;
+		$commentBanType = 1;
 	} elseif ($time < 0) {
 		exit("temp_0_Error: Invalid input for argument 'Time'.");
 	}
@@ -52,11 +54,12 @@ if (isset($commentarray[3])) {
 } else {
 	$reason = "No reason specified";
 }
-if ($time == 0) {
-	$commentBanType = 2;
-} else {
-	$commentBanType = 1;
+$query = $db->prepare("SELECT userID FROM users WHERE (extID = :userName OR userName = :userName) AND isRegistered = 1 LIMIT 1");
+$query->execute([':userName' => $userName]);
+if ($query->rowCount() == 0) {
+    exit("temp_0_Error: No user found with the name or account ID '$userName'.");
 }
+$userID = $query->fetchColumn();
 $query = $db->prepare("UPDATE users SET isCommentBanned = :type, commentBanTime = :time, commentBanReason = :reason WHERE userID=:userID");
 $query->execute([':userID' => $userID, ':type' => $commentBanType, ':time' => $time, ':reason' => $reason]);
 $query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES (15, 4, :value, :value2, :timestamp, :id)");
