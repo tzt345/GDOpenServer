@@ -58,7 +58,7 @@ if ($starCoins == 1) {
         $query->execute([':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
         $query = $db->prepare("UPDATE levels SET starCoins=1 WHERE levelID=:levelID");
         $query->execute([':levelID' => $levelID]);
-        $response .= " and verified it's coins";
+        $response .= " and verified its coins";
     }
 }
 exit("temp_0_Level successfully rated to $response.");
