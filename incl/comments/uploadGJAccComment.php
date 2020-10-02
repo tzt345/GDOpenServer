@@ -22,8 +22,7 @@ if($id != "" AND $comment != "" AND $GJPCheck->check($gjp,$id) == 1){
 	if($cmds->doProfileCommands($id, $decodecomment)){
 		exit("-1");
 	}
-	$query = $db->prepare("INSERT INTO acccomments (userName, comment, userID, timeStamp)
-										VALUES (:userName, :comment, :userID, :uploadDate)");
+	$query = $db->prepare("INSERT INTO acccomments (userName, comment, userID, timeStamp) VALUES (:userName, :comment, :userID, :uploadDate)");
 	$query->execute([':userName' => $userName, ':comment' => $comment, ':userID' => $userID, ':uploadDate' => $uploadDate]);
 	echo 1;
 }else{

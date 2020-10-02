@@ -60,7 +60,7 @@ if (isset($commentarray[3])) {
 	$time = 0;
 }
 if (isset($commentarray[4])) {
-	$reason = str_replace($prefix.$commandName.$userName.$banTypeArg.$timeArg." ", "", $comment);;
+	$reason = str_replace($prefix.$commandName.$userName.$banTypeArg.$timeArg." ", "", $comment);
 } else {
 	$reason = "No reason specified";
 }

@@ -52,9 +52,19 @@ if($commentcount == 0){
 $query = $db->prepare($query);
 $query->execute([':levelID' => $levelID]);
 $result = $query->fetchAll();
+function timing ($time) {
+    $time = time() - $time; // to get the time since that moment
+    $time = ($time<1)? 1 : $time;
+    $tokens = array (31536000 => 'year', 2592000 => 'month', 604800 => 'week', 86400 => 'day', 3600 => 'hour', 60 => 'minute', 0 => 'second');
+    foreach ($tokens as $unit => $text) {
+        if ($time < $unit) continue;
+        $numberOfUnits = floor($time / $unit);
+        return $numberOfUnits.' '.$text.(($numberOfUnits>1)?'s':'');
+    }
+}
 foreach($result as &$comment1) {
 	if($comment1["commentID"]!=""){
-		$uploadDate = date("d/m/Y G.i", $comment1["timestamp"]);
+		$uploadDate = timing($comment1["timestamp"]);
 		$actualcomment = $comment1["comment"];
 		if($gameVersion < 20){
 			$actualcomment = base64_decode($actualcomment);
@@ -81,7 +91,7 @@ foreach($result as &$comment1) {
 				if ($colorado == "random") {
 					$colorado = rand(0,255).",".rand(0,255).",".rand(0,255);
 				}
-				$commentstring .= "~11~".$gs->getMaxValuePermission($extID, "modBadgeLevel")."~12~".$gs->getAccountCommentColor($extID).":1~".$user["userName"]."~7~1~9~".$user["icon"]."~10~".$user["color1"]."~11~".$user["color2"]."~14~".$user["iconType"]."~15~".$user["special"]."~16~".$user["extID"];
+				$commentstring .= "~11~".$gs->getMaxValuePermission($extID, "modBadgeLevel")."~12~".$colorado.":1~".$user["userName"]."~7~1~9~".$user["icon"]."~10~".$user["color1"]."~11~".$user["color2"]."~14~".$user["iconType"]."~15~".$user["special"]."~16~".$user["extID"];
 			}
 			$commentstring .= "|";
 		}

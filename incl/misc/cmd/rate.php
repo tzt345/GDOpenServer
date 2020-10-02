@@ -3,7 +3,7 @@ include dirname(__FILE__) . "/../../lib/connection.php";
 if (isset($commentarray[1])) {
     $diffArray = $gs->getDiffFromName($commentarray[1]);
 } else {
-    exit("temp_0_Error: No input given for required argument 'Difficulty'.");
+    exit("temp_0_Error: No input given.");
 }
 $starDifficulty = $diffArray[0];
 $starDemon = $diffArray[1];
@@ -33,9 +33,11 @@ if (isset($commentarray[4]) AND is_numeric($commentarray[4])) {
 } else {
     $starCoins = 0;
 }
-$response = ucfirst($starDifficulty)." ";
+//$response = ucfirst($starDifficulty)." "; -- debugging maybe??
 if ($starStars != 0) {
-    $response .= $starStars."* ";
+    $response .= "$commentarray[1] with $starStars stars";
+} else {
+	$response .= "$commentarray[1] with no stars";
 }
 $query = $db->prepare("UPDATE levels SET starStars=:starStars, starDifficulty=:starDifficulty, starDemon=:starDemon, starAuto=:starAuto WHERE levelID=:levelID");
 $query->execute([':starStars' => $starStars, ':starDifficulty' => $starDifficulty, ':starDemon' => $starDemon, ':starAuto' => $starAuto, ':levelID' => $levelID]);
@@ -56,8 +58,8 @@ if ($starCoins == 1) {
         $query->execute([':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
         $query = $db->prepare("UPDATE levels SET starCoins=1 WHERE levelID=:levelID");
         $query->execute([':levelID' => $levelID]);
-        $response .= "and verified it's coins";
+        $response .= "and has verified coins";
     }
 }
-exit("temp_0_Level successfully rated to a $response.");
+exit("temp_0_Level successfully rated to $response.");
 ?>

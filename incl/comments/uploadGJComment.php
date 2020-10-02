@@ -1,6 +1,6 @@
 <?php
 chdir(dirname(__FILE__));
-error_reporting(E_ALL);
+//error_reporting(E_ALL);
 include "../lib/connection.php";
 require_once "../lib/mainLib.php";
 $mainLib = new mainLib();

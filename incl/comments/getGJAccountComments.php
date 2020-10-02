@@ -21,9 +21,19 @@ if($query->rowCount() == 0){
 $countquery = $db->prepare("SELECT count(*) FROM acccomments WHERE userID = :userID");
 $countquery->execute([':userID' => $userID]);
 $commentcount = $countquery->fetchColumn();
+function timing ($time) {
+	$time = time() - $time; // to get the time since that moment
+	$time = ($time<1)? 1 : $time;
+	$tokens = array (31536000 => 'year', 2592000 => 'month', 604800 => 'week', 86400 => 'day', 3600 => 'hour', 60 => 'minute', 0 => 'second');
+	foreach ($tokens as $unit => $text) {
+		if ($time < $unit) continue;
+		$numberOfUnits = floor($time / $unit);
+		return $numberOfUnits.' '.$text.(($numberOfUnits>1)?'s':'');
+	}
+}
 foreach($result as &$comment1) {
 	if($comment1["commentID"]!=""){
-		$uploadDate = date("d/m/Y G:i", $comment1["timestamp"]);
+		$uploadDate = timing($comment1["timestamp"]);
 		$commentstring .= "2~".$comment1["comment"]."~3~".$comment1["userID"]."~4~".$comment1["likes"]."~5~0~7~".$comment1["isSpam"]."~9~".$uploadDate."~6~".$comment1["commentID"]."|";
 	}
 }

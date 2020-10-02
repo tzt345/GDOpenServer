@@ -58,9 +58,18 @@ if(!is_numeric($levelID)){
 			$query6 = $db->prepare("INSERT INTO actions (type, value, timestamp, value2) VALUES (:type, :itemID, :time, :ip)");
 			$query6->execute([':type' => 7, ':itemID' => $levelID, ':time' => time(), ':ip' => $ip]);
 		}
-		//getting the days since uploaded... or outputting the date in Y-M-D format at least for now...
-		$uploadDate = date("d-m-Y G-i", $result["uploadDate"]);
-		$updateDate = date("d-m-Y G-i", $result["uploadDate"]);
+		function timing ($time) {
+			$time = time() - $time; // to get the time since that moment
+			$time = ($time<1)? 1 : $time;
+			$tokens = array (31536000 => 'year', 2592000 => 'month', 604800 => 'week', 86400 => 'day', 3600 => 'hour', 60 => 'minute', 0 => 'second');
+			foreach ($tokens as $unit => $text) {
+				if ($time < $unit) continue;
+				$numberOfUnits = floor($time / $unit);
+				return $numberOfUnits.' '.$text.(($numberOfUnits>1)?'s':'');
+			}
+		}
+		$uploadDate = timing($result["uploadDate"]);
+		$updateDate = timing($result["uploadDate"]);
 		//password xor
 		$pass = $result["password"];
 		$desc = $result["levelDesc"];
