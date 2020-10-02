@@ -33,11 +33,17 @@ if (isset($commentarray[4]) AND is_numeric($commentarray[4])) {
 } else {
     $starCoins = 0;
 }
+<<<<<<< HEAD
 //$response = ucfirst($starDifficulty)." "; -- debugging maybe??
 if ($starStars != 0) {
     $response .= "$commentarray[1] with $starStars stars";
 } else {
 	$response .= "$commentarray[1] with no stars";
+=======
+$response = ucfirst($starDifficulty);
+if ($starStars != 0) {
+    $response .= " ".$starStars."*";
+>>>>>>> 2e74b5a9203ff4b134d945d996fa4e3fc2fcb77f
 }
 $query = $db->prepare("UPDATE levels SET starStars=:starStars, starDifficulty=:starDifficulty, starDemon=:starDemon, starAuto=:starAuto WHERE levelID=:levelID");
 $query->execute([':starStars' => $starStars, ':starDifficulty' => $starDifficulty, ':starDemon' => $starDemon, ':starAuto' => $starAuto, ':levelID' => $levelID]);
@@ -49,7 +55,7 @@ if ($starFeatured == 1) {
         $query->execute([':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
         $query = $db->prepare("UPDATE levels SET starFeatured=1 WHERE levelID=:levelID");
         $query->execute([':levelID' => $levelID]);
-        $response .= "and featured it";
+        $response .= " and featured it";
     }
 }
 if ($starCoins == 1) {
@@ -58,7 +64,11 @@ if ($starCoins == 1) {
         $query->execute([':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
         $query = $db->prepare("UPDATE levels SET starCoins=1 WHERE levelID=:levelID");
         $query->execute([':levelID' => $levelID]);
+<<<<<<< HEAD
         $response .= "and has verified coins";
+=======
+        $response .= " and verified it's coins";
+>>>>>>> 2e74b5a9203ff4b134d945d996fa4e3fc2fcb77f
     }
 }
 exit("temp_0_Level successfully rated to $response.");
