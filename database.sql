@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.4
+-- version 4.9.5deb2
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Feb 05, 2020 at 01:25 AM
--- Server version: 10.3.17-MariaDB-0+deb10u1
--- PHP Version: 7.3.11-1~deb10u1
+-- Host: localhost:3306
+-- Generation Time: Oct 06, 2020 at 11:55 AM
+-- Server version: 10.3.22-MariaDB-1ubuntu1
+-- PHP Version: 7.4.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `public_cvoltongdps`
+-- Database: `cisuomi`
 --
 
 -- --------------------------------------------------------
@@ -32,7 +32,6 @@ CREATE TABLE `acccomments` (
   `userID` int(11) NOT NULL,
   `userName` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `comment` longtext COLLATE utf8_unicode_ci NOT NULL,
-  `secret` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'unused',
   `commentID` int(11) NOT NULL,
   `timestamp` int(11) NOT NULL,
   `likes` int(11) NOT NULL DEFAULT 0,
@@ -49,7 +48,8 @@ CREATE TABLE `accounts` (
   `userName` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `secret` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'unused',
+  `verifySecret` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `isVerified` int(11) NOT NULL DEFAULT 1,
   `accountID` int(11) NOT NULL,
   `saveData` longtext COLLATE utf8_unicode_ci NOT NULL,
   `isAdmin` int(11) NOT NULL DEFAULT 0,
@@ -68,9 +68,7 @@ CREATE TABLE `accounts` (
   `friendsCount` int(11) NOT NULL DEFAULT 0,
   `saveKey` blob NOT NULL,
   `discordID` bigint(20) NOT NULL DEFAULT 0,
-  `discordLinkReq` bigint(20) NOT NULL DEFAULT 0,
-  `verifySecret` varchar(255) NOT NULL DEFAULT '',
-  `isVerified` int(11) NOT NULL DEFAULT 1
+  `discordLinkReq` bigint(20) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -125,7 +123,6 @@ CREATE TABLE `comments` (
   `userID` int(11) NOT NULL,
   `userName` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `comment` longtext COLLATE utf8_unicode_ci NOT NULL,
-  `secret` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'none',
   `levelID` int(11) NOT NULL,
   `commentID` int(11) NOT NULL,
   `timestamp` int(11) NOT NULL,
@@ -230,7 +227,6 @@ CREATE TABLE `levels` (
   `extraString` mediumtext COLLATE utf8_unicode_ci NOT NULL,
   `levelString` longtext COLLATE utf8_unicode_ci DEFAULT NULL,
   `levelInfo` mediumtext COLLATE utf8_unicode_ci NOT NULL,
-  `secret` mediumtext COLLATE utf8_unicode_ci NOT NULL,
   `starDifficulty` int(11) NOT NULL DEFAULT 0 COMMENT '0=N/A 10=EASY 20=NORMAL 30=HARD 40=HARDER 50=INSANE 50=AUTO 50=DEMON',
   `downloads` int(11) NOT NULL DEFAULT 300,
   `likes` int(11) NOT NULL DEFAULT 100,
@@ -320,7 +316,6 @@ CREATE TABLE `messages` (
   `messageID` int(11) NOT NULL,
   `toAccountID` int(11) NOT NULL,
   `timestamp` int(11) NOT NULL,
-  `secret` varchar(25) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'unused',
   `isNew` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -536,7 +531,6 @@ CREATE TABLE `users` (
   `userCoins` int(11) NOT NULL DEFAULT 0,
   `special` int(11) NOT NULL DEFAULT 0,
   `gameVersion` int(11) NOT NULL DEFAULT 0,
-  `secret` varchar(69) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'none',
   `accIcon` int(11) NOT NULL DEFAULT 0,
   `accShip` int(11) NOT NULL DEFAULT 0,
   `accBall` int(11) NOT NULL DEFAULT 0,
@@ -561,14 +555,14 @@ CREATE TABLE `users` (
   `isLeaderboardBanned` int(11) NOT NULL DEFAULT 0,
   `isCreatorBanned` int(11) NOT NULL DEFAULT 0,
   `isCommentBanned` int(11) NOT NULL DEFAULT 0,
-  `banReason` varchar(255) NULL,
-  `leaderboardBanReason` varchar(255) NULL,
-  `creatorBanReason` varchar(255) NULL,
-  `commentBanReason` varchar(255) NULL,
-  `banTime` int(11) NULL,
-  `leaderboardBanTime` int(11) NULL,
-  `creatorBanTime` int(11) NULL,
-  `commentBanTime` int(11) NULL
+  `banReason` varchar(87) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `leaderboardBanReason` varchar(87) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `creatorBanReason` varchar(87) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `commentBanReason` varchar(91) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `banTime` int(11) DEFAULT NULL,
+  `leaderboardBanTime` int(11) DEFAULT NULL,
+  `creatorBanTime` int(11) DEFAULT NULL,
+  `commentBanTime` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
