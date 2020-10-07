@@ -32,8 +32,8 @@ if ($result["isCPShared"] == 1 AND $dailyWeeklyCPShared == 1) {
 		$query4->execute([':userID' => $share["userID"], ':CPShare' => $CPShare]);
 	}
 } else {
-	$query4 = $db->prepare("UPDATE users SET creatorPoints = creatorPoints + 1 WHERE extID = :extID");
-	$query4->execute([':extID' => $targetExtID]);
+	$query4 = $db->prepare("UPDATE users SET creatorPoints = creatorPoints + :creatorpoints WHERE extID = :extID");
+	$query4->execute([':extID' => $targetExtID, ':creatorpoints' => $rateCP]);
 }
 $query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account, value2, value4) VALUES (5, 1, :levelID, :timestamp, :id, :dailytime, 1)");
 $query->execute([':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID, ':dailytime' => $timestamp]);
