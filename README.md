@@ -6,7 +6,7 @@ Coming with new features, tools, configurations and literally no need of knowled
 There haven't been made lots of tests so far, and it's currently still under heavy development.  
 Most features are **NOT** working, even if there's a config provided. So please don't expect to think everything is working out of the box.  
 I advise you to not use this for a public server until a release will be pushed.
-Currently, tests are done on a Linux server, with MariaDB and PHP 8.0 installed.
+Currently, tests are done on a Linux server, with MariaDB and PHP 7.4 installed.
 
 ### Setup (extremely simplified)
 1. Upload all files to your webserver
@@ -18,7 +18,8 @@ Currently, tests are done on a Linux server, with MariaDB and PHP 8.0 installed.
 ### Credits
 Most said code changes are already credited in https://github.com/Cvolton/GMDprivateServer.  
 Big thanks to Intelligent-Cat and Wyliemaster for helping me working on this project.  
-Additional credits to Alex1304 and DonAlex0 for some code they made that's included in here.
+Additional credits to Alex1304 and DonAlex0 for some code they made that's included in here,  
+also thanks to erfg12 for the Newgrounds-Scraper code.
 
 ### Discord
 If you need support, want to be updated or just want to chat, then you might want to join our Discord. https://discord.gg/PjFXRf5
