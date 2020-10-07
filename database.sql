@@ -48,7 +48,7 @@ CREATE TABLE `accounts` (
   `userName` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `verifySecret` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `verifySecret` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'unused',
   `isVerified` int(11) NOT NULL DEFAULT 1,
   `accountID` int(11) NOT NULL,
   `saveData` longtext COLLATE utf8_unicode_ci NOT NULL,
