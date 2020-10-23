@@ -1,6 +1,7 @@
 ## GDOpenServer
 Basically a "server emulator" for Geometry Dash, except it's rewritten soon.  
-Coming with new features, tools, configurations and literally no need of knowledge on how to use PHPMyAdmin, all documentated and easy to use!
+Coming with new features, tools, configurations and literally no need of knowledge on how to use PHPMyAdmin, all documentated and easy to use!  
+[![CodeFactor](https://www.codefactor.io/repository/github/jecket22/gdopenserver/badge/master)](https://www.codefactor.io/repository/github/jecket22/gdopenserver/overview/master)
 
 # EY, LISTEN UP!
 There haven't been made lots of tests so far, and it's currently still under heavy development.  
