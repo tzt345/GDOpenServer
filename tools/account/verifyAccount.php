@@ -1,7 +1,7 @@
 <?php
 session_start();
 if(isset($_GET["secret"]) AND isset($_GET["ID"])) {
-	if(is_numeric($_GET["secret"]) AND is_numeric($_GET["ID"])) {
+	if(is_numeric($_GET["ID"])) {
 		include "../../incl/lib/connection.php";
 		$query = $db->prepare("SELECT verifySecret FROM accounts WHERE accountID = :acc");
 		$query->execute([':acc' => $_GET["ID"]]);
