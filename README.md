@@ -20,7 +20,7 @@ Currently, tests are done on a Linux server, with MariaDB and PHP 7.4 installed.
 Most said code changes are already credited in https://github.com/Cvolton/GMDprivateServer.  
 Big thanks to Intelligent-Cat and Wyliemaster for helping me working on this project.  
 Additional credits to Alex1304 and DonAlex0 for some code they made that's included in here,  
-also thanks to erfg12 for the Newgrounds-Scraper code.
+also thanks to erfg12 for the Newgrounds-Scraper code and PHPMailer org for the PHPMailer binaries.
 
 ### Discord
 If you need support, want to be updated or just want to chat, then you might want to join our Discord. https://discord.gg/PjFXRf5
