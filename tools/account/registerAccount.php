@@ -71,10 +71,10 @@ if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["pas
 Username: <input type="text" name="username" maxlength=15><br>
 Password: <input type="password" name="password" maxlength=20><br>
 Repeat Password: <input type="password" name="repeatpassword" maxlength=20><br>
-E-Mail: <input type="email" name="email" maxlength=50><br>
+E-Mail: <input type="email" name="email" maxlength=50>
 <?php if ($accountVerification == 2) { ?> (Make sure to enter your real E-Mail!)
 <?php } if ($accountVerification >= 1) { /* practically useless, but since I haven't worked on an auto-expiry system for unverified accounts, this will stay to prevent bots */ ?>
-Verify Captcha: <input name="captcha" type="text"><br>
+<br>Verify Captcha: <input name="captcha" type="text"><br>
 <img src="../../incl/misc/captchaGen.php" /><br><br>
 <?php } ?>
 <input type="submit" value="Register"></form>
