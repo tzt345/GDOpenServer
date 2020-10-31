@@ -44,7 +44,7 @@ if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["pas
 						$query->execute([':userName' => $username, ':password' => $hashpass, ':email' => $email, ':time' => time(), ':secret' => $secret]);
 						$accountID = $db->lastInsertId();
 						sendVerificationMail($email, $secret, $accountID);
-						echo "Account registred. Check your E-Mail (spam) inbox to verify your account. <a href='..'>Go back to the tools page.</a>";
+						echo "Account registred. Check your E-Mail (spam-) inbox to verify your account. <a href='..'>Go back to the tools page.</a>";
 					} else {
 						echo "Captcha verification failed. Please try again.";
 					}
@@ -71,8 +71,8 @@ if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["pas
 Username: <input type="text" name="username" maxlength=15><br>
 Password: <input type="password" name="password" maxlength=20><br>
 Repeat Password: <input type="password" name="repeatpassword" maxlength=20><br>
-<?php if ($accountVerification == 2) { ?>
 E-Mail: <input type="email" name="email" maxlength=50><br>
+<?php if ($accountVerification == 2) { ?> (Make sure to enter your real E-Mail!)
 <?php } if ($accountVerification >= 1) { /* practically useless, but since I haven't worked on an auto-expiry system for unverified accounts, this will stay to prevent bots */ ?>
 Verify Captcha: <input name="captcha" type="text"><br>
 <img src="../../incl/misc/captchaGen.php" /><br><br>
