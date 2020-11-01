@@ -393,7 +393,7 @@ class mainLib {
 		$result = $query->fetch();
 		if ($query->rowCount() > 0) {
 			$query = $db->prepare("UPDATE users SET lastPlayed = :lastPlayed WHERE extID = :id");
-			$query->execute([':id' => $ID]);
+			$query->execute([':id' => $ID, ':lastPlayed' => time()]);
 			$userID = $result["userID"];
 		} else {
 			if ($userName != "Player") {
