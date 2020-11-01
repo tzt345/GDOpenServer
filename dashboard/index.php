@@ -2,14 +2,19 @@
 session_start();
 require "incl/dashboardLib.php";
 $dl = new dashboardLib();
-require "../incl/lib/connection.php";
+include "../incl/lib/connection.php";
 include "../config/metadata.php";
+include "../config/levels.php";
 
 $chartdata = array();
 for($x = 7; $x >= 0;){
 	$timeBefore = time() - (86400 * $x);
 	$timeAfter = time() - (86400 * ($x + 1));
-	$query = $db->prepare("SELECT count(*) FROM levels WHERE uploadDate < :timeBefore AND uploadDate > :timeAfter");
+	if ($showCreatorBannedPeoplesLevels == 1) {
+		$query = $db->prepare("SELECT count(*) FROM levels WHERE uploadDate < :timeBefore AND uploadDate > :timeAfter AND userID != $botUID AND extID != $botAID");
+	} else {
+		$query = $db->prepare("SELECT count(*) FROM levels WHERE uploadDate < :timeBefore AND uploadDate > :timeAfter AND isCreatorBanned = 0 AND userID != $botUID AND extID != $botAID");
+	}
 	$query->execute([':timeBefore' => $timeBefore, ':timeAfter' => $timeAfter]);
 	switch($x){
 		case 1:
@@ -39,7 +44,11 @@ foreach($months as &$month){
 	$nextMonth = $months[$x];
 	$timeBefore = strtotime("first day of $month ".date('Y'));
 	$timeAfter = strtotime("first day of $nextMonth ".$nextMonthYear);
-	$query = $db->prepare("SELECT count(*) FROM levels WHERE uploadDate > :timeBefore AND uploadDate < :timeAfter");
+	if ($showCreatorBannedPeoplesLevels == 1) {
+		$query = $db->prepare("SELECT count(*) FROM levels WHERE uploadDate > :timeBefore AND uploadDate < :timeAfter AND userID != $botUID AND extID != $botAID");
+	} else {
+		$query = $db->prepare("SELECT count(*) FROM levels WHERE uploadDate > :timeBefore AND uploadDate < :timeAfter AND isCreatorBanned = 0 AND userID != $botUID AND extID != $botAID");
+	}
 	$query->execute([':timeBefore' => $timeBefore, ':timeAfter' => $timeAfter]);
 	$amount = $query->fetchColumn();
 	if($amount != 0){

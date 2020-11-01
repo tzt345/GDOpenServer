@@ -26,14 +26,14 @@ if (isset($commentarray[3])) {
 			break;
 		default:
 			try {
-				$time = time() + int($timeArg);
+				$time = $uploadDate + int($timeArg);
 			} catch (Exception $e) {
 				exit("temp_0_Error: Invalid input for argument 'Time'.");
 			}
 			break;
 	}
 	if ($time > 0) {
-		$timeAgo = time() - $time;
+		$timeAgo = $uploadDate - $time;
 	} elseif ($time < 0) {
 		exit("temp_0_Error: Invalid input for argument 'Time'.");
 	}
@@ -50,6 +50,6 @@ $count = $query->fetchColumn();
 $query2 = $db->prepare("UPDATE levels SET likes = likes + :count WHERE levelID = :levelID");
 $query2->execute([':levelID' => $levelID, ':count' => $count]);
 $query3 = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES (19, :levelID, 1, :now, :account)");
-$query3->execute([':levelID' => $levelID, ':timestamp' => $timestamp, ':now' => time(), ':account' => $accountID]);
+$query3->execute([':levelID' => $levelID, ':timestamp' => $timestamp, ':now' => $uploadDate, ':account' => $accountID]);
 exit("temp_0_$count likes from this level have been reverted.");
 ?>

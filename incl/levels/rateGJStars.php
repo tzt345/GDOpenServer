@@ -12,7 +12,7 @@ $levelID = $ep->remove($_POST["levelID"]);
 $accountID = $ep->remove($_POST["accountID"]);
 if($accountID != "" AND $gjp != ""){
 	$GJPCheck = new GJPCheck();
-	$gjpresult = $GJPCheck->check($gjp,$accountID);
+	$gjpresult = $GJPCheck->check($gjp, $accountID);
 	if($gjpresult == 1){
 		$permState = $gs->checkPermission($accountID, "actionRateStars");
 		if($permState){
@@ -22,5 +22,9 @@ if($accountID != "" AND $gjp != ""){
 		}else{
 			echo -1;
 		}
-	}else{echo -1;}
-}else{echo -1;}
+	}else{
+		echo -1;
+	}
+}else{
+	echo -1;
+}

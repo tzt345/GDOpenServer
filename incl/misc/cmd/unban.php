@@ -1,5 +1,4 @@
 <?php
-$commandName = $commentarray[0];
 if (isset($commentarray[1])) {
     $userName = $commentarray[1];
 } else {
@@ -25,21 +24,21 @@ if ($query->rowCount() == 0) {
 $userID = $query->fetchColumn();
 switch ($banType) {
     case 0:
-        $query = $db->prepare("UPDATE users SET isBanned = 0, banTime = NULL, banReason = NULL WHERE userID=:userID");
+        $query = $db->prepare("UPDATE users SET isBanned = 0, banTime = NULL, banReason = NULL WHERE userID = :userID");
         $query->execute([':userID' => $userID]);
         $query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES (15, 1, :value, 0, :timestamp, :id)");
         $query->execute([':value' => $userID, ':timestamp' => $uploadDate, ':id' => $accountID]);
         $banResponse = "unbanned";
         break;
     case 1:
-        $query = $db->prepare("UPDATE users SET isLeaderboardBanned = 0, leaderboardBanTime = NULL, leaderboardBanReason = NULL WHERE userID=:userID");
+        $query = $db->prepare("UPDATE users SET isLeaderboardBanned = 0, leaderboardBanTime = NULL, leaderboardBanReason = NULL WHERE userID = :userID");
         $query->execute([':userID' => $userID]);
         $query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES (15, 2, :value, 0, :timestamp, :id)");
         $query->execute([':value' => $userID, ':timestamp' => $uploadDate, ':id' => $accountID]);
         $banResponse = "leaderboard unbanned";
         break;
     case 2:
-        $query = $db->prepare("UPDATE users SET isCreatorBanned = 0, creatorBanTime = NULL, creatorBanReason = NULL WHERE userID=:userID");
+        $query = $db->prepare("UPDATE users SET isCreatorBanned = 0, creatorBanTime = NULL, creatorBanReason = NULL WHERE userID = :userID");
         $query->execute([':userID' => $userID]);
         $query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES (15, 3, :value, 0, :timestamp, :id)");
         $query->execute([':value' => $userID, ':timestamp' => $uploadDate, ':id' => $accountID]);

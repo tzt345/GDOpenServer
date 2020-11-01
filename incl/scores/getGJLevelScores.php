@@ -3,6 +3,7 @@
 chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
+$GJPCheck = new GJPCheck();
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../lib/mainLib.php";
@@ -24,36 +25,29 @@ if(isset($_POST["s9"])){
 	$coins = 0;
 }
 
-
-
-
-
 //UPDATING SCORE
+$gjpresult = $GJPCheck->check($gjp, $accountID);
+if($gjpresult != 1){
+	exit("-1");
+}
 $userID = $gs->getUserID($accountID);
 $query2 = $db->prepare("SELECT percent FROM levelscores WHERE accountID = :accountID AND levelID = :levelID");
 $query2->execute([':accountID' => $accountID, ':levelID' => $levelID]);
 $oldPercent = $query2->fetchColumn();
 if($query2->rowCount() == 0) {
-	$query = $db->prepare("INSERT INTO levelscores (accountID, levelID, percent, uploadDate, coins, attempts)
-	VALUES (:accountID, :levelID, :percent, :uploadDate, :coins, :attempts)");
+	$query = $db->prepare("INSERT INTO levelscores (accountID, levelID, percent, uploadDate, coins, attempts) VALUES (:accountID, :levelID, :percent, :uploadDate, :coins, :attempts)");
 } else {
 	if($oldPercent <= $percent){
-		$query = $db->prepare("UPDATE levelscores SET percent=:percent, uploadDate=:uploadDate, coins=:coins, attempts=:attempts WHERE accountID=:accountID AND levelID=:levelID");
+		$query = $db->prepare("UPDATE levelscores SET percent = :percent, uploadDate = :uploadDate, coins = :coins, attempts = :attempts WHERE accountID = :accountID AND levelID = :levelID");
 	}else{
-		$query = $db->prepare("SELECT count(*) FROM levelscores WHERE percent=:percent AND uploadDate=:uploadDate AND accountID=:accountID AND levelID=:levelID AND coins = :coins AND attempts = :attempts");
+		$query = $db->prepare("SELECT count(*) FROM levelscores WHERE percent=:percent AND uploadDate = :uploadDate AND accountID = :accountID AND levelID = :levelID AND coins = :coins AND attempts = :attempts");
 	}
 }
-$GJPCheck = new GJPCheck();
-$gjpresult = $GJPCheck->check($gjp,$accountID);
-if($gjpresult == 1){
-	$query->execute([':accountID' => $accountID, ':levelID' => $levelID, ':percent' => $percent, ':uploadDate' => $uploadDate, ':coins' => $coins, ':attempts' => $attempts]);
-	if($percent > 100){
-		$query = $db->prepare("UPDATE users SET isBanned=1 WHERE extID = :accountID");
-		$query->execute([':accountID' => $accountID]);
-	}
+$query->execute([':accountID' => $accountID, ':levelID' => $levelID, ':percent' => $percent, ':uploadDate' => $uploadDate, ':coins' => $coins, ':attempts' => $attempts]);
+if($percent > 100){
+	$query = $db->prepare("UPDATE users SET isBanned = 1 WHERE extID = :accountID");
+	$query->execute([':accountID' => $accountID]);
 }
-
-
 
 //GETTING SCORES
 if(!isset($_POST["type"])){
@@ -81,9 +75,6 @@ switch($type){
 		return -1;
 		break;
 }
-
-
-
 $query2->execute($query2args);
 $result = $query2->fetchAll();
 foreach ($result as &$score) {
@@ -93,7 +84,7 @@ foreach ($result as &$score) {
 	$user = $query2->fetchAll();
 	$user = $user[0];
 	$time = date("d/m/Y G.i", $score["uploadDate"]);
-	if($user["isBanned"]==0){
+	if($user["isBanned"] == 0){
 		if($score["percent"] == 100){
 			$place = 1;
 		}else if($score["percent"] > 75){

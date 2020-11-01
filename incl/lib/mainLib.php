@@ -277,60 +277,59 @@ class mainLib {
 	}
 	public function getGauntletName($id){
 		switch($id){
-		case 1:
-			$gauntletname = "Fire";
-			break;
-		case 2:
-			$gauntletname = "Ice";
-			break;
-		case 3:
-			$gauntletname = "Poison";
-			break;
-		case 4:
-			$gauntletname = "Shadow";
-			break;
-		case 5:
-			$gauntletname = "Lava";
-			break;
-		case 6:
-			$gauntletname = "Bonus";
-			break;
-		case 7:
-			$gauntletname = "Chaos";
-			break;
-		case 8:
-			$gauntletname = "Demon";
-			break;
-		case 9:
-			$gauntletname = "Time";
-			break;
-		case 10:
-			$gauntletname = "Crystal";
-			break;
-		case 11:
-			$gauntletname = "Magic";
-			break;
-		case 12:
-			$gauntletname = "Spike";
-			break;
-		case 13:
-			$gauntletname = "Monster";
-			break;
-		case 14:
-			$gauntletname = "Doom";
-			break;
-		case 15:
-			$gauntletname = "Death";
-			break;
-		default:
-			$gauntletname = "Unknown";
-			break;
+			case 1:
+				$gauntletname = "Fire";
+				break;
+			case 2:
+				$gauntletname = "Ice";
+				break;
+			case 3:
+				$gauntletname = "Poison";
+				break;
+			case 4:
+				$gauntletname = "Shadow";
+				break;
+			case 5:
+				$gauntletname = "Lava";
+				break;
+			case 6:
+				$gauntletname = "Bonus";
+				break;
+			case 7:
+				$gauntletname = "Chaos";
+				break;
+			case 8:
+				$gauntletname = "Demon";
+				break;
+			case 9:
+				$gauntletname = "Time";
+				break;
+			case 10:
+				$gauntletname = "Crystal";
+				break;
+			case 11:
+				$gauntletname = "Magic";
+				break;
+			case 12:
+				$gauntletname = "Spike";
+				break;
+			case 13:
+				$gauntletname = "Monster";
+				break;
+			case 14:
+				$gauntletname = "Doom";
+				break;
+			case 15:
+				$gauntletname = "Death";
+				break;
+			default:
+				$gauntletname = "Unknown";
+				break;
 		}
 		return $gauntletname;
 	}
 
-	function makeTime($delta)
-	{
+	private function makeTime($delta){
 		if ($delta < 31536000)
 		{
 			if ($delta < 2628000)
@@ -347,7 +346,7 @@ class mainLib {
 							}
 							else
 							{
-											$rounded = floor($delta / 60);
+								$rounded = floor($delta / 60);
 								return $rounded." minute".($rounded == 1 ? "" : "s");
 							}
 						}
@@ -382,21 +381,30 @@ class mainLib {
 		}
 	}
 
-	public function getUserID($extID, $userName = "Undefined") {
+	public function getUserID($ID) {
 		include __DIR__ . "/connection.php";
-		if(is_numeric($extID)){
+		if (is_numeric($ID)) {
 			$register = 1;
-		}else{
+		} else {
 			$register = 0;
 		}
 		$query = $db->prepare("SELECT userID FROM users WHERE extID = :id");
-		$query->execute([':id' => $extID]);
+		$query->execute([':id' => $ID]);
+		$result = $query->fetch();
 		if ($query->rowCount() > 0) {
-			$userID = $query->fetchColumn();
+			$query = $db->prepare("UPDATE users SET lastPlayed = :lastPlayed WHERE extID = :id");
+			$query->execute([':id' => $ID]);
+			$userID = $result["userID"];
 		} else {
-			$query = $db->prepare("INSERT INTO users (isRegistered, extID, userName, lastPlayed) VALUES (:register, :id, :userName, :uploadDate)");
-			$query->execute([':id' => $extID, ':register' => $register, ':userName' => $userName, ':uploadDate' => time()]);
-			$userID = $db->lastInsertId();
+			if ($userName != "Player") {
+				$query = $db->prepare("INSERT INTO users (isRegistered, extID, userName, lastPlayed) VALUES (:register, :id, :userName, :lastPlayed)");
+				$query->execute([':id' => $ID, ':register' => $register, ':userName' => $this->getAccountName($ID), ':lastPlayed' => time()]);
+				$userID = $db->lastInsertId();
+			} else {
+				$query = $db->prepare("INSERT INTO users (isRegistered, extID, userName, lastPlayed) VALUES (:register, :id, :userName, :lastPlayed)");
+				$query->execute([':id' => $ID, ':register' => $register, ':userName' => $userName, ':lastPlayed' => time()]);
+				$userID = $db->lastInsertId();
+			}
 		}
 		return $userID;
 	}
@@ -438,8 +446,10 @@ class mainLib {
 		$query = $db->prepare("SELECT extID FROM users WHERE userID = :id");
 		$query->execute([':id' => $userID]);
 		if ($query->rowCount() > 0) {
+			$query2 = $db->prepare("UPDATE users SET lastPlayed = :time WHERE userID = :id");
+			$query2->execute([':time' => time(), ':id' => $userID]);
 			return $query->fetchColumn();
-		}else{
+		} else {
 			return 0;
 		}
 	}
@@ -457,7 +467,7 @@ class mainLib {
 	}
 	public function getSongString($songID){
 		include __DIR__ . "/connection.php";
-		$query3=$db->prepare("SELECT ID,name,authorID,authorName,size,isDisabled,download FROM songs WHERE ID = :songid LIMIT 1");
+		$query3=$db->prepare("SELECT ID, name, authorID, authorName, size, isDisabled, download FROM songs WHERE ID = :songid LIMIT 1");
 		$query3->execute([':songid' => $songID]);
 		if($query3->rowCount() == 0){
 			return false;
@@ -481,7 +491,6 @@ class mainLib {
 		$data = array("recipient_id" => $receiver);																	
 		$data_string = json_encode($data);
 		$url = "https://discordapp.com/api/v6/users/@me/channels";
-		//echo $url;
 		$crl = curl_init($url);
 		$headr = array();
 		$headr['User-Agent'] = 'CvoltonGDPS (http://pi.michaelbrabec.cz:9010, 1.0)';
@@ -515,19 +524,18 @@ class mainLib {
 	}
 	public function getDiscordAcc($discordID){
 		include __DIR__ . "/../../config/discord.php";
-		///getting discord acc info
+		//getting discord acc info
 		$url = "https://discordapp.com/api/v6/users/".$discordID;
 		$crl = curl_init($url);
 		$headr = array();
 		$headr['User-Agent'] = 'CvoltonGDPS (http://pi.michaelbrabec.cz:9010, 1.0)';
 		$headr[] = 'Content-type: application/json';
 		$headr[] = 'Authorization: Bot '.$bottoken;
-		curl_setopt($crl, CURLOPT_HTTPHEADER,$headr);
+		curl_setopt($crl, CURLOPT_HTTPHEADER, $headr);
 		curl_setopt($crl, CURLOPT_RETURNTRANSFER, 1); 
 		$response = curl_exec($crl);
 		curl_close($crl);
 		$userinfo = json_decode($response, true);
-		//var_dump($userinfo);
 		return $userinfo["username"] . "#" . $userinfo["discriminator"];
 	}
 	public function randomString($length = 6) {
@@ -629,7 +637,9 @@ class mainLib {
 	public function getIP(){
 		include __DIR__ . "/../../config/security.php";
 		if ($IPChecking == 0) {
-			if (isset($_POST["accountID"])) {
+			if (isset($_SESSION["accountID"])) {
+				return $_SESSION["accountID"];
+			} elseif (isset($_POST["accountID"])) {
 				return $_POST["accountID"];
 			}
 		}
@@ -798,10 +808,11 @@ class mainLib {
 			$query->execute([':download' => $song]);	
 			$count = $query->fetchColumn();
 			if ($song_reupload != 0) {
+				$timestamp = time();
 				//checking the amount of reuploads
 				if($isSongReuploadLimitDaily == 1) {
 					$query = $db->prepare("SELECT value2 FROM actions WHERE type = 18 AND value = :accountID AND timestamp > :timestamp");
-					$query->execute([':accountID' => $accountID, ':timestamp' => time() - 86400]);
+					$query->execute([':accountID' => $accountID, ':timestamp' => $timestamp - 86400]);
 				} else {
 					$query = $db->prepare("SELECT value2 FROM actions WHERE type = 18 AND value = :accountID");
 					$query->execute([':accountID' => $accountID]);
@@ -809,13 +820,13 @@ class mainLib {
 				
 				if($query->rowCount() == 0) {
 					$query = $db->prepare("INSERT INTO actions (type, value, value2, timestamp) VALUES (18, :accountID, 1, :timestamp)");
-					$query->execute([':accountID' => $accountID, ':timestamp' => time()]);
+					$query->execute([':accountID' => $accountID, ':timestamp' => $timestamp]);
 					$reuploads = 1;
 				} else {
 					$reuploads = $query->fetchColumn();
 					if($isSongReuploadLimitDaily == 1) {
 						$query = $db->prepare("UPDATE actions SET value2 = ".($reuploads + 1)." WHERE type = 18 AND value = :accountID AND timestamp > :timestamp");
-						$query->execute([':accountID' => $accountID, ':timestamp' => time() - 86400]);
+						$query->execute([':accountID' => $accountID, ':timestamp' => $timestamp - 86400]);
 					} else {
 						$query = $db->prepare("UPDATE actions SET value2 = ".($reuploads + 1)." WHERE type = 18 AND value = :accountID");
 						$query->execute([':accountID' => $accountID]);
@@ -824,13 +835,24 @@ class mainLib {
 			} else {
 				$reuploads = -1;
 			}
-			if($count != 0){
+
+			if ($count != 0) {
 				return "-3";
-			}else{
+			} else {
 				if ($reuploads < $song_reupload) {
 					$query = $db->prepare("INSERT INTO songs (name, authorID, authorName, size, download, hash) VALUES (:name, '9', :author, :size, :download, :hash)");
 					$query->execute([':name' => $name, ':download' => $song, ':author' => $author, ':size' => $size, ':hash' => $hash]);
-					return $db->lastInsertId();
+					$response = $db->lastInsertId();
+					if ($response > 999999) {
+						require_once dirname(__FILE__)."/../incl/lib/mainLib.php";
+						$gs = new mainLib();
+						$queryd = $db->prepare("INSERT INTO levels (levelName, gameVersion, binaryVersion, userName, levelDesc, levelVersion, levelLength, audioTrack, auto, password, original, twoPlayer, songID, objects, coins, requestedStars, extraString, levelString, levelInfo, uploadDate, userID, extID, updateDate, unlisted, hostname, isLDM) VALUES (:levelName, 19, 19, :userName, 'QXV0by1HZW5lcmF0ZWQgU29uZyBMZXZlbA==', 1, 0, 0, 0, 0, 0, 0, :songID, 1, 0, 0, '29_29_29_40_29_29_29_29_29_29_29_29_29_29_29_29', '', 0, :uploadDate, :userID, :id, :uploadDate, 1, '127.0.0.1', 0)");
+						$queryd->execute([':levelName' => "Song ID ".$db->lastInsertId(), ':userName' => $gs->getAccountName($botAID), ':songID' => $db->lastInsertId(), ':uploadDate' => time(), ':userID' => $botUID, ':id' => $botAID]);
+						$levelID = $db->lastInsertId();
+						file_put_contents("../../data/levels/$levelID", "H4sIAAAAAAAAC6WQ0Q3CMAxEFwqSz4nbVHx1hg5wA3QFhgfn4K8VRfzci-34Kcq-1V7AZnTCg5UeQUBwQc3GGzgRZsaZICKj09iJBzgU5tcU-F-xHCryjhYuSZy5fyTK3_iI7JsmTjX2y2umE03ZV9RiiRAmoZVX6jyr80ZPbHUZlY-UYAzWNlJTmIBi9yfXQXYGDwIAAA==");
+						$response .= "Level ID for download: $levelID";
+					}
+					return $response;
 				} else {
 					return "-3";
 				}
@@ -851,8 +873,65 @@ class mainLib {
 	}
 	public function suggestLevel($accountID, $levelID, $difficulty, $stars, $feat, $auto, $demon){
 		include __DIR__ . "/connection.php";
-		$query = "INSERT INTO suggest (suggestBy, suggestLevelID, suggestDifficulty, suggestStars, suggestFeatured, suggestAuto, suggestDemon, timestamp) VALUES (:account, :level, :diff, :stars, :feat, :auto, :demon, :timestamp)";
+		$query = "INSERT INTO suggest (suggestBy, suggestLevelId, suggestDifficulty, suggestStars, suggestFeatured, suggestAuto, suggestDemon, timestamp) VALUES (:account, :level, :diff, :stars, :feat, :auto, :demon, :timestamp)";
 		$query = $db->prepare($query);
 		$query->execute([':account' => $accountID, ':level' => $levelID, ':diff' => $difficulty, ':stars' => $stars, ':feat' => $feat, ':auto' => $auto, ':demon' => $demon, ':timestamp' => time()]);
+	}
+	public function checkBan($ID, $type = 1, $isAccountID = 0){
+		include dirname(__FILE__)."/../../config/security.php";
+		include dirname(__FILE__)."/../../config/users.php";
+		if ($isAccountID == 1) {
+			$ID = $this->getUserID($ID);
+		}
+		switch($type) {
+			case 1:
+				$banType = "isBanned";
+				$banTime = "banTime";
+				$banTime = "banReason";
+				break;
+			case 2:
+				$banType = "isLeaderboardBanned";
+				$banTime = "leaderboardBanTime";
+				$banReason = "leaderboardBanReason";
+				break;
+			case 3:
+				$banType = "isCreatorBanned";
+				$banTime = "creatorBanTime";
+				$banReason = "creatorBanTime";
+				break;
+			default:
+				$type = 1; 
+				$banType = "isBanned";
+				$banTime = "banTime";
+				$banReason = "banReason";
+				break;
+		}
+		$query = $db->prepare("SELECT $banType, isVerified FROM users WHERE userID = :ID");
+		$query->execute([':ID' => $ID]);
+		if ($query->rowCount() == 0) {
+			return -1;
+		}
+		$result = $query->fetch();
+		if ($result[$banType] == 1) {
+			if (($result[$banTime] - $uploadDate) <= 0 AND $result[$banTime] != 0) {
+				$banExpired = $db->prepare("UPDATE users SET $banType = 0, $banTime = NULL, $banReason = NULL WHERE userID = :userID");
+				$banExpired->execute([':userID' => $ID]);
+				$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES (15, :type, :value, 0, :timestamp, :id)");
+				$query->execute([':type' => $type, ':value' => $userName, ':timestamp' => $uploadDate, ':id' => $botAID]);
+				return -1;
+			} else {
+				return 1;
+			}
+		} elseif($accountVerification != 0 AND $result["isVerified"] == 0) {
+			return 1;
+		} else {
+			return -1;
+		}
+	}
+	public function checkBotAccount(){
+		
+	}
+	public function checkBotUser(){
+
 	}
 }

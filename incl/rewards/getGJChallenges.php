@@ -2,14 +2,14 @@
 chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require "../lib/XORCipher.php";
+$XORCipher = new XORCipher();
 require "../lib/generateHash.php";
+$generateHash = new generateHash();
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
 $usedids = array();
-$XORCipher = new XORCipher();
-$generateHash = new generateHash();
 $accountID = $ep->remove($_POST["accountID"]);
 $udid = $ep->remove($_POST["udid"]);
 if(is_numeric($udid)){
@@ -21,7 +21,7 @@ if($accountID != 0){
 }else{
 	$userID = $gs->getUserID($udid);
 }
-$chk = $XORCipher->cipher(base64_decode(substr($chk, 5)),19847);
+$chk = $XORCipher->cipher(base64_decode(substr($chk, 5)), 19847);
 //Generating quest IDs
 $from = strtotime('2000-12-17');
 $today = time();
@@ -29,20 +29,18 @@ $difference = $today - $from;
 $questID = floor($difference / 86400);
 $questID = $questID * 3;
 $quest1ID = $questID;
-$quest2ID = $questID+1;
-$quest3ID = $questID+2;
+$quest2ID = $questID + 1;
+$quest3ID = $questID + 2;
 //Time left
 $midnight = strtotime("tomorrow 00:00:00");
 $current = time();
 $timeleft = $midnight - $current;
-$query=$db->prepare("SELECT type,amount,reward,name FROM quests");
+$query  =$db->prepare("SELECT type, amount, reward, name FROM quests");
 $query->execute();
 $result = $query->fetchAll();
-//var_dump($result);
 shuffle($result);
-//var_dump($result);
 //quests
-if (empty($result[0]) || empty($result[1]) || empty($result[2])) {
+if (empty($result[0]) OR empty($result[1]) OR empty($result[2])) {
 	exit("-1");
 }
 $quest1 = $quest1ID.",".$result[0]["type"].",".$result[0]["amount"].",".$result[0]["reward"].",".$result[0]["name"]."";

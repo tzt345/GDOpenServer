@@ -4,7 +4,6 @@
 set_time_limit(0);
 ob_flush();
 flush();
-//error_reporting(0);
 include "../../incl/lib/connection.php";
 $x = 1;
 $query = $db->prepare("SELECT accountID, userName, registerDate FROM accounts");

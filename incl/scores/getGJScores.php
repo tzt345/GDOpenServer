@@ -1,17 +1,12 @@
 <?php
 chdir(dirname(__FILE__));
-//error_reporting(0);
 include "../lib/connection.php";
 require_once "../lib/exploitPatch.php";
+$ep = new exploitPatch();
 require_once "../lib/GJPCheck.php";
+$GJPCheck = new GJPCheck();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
-$ep = new exploitPatch();
-$stars = 0;
-$count = 0;
-$xi = 0;
-$lbstring = "";
-$date = date("d-m");
 $gameVersion = $ep->number($_POST["gameVersion"]);
 if(empty($gameVersion)){
 	$sign = "< 20 AND gameVersion <> 0";
@@ -22,7 +17,6 @@ if ($gameVersion >= 20){
 	if(!empty($_POST["accountID"])){
 		$accountID = $ep->remove($_POST["accountID"]);
 		$gjp = $ep->remove($_POST["gjp"]);
-		$GJPCheck = new GJPCheck(); //gjp check
 		$gjpresult = $GJPCheck->check($gjp, $accountID);
 		if($gjpresult != 1){
 			exit("-1");
@@ -42,6 +36,11 @@ if ($gameVersion >= 20){
 	}
 }
 
+$stars = 0;
+$count = 0;
+$xi = 0;
+$lbstring = "";
+$date = date("d-m");
 $type = $ep->remove($_POST["type"]);
 if($type == "top" OR $type == "creators" OR $type == "relative"){
 	if($type == "top"){
@@ -112,7 +111,7 @@ if($type == "top" OR $type == "creators" OR $type == "relative"){
 		if($date == "01-04"){
 			$lbstring .= "1:sakujes:2:".$user["userID"].":13:999:17:999:6:".$xi.":9:9:10:9:11:8:14:1:15:3:16:".$extid.":3:999:8:99999:4:999:7:".$extid.":46:99999|";
 		}else{
-			$lbstring .= "1:".$user["userName"].":2:".$user["userID"].":13:".$user["coins"].":17:".$user["userCoins"].":6:".$xi.":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":14:".$user["iconType"].":15:".$user["special"].":16:".$extid.":3:".$user["stars"].":8:".round($user["creatorPoints"],0,PHP_ROUND_HALF_DOWN).":4:".$user["demons"].":7:".$extid.":46:".$user["diamonds"]."|";
+			$lbstring .= "1:".$user["userName"].":2:".$user["userID"].":13:".$user["coins"].":17:".$user["userCoins"].":6:".$xi.":9:".$user["icon"].":10:".$user["color1"].":11:".$user["color2"].":14:".$user["iconType"].":15:".$user["special"].":16:".$extid.":3:".$user["stars"].":8:".round($user["creatorPoints"], 0, PHP_ROUND_HALF_DOWN).":4:".$user["demons"].":7:".$extid.":46:".$user["diamonds"]."|";
 		}
 	}
 }

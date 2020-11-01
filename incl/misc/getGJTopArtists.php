@@ -1,14 +1,14 @@
 <?php
 chdir(dirname(__FILE__));
-require "../lib/connection.php";
+include "../lib/connection.php";
+include "../../config/misc.php";
 require "../lib/exploitPatch.php";
-require "../../config/misc.php";
 $ep = new exploitPatch();
 $str = "";
 
 if(isset($_POST["page"]) AND is_numeric($_POST["page"])){
 	$offset = $ep->number($_POST["page"]) . "0";
-	$offset = $offset*2; // ask robtop
+	$offset = $offset * 2; // ask robtop
 }else{
 	exit("-1");
 }
@@ -54,6 +54,6 @@ if($topArtistsRedirectsMainGD == 1) {
 	$str = rtrim($str, "|");
 	$str .= "#$totalCount:$offset:20";
 	// send result
-	echo "$str";
+	echo $str;
 }
 ?>

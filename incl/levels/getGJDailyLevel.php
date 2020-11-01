@@ -1,5 +1,6 @@
 <?php
 chdir(dirname(__FILE__));
+include "../lib/connection.php";
 if(empty($_POST["weekly"]) OR $_POST["weekly"] == 0){
 	$weekly = 0;
 	$midnight = strtotime("tomorrow 00:00:00");
@@ -7,7 +8,6 @@ if(empty($_POST["weekly"]) OR $_POST["weekly"] == 0){
 	$weekly = 1;
 	$midnight = strtotime("next monday");
 }
-include "../lib/connection.php";
 //Getting DailyID
 $current = time();
 $query=$db->prepare("SELECT feaID FROM dailyfeatures WHERE timestamp < :current AND type = :type ORDER BY timestamp DESC LIMIT 1");

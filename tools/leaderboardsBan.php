@@ -1,6 +1,7 @@
 <?php
 include "../incl/lib/connection.php";
 require "../incl/lib/generatePass.php";
+$gp = new generatePass();
 require_once "../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../incl/lib/mainLib.php";
@@ -9,31 +10,29 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 	$userName = $ep->remove($_POST["userName"]);
 	$password = $ep->remove($_POST["password"]);
 	$userID = $ep->remove($_POST["userID"]);
-	$generatePass = new generatePass();
-	$pass = $generatePass->isValidUsrname($userName, $password);
+	$pass = $gp->isValidUsrname($userName, $password);
 	if ($pass == 1) {
-		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName=:userName");	
+		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName = :userName");	
 		$query->execute([':userName' => $userName]);
 		$accountID = $query->fetchColumn();
 		if($gs->checkPermission($accountID, "toolLeaderboardsban")){
 			if(!is_numeric($userID)){
-				exit("Invalid userID");
+				exit("Invalid userID. <a href='leaderboardsBan.php'>Try again.</a>");
 			}
-			$query = $db->prepare("UPDATE users SET isBanned = 1 WHERE userID = :id");
+			$query = $db->prepare("UPDATE users SET isLeaderboardBanned = 1 WHERE userID = :id");
 			$query->execute([':id' => $userID]);
 			if($query->rowCount() != 0){
-				echo "Banned succesfully.";
+				echo "Banned succesfully. <a href='index.php'> Go back to main tools page.</a>";
 			}else{
-				echo "Ban failed.";
+				echo "Ban failed. <a href='leaderboardsBan.php'>Try again.</a>";
 			}
-			$query = $db->prepare("INSERT INTO modactions  (type, value, value2, timestamp, account) 
-													VALUES ('15',:userID, '1',  :timestamp,:account)");
+			$query = $db->prepare("INSERT INTO modactions (type, value, value2, timestamp, account) VALUES (15, :userID, 1,  :timestamp, :account)");
 			$query->execute([':userID' => $userID, ':timestamp' => time(), ':account' => $accountID]);
 		}else{
-			exit("You do not have the permission to do this action. <a href='leaderboardsBan.php'>Try again</a>");
+			exit("You do not have the permission to do this action. <a href='leaderboardsBan.php'>Try again.</a>");
 		}
 	}else{
-		echo "Invalid password or nonexistant account. <a href='leaderboardsBan.php'>Try again</a>";
+		echo "Invalid password or non-existant account. <a href='leaderboardsBan.php'>Try again</a>";
 	}
 }else{
 	echo '<form action="leaderboardsBan.php" method="post">Your Username: <input type="text" name="userName">

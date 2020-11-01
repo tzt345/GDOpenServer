@@ -67,9 +67,9 @@ ob_flush();
 flush();
 //banning ppl
 foreach($result as $user){
-	$query = $db->prepare("UPDATE users SET isBanned = '1' WHERE userID = :id");
+	$query = $db->prepare("UPDATE users SET isBanned = 1 WHERE userID = :id");
 	$query->execute([':id' => $user["userID"]]);
-	echo "Banned ".htmlspecialchars($user["userName"],ENT_QUOTES)." - ".$user["userID"]."<br>";
+	echo "Banned ".htmlspecialchars($user["userName"], ENT_QUOTES)." - ".$user["userID"]."<br>";
 }
 //counting coins
 echo "<h3>User coins based bans</h3>";
@@ -84,9 +84,9 @@ ob_flush();
 flush();
 //banning ppl
 foreach($result as $user){
-	$query = $db->prepare("UPDATE users SET isBanned = '1' WHERE userID = :id");
+	$query = $db->prepare("UPDATE users SET isBanned = 1 WHERE userID = :id");
 	$query->execute([':id' => $user["userID"]]);
-	echo "Banned ".htmlspecialchars($user["userName"],ENT_QUOTES)." - ".$user["userID"]."<br>";
+	echo "Banned ".htmlspecialchars($user["userName"], ENT_QUOTES)." - ".$user["userID"]."<br>";
 }
 $quarter = floor($demons / 16);
 $demons = $demons + 3 + $quarter;
@@ -99,17 +99,19 @@ ob_flush();
 flush();
 //banning ppl
 foreach($result as $user){
-	$query = $db->prepare("UPDATE users SET isBanned = '1' WHERE userID = :id");
+	$query = $db->prepare("UPDATE users SET isBanned = 1 WHERE userID = :id");
 	$query->execute([':id' => $user["userID"]]);
-	echo "Banned ".htmlspecialchars($user["userName"],ENT_QUOTES)." - ".$user["userID"]."<br>";
+	echo "Banned ".htmlspecialchars($user["userName"], ENT_QUOTES)." - ".$user["userID"]."<br>";
 }
 //banips
 $query = $db->prepare("SELECT IP FROM bannedips");
 $query->execute();
 $result = $query->fetchAll();
 foreach($result as &$ip){
-	$query = $db->prepare("UPDATE users SET isBanned = '1' WHERE IP LIKE CONCAT(:ip, '%')");
-	$query->execute([':ip' => $ip["IP"]]);
+	if ($ip != "127.0.0.1") {
+		$query = $db->prepare("UPDATE users SET isBanned = 1 WHERE IP LIKE CONCAT(:ip, '%')");
+		$query->execute([':ip' => $ip["IP"]]);
+	}
 }
 echo "<hr>Auto-ban finished";
 ob_flush();

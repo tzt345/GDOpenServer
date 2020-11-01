@@ -13,7 +13,7 @@ if($query->rowCount() == 0){
 }
 $query = $db->prepare("INSERT INTO dailyfeatures (levelID, timestamp, type) VALUES (:levelID, :uploadDate, 0)");
 $query->execute([':levelID' => $levelID, ':uploadDate' => $timestamp]);
-$query = $db->prepare("SELECT isCPShared FROM levels WHERE levelID=:levelID");
+$query = $db->prepare("SELECT isCPShared FROM levels WHERE levelID = :levelID");
 $query->execute([':levelID' => $levelID]);
 $result = $query->fetch();
 if ($result["isCPShared"] == 1 AND $dailyWeeklyCPShared == 1) {

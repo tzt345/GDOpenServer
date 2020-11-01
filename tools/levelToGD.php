@@ -43,11 +43,10 @@ if(!empty($_POST["userhere"]) AND !empty($_POST["passhere"]) AND !empty($_POST["
 	$query = $db->prepare("SELECT userID FROM users WHERE extID = :ext");
 	$query->execute([':ext' => $accountID]);
 	if($query->fetchColumn() != $userID){ //verifying if lvl owned
-		exit("This level doesn't belong to the account you're trying to reupload from");
+		exit("This level doesn't belong to the account you're trying to reupload from. <a href='levelToGD.php'>Try again.</a>");
 	}
-	$udid = "S" . mt_rand(111111111,999999999) . mt_rand(111111111,999999999) . mt_rand(111111111,999999999) . mt_rand(111111111,999999999) . mt_rand(1,9); //getting accountid
-	$sid = mt_rand(111111111,999999999) . mt_rand(11111111,99999999);
-	//echo $udid;
+	$udid = "S" . mt_rand(111111111, 999999999) . mt_rand(111111111, 999999999) . mt_rand(111111111, 999999999) . mt_rand(111111111, 999999999) . mt_rand(1, 9); //getting accountid
+	$sid = mt_rand(111111111, 999999999) . mt_rand(11111111, 99999999);
 	$post = ['userName' => $usertarg, 'udid' => $udid, 'password' => $passtarg, 'sID' => $sid, 'secret' => 'Wmfv3899gc9'];
 	$ch = curl_init($server . "/accounts/loginGJAccount.php");
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -55,22 +54,22 @@ if(!empty($_POST["userhere"]) AND !empty($_POST["passhere"]) AND !empty($_POST["
 	$result = curl_exec($ch);
 	curl_close($ch);
 	if($result == "" OR $result == "-1" OR $result == "No no no"){
-		if($result==""){
-			echo "An error has occured while connecting to the login server.";
-		}else if($result=="-1"){
-			echo "Login to the target server failed.";
+		if($result == ""){
+			echo "An error has occured while connecting to the login server. <a href='levelToGD.php'>Try again.</a>";
+		}elseif($result == "-1"){
+			echo "Login to the target server failed. <a href='levelToGD.php'>Try again.</a>";
 		}else{
-			echo "RobTop doesn't like you or something...";
+			echo "RobTop doesn't like you or something.... <a href='levelToGD.php'>Try again.</a>";
 		}
 		exit("<br>Error code: $result");
 	}
 	if(!is_numeric($levelID)){ //checking if lvlid is numeric cuz exploits
-		exit("Invalid levelID");
+		exit("Invalid level ID. <a href='levelToGD.php'>Try again.</a>");
 	}
 	$levelString = file_get_contents("../data/levels/$levelID"); //generating seed2
-	$seed2 = base64_encode($xc->cipher($gh->genSeed2noXor($levelString),41274));
-	$accountID = explode(",",$result)[0]; //and finally reuploading
-	$gjp = base64_encode($xc->cipher($passtarg,37526));
+	$seed2 = base64_encode($xc->cipher($gh->genSeed2noXor($levelString), 41274));
+	$accountID = explode(",", $result)[0]; //and finally reuploading
+	$gjp = base64_encode($xc->cipher($passtarg, 37526));
 	$post = ['gameVersion' => $levelInfo["gameVersion"], 
 	'binaryVersion' => $levelInfo["binaryVersion"], 
 	'gdw' => "0", 
@@ -109,9 +108,9 @@ if(!empty($_POST["userhere"]) AND !empty($_POST["passhere"]) AND !empty($_POST["
 	$result = curl_exec($ch);
 	curl_close($ch);
 	if($result == "" OR $result == "-1" OR $result == "No no no"){
-		if($result==""){
+		if($result == ""){
 			echo "An error has occured while connecting to the upload server.";
-		}else if($result=="-1"){
+		}elseif($result == "-1"){
 			echo "Reuploading level failed.";
 		}else{
 			echo "RobTop doesn't like you or something... (upload)";

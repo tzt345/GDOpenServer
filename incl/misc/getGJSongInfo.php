@@ -3,6 +3,8 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
+require_once "../lib/mainLib.php";
+$gs = new mainLib();
 if(empty($_POST["songID"])){
 	exit("-1");
 }
@@ -52,13 +54,13 @@ if($query3->rowCount() == 0) {
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 		$result = curl_exec($ch);
 		curl_close($ch);
-		if(substr_count($result, "1~|~".$songid."~|~2") != 0){
+		if (substr_count($result, "1~|~".$songid."~|~2") != 0) {
 			$result = explode('#',$result)[2];
-		}else{
+		} else {
 			$ch = curl_init(); 
 			curl_setopt($ch, CURLOPT_URL, "https://www.newgrounds.com/audio/listen/".$songid); 
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
-			$songinfo = curl_exec($ch); 
+			$songinfo = curl_exec($ch);
 			curl_close($ch);
 			if(empty(explode('"url":"', $songinfo)[1])){
 				exit("-1");
@@ -70,7 +72,8 @@ if($query3->rowCount() == 0) {
 			if($songurl == ""){
 				exit("-1");
 			}
-			$result = "1~|~".$songid."~|~2~|~".$songname."~|~3~|~1234~|~4~|~".$songauthor."~|~5~|~6.69~|~6~|~~|~10~|~".$songurl."~|~7~|~~|~8~|~1";
+			$size = $gs->getFileSize($songurl);
+			$result = "1~|~".$songid."~|~2~|~".$songname."~|~3~|~1234~|~4~|~".$songauthor."~|~5~|~".$size."~|~6~|~~|~10~|~".$songurl."~|~7~|~~|~8~|~1";
 		}
 	}
 	echo $result;
@@ -80,7 +83,7 @@ if($query3->rowCount() == 0) {
 	$query = $db->prepare("INSERT INTO songs (ID, name, authorID, authorName, size, download) VALUES (:id, :name, :authorID, :authorName, :size, :download)");
 	$query->execute([':id' => $resultarray[1], ':name' => $resultarray[3], ':authorID' => $resultarray[5], ':authorName' => $resultarray[7], ':size' => $resultarray[9], ':download' => $resultarray[13]]);
 	return $db->lastInsertId();
-}else{
+} else {
 	$result4 = $query3->fetch();
 	if($result4["isDisabled"] == 1){
 		exit("-2");

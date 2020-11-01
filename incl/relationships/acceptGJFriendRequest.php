@@ -11,7 +11,7 @@ $accountID = $ep->remove($_POST["accountID"]);
 $gjp = $ep->remove($_POST["gjp"]);
 $requestID = $ep->remove($_POST["requestID"]);
 $GJPCheck = new GJPCheck();
-$gjpresult = $GJPCheck->check($gjp,$accountID);
+$gjpresult = $GJPCheck->check($gjp, $accountID);
 if($gjpresult == 1){
 	// ACCEPTING FOR USER 2
 	$query = $db->prepare("SELECT accountID, toAccountID FROM friendreqs WHERE ID = :requestID");
@@ -22,9 +22,7 @@ if($gjpresult == 1){
 	if($toAccountID != $accountID){
 		exit("-1");
 	}
-	$query = $db->prepare("INSERT INTO friendships (person1, person2, isNew1, isNew2)
-	VALUES (:accountID, :targetAccountID, 1, 1)");
-
+	$query = $db->prepare("INSERT INTO friendships (person1, person2, isNew1, isNew2) VALUES (:accountID, :targetAccountID, 1, 1)");
 	$query->execute([':accountID' => $reqAccountID, ':targetAccountID' => $toAccountID]);
 	//REMOVING THE REQUEST
 	$query = $db->prepare("DELETE from friendreqs WHERE ID=:requestID LIMIT 1");

@@ -15,7 +15,7 @@ $password = $_GET["password"];
 $generatePass = new generatePass();
 $pass = $generatePass->isValidUsrname($userName, $password);
 if ($pass == 1) {
-	$query = $db->prepare("select accountID, saveData from accounts where userName = :userName");
+	$query = $db->prepare("SELECT accountID, saveData FROM accounts WHERE userName = :userName");
 	$query->execute([':userName' => $userName]);
 	$account = $query->fetch();
 	$accountID = $account["accountID"];
@@ -24,7 +24,7 @@ if ($pass == 1) {
 	}
 	if(!file_exists("../data/accounts/$accountID")){
 			$saveData = $account["saveData"];
-		if(substr($saveData,0,4) == "SDRz"){
+		if(substr($saveData, 0, 4) == "SDRz"){
 			$saveData = base64_decode($saveData);
 		}
 	}else{

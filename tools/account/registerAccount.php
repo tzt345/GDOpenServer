@@ -2,15 +2,15 @@
 session_start();
 require "../../config/security.php";
 // here begins the checks
-if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["password"]) AND !empty($_POST["repeatpassword"])){
+if(!empty($_POST["userName"]) AND !empty($_POST["email"]) AND !empty($_POST["password"]) AND !empty($_POST["repeatPassword"])){
 	require "../../incl/lib/connection.php";
 	require "../../incl/lib/exploitPatch.php";
-	$exploit_patch = new exploitPatch();
+	$ep = new exploitPatch();
 	// catching all the input
-	$username = $exploit_patch->remove($_POST["username"]);
+	$userName = $ep->remove($_POST["userName"]);
 	$password = $_POST["password"];
-	$repeat_password = $_POST["repeatpassword"];
-	$email = $exploit_patch->remove($_POST["email"]);
+	$repeatPassword = $_POST["repeatPassword"];
+	$email = $ep->remove($_POST["email"]);
 	if(strlen($username) < 3){
 		echo 'Username should be more than 3 characters.';
 	}elseif(strlen($password) < 6){
@@ -19,17 +19,17 @@ if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["pas
 		// this checks if there is another account with the same username or email as your input
 		$query = $db->prepare("SELECT count(*) FROM accounts WHERE email LIKE :email");
 		$query->execute([':email' => $email]);
-		$registred_emails = $query->fetchColumn();
+		$registeredEmails = $query->fetchColumn();
 		$query = $db->prepare("SELECT count(*) FROM accounts WHERE userName LIKE :userName");
-		$query->execute([':userName' => $username]);
-		$registred_users = $query->fetchColumn();
-		if($registred_emails > 0 AND $accountVerification == 2){
+		$query->execute([':userName' => $userName]);
+		$registredUsers = $query->fetchColumn();
+		if ($accountVerification == 2 AND $registredEmails > 0) {
 			// I am too lazy to put a check if there are more than 1 account with the same mail, shouldn't break anything, hopefully
 			echo 'E-Mail already taken. You should contact the server owner if you belive this is an error.';
-		}elseif($registred_users == 1){
+		} elseif ($registredUsers > 0) {
 			echo 'Username already taken.';
-		}else{
-			if($password != $repeat_password){
+		} else {
+			if ($password != $repeatPassword) {
 				echo 'Passwords do not match.';
 			}else{
 				// hashing your password and registering your account
@@ -37,29 +37,29 @@ if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["pas
 				if ($accountVerification == 2) {
 					if(isset($_POST["captcha"]) AND $_POST["captcha"] != "" AND $_SESSION["code"] == $_POST["captcha"]) {
 						require "../../incl/lib/mainLib.php";
-						require "../../incl/email/sendMail.php";
 						$ss = new mainLib();
+						require "../../incl/email/sendMail.php";
 						$secret = $ss->randomString(16);
 						$query = $db->prepare("INSERT INTO accounts (userName, password, email, saveData, registerDate, saveKey, isVerified, verifySecret) VALUES (:userName, :password, :email, '', :time, '', 0, :secret)");
 						$query->execute([':userName' => $username, ':password' => $hashpass, ':email' => $email, ':time' => time(), ':secret' => $secret]);
 						$accountID = $db->lastInsertId();
 						sendVerificationMail($email, $secret, $accountID);
-						echo "Account registred. Check your E-Mail (spam-) inbox to verify your account. <a href='..'>Go back to the tools page.</a>";
+						echo "Account registred. Check your E-Mail inbox to verify your account (Remember to check your spam emails too). <a href='..'>Go back to the tools page.</a>";
 					} else {
 						echo "Captcha verification failed. Please try again.";
 					}
 				} elseif ($accountVerification == 1) {
 					if(isset($_POST["captcha"]) AND $_POST["captcha"] != "" AND $_SESSION["code"] == $_POST["captcha"]) {
 						$query = $db->prepare("INSERT INTO accounts (userName, password, email, saveData, registerDate, saveKey, isVerified) VALUES (:userName, :password, :email, '', :time, '', 0)");
-						$query->execute([':userName' => $username, ':password' => $hashpass, ':email' => $email, ':time' => time()]);
-						echo "Account registred. No E-Mail verification required, you can login. <a href='..'>Go back to the Tools page.</a>";
+						$query->execute([':userName' => $userName, ':password' => $hashpass, ':email' => $email, ':time' => time()]);
+						echo "Account registred. No E-Mail verification required, you can login. <a href='index.php'>Go back to account management.</a>";
 					} else {
 						echo "Captcha verification failed. Please try again.";
 					}
 				} else {
 					$query = $db->prepare("INSERT INTO accounts (userName, password, email, saveData, registerDate, saveKey) VALUES (:userName, :password, :email, '', :time, '')");
-					$query->execute([':userName' => $username, ':password' => $hashpass, ':email' => $email, ':time' => time()]);
-					echo "Account registred. No E-Mail verification required, you can login. <a href='..'>Go back to the Tools page.</a>";
+					$query->execute([':userName' => $userName, ':password' => $hashpass, ':email' => $email, ':time' => time()]);
+					echo "Account registred. No E-Mail verification required, you can login. <a href='index.php'>Go back to account management.</a>";
 				}
 			}
 		}
@@ -68,12 +68,12 @@ if(!empty($_POST["username"]) AND !empty($_POST["email"]) AND !empty($_POST["pas
 }
 ?>
 <form action="registerAccount.php" method="post">
-Username: <input type="text" name="username" maxlength=15><br>
+Username: <input type="text" name="userName" maxlength=15><br>
 Password: <input type="password" name="password" maxlength=20><br>
-Repeat Password: <input type="password" name="repeatpassword" maxlength=20><br>
-E-Mail: <input type="email" name="email" maxlength=50>
+Repeat Password: <input type="password" name="repeatPassword" maxlength=20><br>
+Email: <input type="email" name="email" maxlength=50>
 <?php if ($accountVerification == 2) { ?> (Make sure to enter your real E-Mail!)
-<?php } if ($accountVerification >= 1) { /* practically useless, but since I haven't worked on an auto-expiry system for unverified accounts, this will stay to prevent bots */ ?>
+<?php } if ($accountVerification >= 1) { /* practically useless, but since I haven't worked on an auto-expiry system for unverified accounts, this will stay to prevent bots */ ?> 
 <br>Verify Captcha: <input name="captcha" type="text"><br>
 <img src="../../incl/misc/captchaGen.php" /><br><br>
 <?php } ?>

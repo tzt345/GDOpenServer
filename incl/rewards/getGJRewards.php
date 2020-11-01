@@ -3,12 +3,13 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 include "../../config/chests.php";
 require "../lib/XORCipher.php";
+$XORCipher = new XORCipher();
 require "../lib/GJPCheck.php";
+$GJPCheck = new GJPCheck();
 require "../lib/generateHash.php";
+$generateHash = new generateHash();
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
-$XORCipher = new XORCipher();
-$generateHash = new generateHash();
 $accountID = $ep->remove($_POST["accountID"]);
 $udid = $ep->remove($_POST["udid"]);
 if(is_numeric($udid)){
@@ -17,7 +18,6 @@ if(is_numeric($udid)){
 $chk = $ep->remove($_POST["chk"]);
 $gjp = $ep->remove($_POST["gjp"]);
 $rewardType = $ep->remove($_POST["rewardType"]);
-$GJPCheck = new GJPCheck();
 $gjpresult = $GJPCheck->check($gjp, $accountID);
 if($gjpresult !== 1 AND $accountID !== 0){
 	exit("-1");

@@ -24,9 +24,9 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 			if(!is_numeric($type) OR !is_numeric($amount) OR !is_numeric($reward) OR $type > 3){
 				exit("Invalid Type/Amount/Reward. <a href='addQuest.php'>Try again.</a>");
 			}
-			$query = $db->prepare("INSERT INTO quests (type, amount, reward, name) VALUES (:type,:amount,:reward,:name)");
+			$query = $db->prepare("INSERT INTO quests (type, amount, reward, name) VALUES (:type, :amount, :reward, :name)");
 			$query->execute([':type' => $type, ':amount' => $amount, ':reward' => $reward, ':name' => $name]);
-			$query = $db->prepare("INSERT INTO modactions (type, value, timestamp, account, value2, value3, value4) VALUES ('17',:value,:timestamp,:account,:amount,:reward,:name)");
+			$query = $db->prepare("INSERT INTO modactions (type, value, timestamp, account, value2, value3, value4) VALUES (17, :value, :timestamp, :account, :amount, :reward, :name)");
 			$query->execute([':value' => $type, ':timestamp' => time(), ':account' => $accountID, ':amount' => $amount, ':reward' => $reward, ':name' => $name]);
 			if($db->lastInsertId() < 3) {
 				exit("Successfully added the quest! It's recommended to <a href='addQuest.php'>add</a> a few more.");
@@ -35,7 +35,7 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 			}
 		}
 	}else{
-		echo "Invalid password or non-existant account. <a href='addQuest.php'>Try again.</a>";
+		echo "Invalid password or non-existent account. <a href='addQuest.php'>Try again.</a>";
 	}
 }else{
 	echo '<form action="addQuest.php" method="post">Username: <input type="text" name="userName">

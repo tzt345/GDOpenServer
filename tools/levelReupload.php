@@ -61,15 +61,15 @@ if(!empty($_POST["levelid"])){
 			var_dump($levelarray);
 		}
 		if($levelarray["a4"] == ""){
-			echo "An error has occured.<br>Error code: ".htmlspecialchars($result,ENT_QUOTES);
+			echo "An error has occured.<br>Error code: ".htmlspecialchars($result, ENT_QUOTES);
 		}
 		$uploadDate = time();
 		//old levelString
 		$levelString = chkarray($levelarray["a4"]);
 		$gameVersion = chkarray($levelarray["a13"]);
 		if(substr($levelString,0,2) == 'eJ'){
-			$levelString = str_replace("_","/",$levelString);
-			$levelString = str_replace("-","+",$levelString);
+			$levelString = str_replace("_", "/", $levelString);
+			$levelString = str_replace("-", "+", $levelString);
 			$levelString = gzuncompress(base64_decode($levelString));
 			if($gameVersion > 18){
 				$gameVersion = 18;
@@ -92,7 +92,7 @@ if(!empty($_POST["levelid"])){
 			$extraString = chkarray($levelarray["a36"]);
 			$starStars = chkarray($levelarray["a18"]);
 			$isLDM = chkarray($levelarray["a40"]);
-			$password = chkarray($xc->cipher(base64_decode($levelarray["a27"]),26364));
+			$password = chkarray($xc->cipher(base64_decode($levelarray["a27"]), 26364));
 			$starCoins = 0;
 			$starDiff = 0;
 			$starDemon = 0;
@@ -109,7 +109,7 @@ if(!empty($_POST["levelid"])){
 			}
 			$targetUserID = chkarray($levelarray["a6"]);
 			//linkacc
-			$query = $db->prepare("SELECT accountID, userID FROM links WHERE targetUserID=:target AND server=:url");
+			$query = $db->prepare("SELECT accountID, userID FROM links WHERE targetUserID = :target AND server = :url");
 			$query->execute([':target' => $targetUserID, ':url' => $parsedurl["host"]]);
 			if($query->rowCount() == 0){
 				if ($level_reupload == 0){
@@ -127,7 +127,7 @@ if(!empty($_POST["levelid"])){
 				//checking the amount of reuploads
 				if($isLevelReuploadLimitDaily == 1) {
 					$query = $db->prepare("SELECT value2 FROM actions WHERE type = 17 AND value = :accountID AND timestamp > :timestamp");
-					$query->execute([':accountID' => $extID, ':timestamp' => time() - 86400]);
+					$query->execute([':accountID' => $extID, ':timestamp' => $uploadDate - 86400]);
 				} else {
 					$query = $db->prepare("SELECT value2 FROM actions WHERE type = 17 AND value = :accountID");
 					$query->execute([':accountID' => $extID]);
@@ -135,13 +135,13 @@ if(!empty($_POST["levelid"])){
 				
 				if($query->rowCount() == 0) {
 					$query = $db->prepare("INSERT INTO actions (type, value, value2, timestamp) VALUES (17, :accountID, 1, :timestamp)");
-					$query->execute([':accountID' => $extID, ':timestamp' => time()]);
+					$query->execute([':accountID' => $extID, ':timestamp' => $uploadDate]);
 					$reuploads = 1;
 				} else {
 					$reuploads = $query->fetchColumn();
 					if($isLevelReuploadLimitDaily == 1) {
 						$query = $db->prepare("UPDATE actions SET value2 = ".($reuploads + 1)." WHERE type = 17 AND value = :accountID AND timestamp > :timestamp");
-						$query->execute([':accountID' => $extID, ':timestamp' => time() - 86400]);
+						$query->execute([':accountID' => $extID, ':timestamp' => $uploadDate - 86400]);
 					} else {
 						$query = $db->prepare("UPDATE actions SET value2 = ".($reuploads + 1)." WHERE type = 17 AND value = :accountID");
 						$query->execute([':accountID' => $extID]);
@@ -153,8 +153,8 @@ if(!empty($_POST["levelid"])){
 			
 			if ($reuploads < $level_reupload) {
 				//query
-				$query = $db->prepare("INSERT INTO levels (levelName, gameVersion, binaryVersion, userName, levelDesc, levelVersion, levelLength, audioTrack, auto, password, original, twoPlayer, songID, objects, coins, requestedStars, extraString, levelString, levelInfo, uploadDate, updateDate, originalReup, userID, extID, unlisted, hostname, starStars, starCoins, starDifficulty, starDemon, starAuto, isLDM) VALUES (:name ,:gameVersion, '27', 'Reupload', :desc, :version, :length, :audiotrack, '0', :password, :originalReup, :twoPlayer, :songID, '0', :coins, :reqstar, :extraString, :levelString, '0', '$uploadDate', '$uploadDate', :originalReup, :userID, :extID, '0', :hostname, :starStars, :starCoins, :starDifficulty, :starDemon, :starAuto, :isLDM)");
-				$query->execute([':password' => $password, ':starDemon' => $starDemon, ':starAuto' => $starAuto, ':gameVersion' => $gameVersion, ':name' => $levelarray["a2"], ':desc' => $levelarray["a3"], ':version' => $levelarray["a5"], ':length' => $levelarray["a15"], ':audiotrack' => $levelarray["a12"], ':twoPlayer' => $twoPlayer, ':songID' => $songID, ':coins' => $coins, ':reqstar' => $reqstar, ':extraString' => $extraString, ':levelString' => "", ':originalReup' => $levelarray["a1"], ':hostname' => $hostname, ':starStars' => $starStars, ':starCoins' => $starCoins, ':starDifficulty' => $starDiff, ':userID' => $userID, ':extID' => $extID, ':isLDM' => $isLDM]);
+				$query = $db->prepare("INSERT INTO levels (levelName, gameVersion, binaryVersion, userName, levelDesc, levelVersion, levelLength, audioTrack, auto, password, original, twoPlayer, songID, objects, coins, requestedStars, extraString, levelString, levelInfo, uploadDate, updateDate, originalReup, userID, extID, unlisted, hostname, starStars, starCoins, starDifficulty, starDemon, starAuto, isLDM) VALUES (:name, :gameVersion, 27, 'Reupload', :desc, :version, :length, :audiotrack, 0, :password, :originalReup, :twoPlayer, :songID, 0, :coins, :reqstar, :extraString, :levelString, 0, :uploadDate, :uploadDate, :originalReup, :userID, :extID, 0, :hostname, :starStars, :starCoins, :starDifficulty, :starDemon, :starAuto, :isLDM)");
+				$query->execute([':password' => $password, ':starDemon' => $starDemon, ':starAuto' => $starAuto, ':gameVersion' => $gameVersion, ':name' => $levelarray["a2"], ':desc' => $levelarray["a3"], ':version' => $levelarray["a5"], ':length' => $levelarray["a15"], ':audiotrack' => $levelarray["a12"], ':twoPlayer' => $twoPlayer, ':songID' => $songID, ':coins' => $coins, ':reqstar' => $reqstar, ':extraString' => $extraString, ':levelString' => "", ':uploadDate' => $uploadDate, ':originalReup' => $levelarray["a1"], ':hostname' => $hostname, ':starStars' => $starStars, ':starCoins' => $starCoins, ':starDifficulty' => $starDiff, ':userID' => $userID, ':extID' => $extID, ':isLDM' => $isLDM]);
 				$levelID = $db->lastInsertId();
 				file_put_contents("../data/levels/$levelID", $levelString);
 				echo "Level reuploaded, ID: $levelID<br><hr><br>";

@@ -1,7 +1,6 @@
 <?php
 chdir(dirname(__FILE__));
 include "../lib/connection.php";
-require "../lib/XORCipher.php";
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../lib/mainLib.php";
@@ -44,23 +43,23 @@ if(!is_numeric($levelID)){
 			$daily = 0;
 	}
 	//downloading the level
-	$query=$db->prepare("SELECT * FROM levels WHERE levelID = :levelID");
+	$query = $db->prepare("SELECT * FROM levels WHERE levelID = :levelID");
 	$query->execute([':levelID' => $levelID]);
 	$lvls = $query->rowCount();
 	if($lvls != 0){
 		$result = $query->fetch();
 		//adding the download
-		$query6 = $db->prepare("SELECT count(*) FROM actions WHERE type=:type AND value=:itemID AND value2=:ip");
-		$query6->execute([':type' => 7, ':itemID' => $levelID, ':ip' => $ip]);
+		$query6 = $db->prepare("SELECT count(*) FROM actions WHERE type = 7 AND value = :itemID AND value2 = :ip");
+		$query6->execute([':itemID' => $levelID, ':ip' => $ip]);
 		if($query6->fetchColumn() < 2){
 			$query2 = $db->prepare("UPDATE levels SET downloads = downloads + 1 WHERE levelID = :levelID");
 			$query2->execute([':levelID' => $levelID]);
-			$query6 = $db->prepare("INSERT INTO actions (type, value, timestamp, value2) VALUES (:type, :itemID, :time, :ip)");
-			$query6->execute([':type' => 7, ':itemID' => $levelID, ':time' => time(), ':ip' => $ip]);
+			$query6 = $db->prepare("INSERT INTO actions (type, value, timestamp, value2) VALUES (7, :itemID, :time, :ip)");
+			$query6->execute([':itemID' => $levelID, ':time' => time(), ':ip' => $ip]);
 		}
 		function timing ($time) {
 			$time = time() - $time; // to get the time since that moment
-			$time = ($time<1)? 1 : $time;
+			$time = ($time < 1) ? 1 : $time;
 			$tokens = array (31536000 => 'year', 2592000 => 'month', 604800 => 'week', 86400 => 'day', 3600 => 'hour', 60 => 'minute', 0 => 'second');
 			foreach ($tokens as $unit => $text) {
 				if ($time < $unit) continue;
@@ -69,18 +68,18 @@ if(!is_numeric($levelID)){
 			}
 		}
 		$uploadDate = timing($result["uploadDate"]);
-		$updateDate = timing($result["uploadDate"]);
+		$updateDate = $uploadDate;
 		//password xor
 		$pass = $result["password"];
 		$desc = $result["levelDesc"];
 		if($gs->checkModIPPermission("actionFreeCopy") == 1){
-			$pass = "1";
+			$xorPass = "1";
 		}
-		$xorPass = $pass;
 		if($gameVersion > 19){
-			$xor = new XORCipher();
 			if($pass != 0){
-				$xorPass = base64_encode($xor->cipher($pass, 26364));
+				require "../lib/XORCipher.php";
+				$xor = new XORCipher();
+				$xorPass = base64_encode($xor->cipher($xorPass, 26364));
 			}
 		}else{
 			$desc = $ep->remove(base64_decode($desc));

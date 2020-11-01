@@ -1,6 +1,7 @@
 <?php
 include "../../incl/lib/connection.php";
 require "../../incl/lib/generatePass.php";
+$generatePass = new generatePass();
 require_once "../../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../../incl/lib/mainLib.php";
@@ -8,22 +9,21 @@ $gs = new mainLib();
 if(!empty($_POST["userName"]) AND !empty($_POST["password"])){
 	$userName = $ep->remove($_POST["userName"]);
 	$password = $ep->remove($_POST["password"]);
-	$generatePass = new generatePass();
 	$pass = $generatePass->isValidUsrname($userName, $password);
 	if ($pass == 1) {
-		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName=:userName");	
+		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName = :userName");	
 		$query->execute([':userName' => $userName]);
 		$accountID = $query->fetchColumn();
 		if($query->rowCount() == 0){
 			echo "Invalid account/password. <a href='suggestList.php'>Try again.</a>";
 		}else if($gs->checkPermission($accountID, "toolSuggestlist")){
 			$accountID = $query->fetchColumn();
-			$query = $db->prepare("SELECT suggestBy,suggestLevelId,suggestDifficulty,suggestStars,suggestFeatured,suggestAuto,suggestDemon,timestamp FROM suggest ORDER BY timestamp DESC");
+			$query = $db->prepare("SELECT suggestBy, suggestLevelId, suggestDifficulty, suggestStars, suggestFeatured, suggestAuto, suggestDemon, timestamp FROM suggest ORDER BY timestamp DESC");
 			$query->execute();
 			$result = $query->fetchAll();
 			echo '<table border="1"><tr><th>Time</th><th>Suggested by</th><th>Level ID</th><th>Difficulty</th><th>Stars</th><th>Featured</th></tr>';
 			foreach($result as &$sugg){
-				echo "<tr><td>".date("d/m/Y G:i", $sugg["timestamp"])."</td><td>".$gs->getAccountName($sugg["suggestBy"])."(".$sugg["suggestBy"].")</td><td>".htmlspecialchars($sugg["suggestLevelId"],ENT_QUOTES)."</td><td>".htmlspecialchars($gs->getDifficulty($sugg["suggestDifficulty"],$sugg["suggestAuto"],$sugg["suggestDemon"]), ENT_QUOTES)."</td><td>".htmlspecialchars($sugg["suggestStars"],ENT_QUOTES)."</td><td>".htmlspecialchars($sugg["suggestFeatured"],ENT_QUOTES)."</td></tr>";
+				echo "<tr><td>".date("d/m/Y G:i", $sugg["timestamp"])."</td><td>".$gs->getAccountName($sugg["suggestBy"])."(".$sugg["suggestBy"].")</td><td>".htmlspecialchars($sugg["suggestLevelId"], ENT_QUOTES)."</td><td>".htmlspecialchars($gs->getDifficulty($sugg["suggestDifficulty"], $sugg["suggestAuto"], $sugg["suggestDemon"]), ENT_QUOTES)."</td><td>".htmlspecialchars($sugg["suggestStars"], ENT_QUOTES)."</td><td>".htmlspecialchars($sugg["suggestFeatured"], ENT_QUOTES)."</td></tr>";
 			}
 			echo "</table>";
 		}else{

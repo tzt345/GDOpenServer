@@ -9,7 +9,7 @@ $gs = new mainLib();
 	generating modtable
 */
 $modtable = "";
-$accounts = implode(",",$gs->getAccountsWithPermission("toolModactions"));
+$accounts = implode(",", $gs->getAccountsWithPermission("toolModactions"));
 if($accounts == ""){
 	$dl->printBox(sprintf($dl->getLocalizedString("errorNoAccWithPerm"), "toolsModactions"));
 	exit();
@@ -26,7 +26,7 @@ foreach($result as &$mod){
 	$query = $db->prepare("SELECT count(*) FROM modactions WHERE account = :id");
 	$query->execute([':id' => $mod["accountID"]]);
 	$actionscount = $query->fetchColumn();
-	$query = $db->prepare("SELECT count(*) FROM modactions WHERE account = :id AND type = '1'");
+	$query = $db->prepare("SELECT count(*) FROM modactions WHERE account = :id AND type = 1");
 	$query->execute([':id' => $mod["accountID"]]);
 	$lvlcount = $query->fetchColumn();
 	$modtable .= "<tr><th scope='row'>".$row."</th><td>".$mod["userName"]."</td><td>".$actionscount."</td><td>".$lvlcount."</td><td>".$time."</td></tr>";

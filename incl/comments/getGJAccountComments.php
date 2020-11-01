@@ -28,7 +28,7 @@ function timing ($time) {
 	foreach ($tokens as $unit => $text) {
 		if ($time < $unit) continue;
 		$numberOfUnits = floor($time / $unit);
-		return $numberOfUnits.' '.$text.(($numberOfUnits>1)?'s':'');
+		return $numberOfUnits.' '.$text.(($numberOfUnits > 1) ? 's' : '');
 	}
 }
 foreach($result as &$comment1) {

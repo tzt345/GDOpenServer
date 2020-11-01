@@ -1,5 +1,4 @@
 <?php
-$commandName = $commentarray[0];
 if (isset($commentarray[1])) {
 	$userName = $commentarray[1];
 } else {
@@ -32,7 +31,7 @@ if (isset($commentarray[2])) {
 			break;
 		default:
 			try {
-				$time = time() + int($timeArg);
+				$time = $uploadDate + int($timeArg);
 			} catch (Exception $e) {
 				exit("temp_0_Error: Invalid input for the duration of the ban.");
 			}
@@ -40,7 +39,7 @@ if (isset($commentarray[2])) {
 	}
 	$commentBanType = 2;
 	if ($time > 0) {
-		$time = time() + $time;
+		$time = $uploadDate + $time;
 		$commentBanType = 1;
 	} elseif ($time < 0) {
 		exit("temp_0_Error: Invalid input for the duration of the ban.");
@@ -49,7 +48,7 @@ if (isset($commentarray[2])) {
 	$time = 0;
 }
 if (isset($commentarray[3])) {
-	$reason = str_replace($prefix.$commandName.$userName.$banTypeArg.$timeArg." ", "", $comment);
+	$reason = str_replace($prefix.$commentarray[0].$userName.$banTypeArg.$timeArg." ", "", $comment);
 } else {
 	$reason = "No reason specified";
 }
@@ -59,7 +58,7 @@ if ($query->rowCount() == 0) {
     exit("temp_0_Error: No user found with the name or account ID '$userName'.");
 }
 $userID = $query->fetchColumn();
-$query = $db->prepare("UPDATE users SET isCommentBanned = :type, commentBanTime = :time, commentBanReason = :reason WHERE userID=:userID");
+$query = $db->prepare("UPDATE users SET isCommentBanned = :type, commentBanTime = :time, commentBanReason = :reason WHERE userID = :userID");
 $query->execute([':userID' => $userID, ':type' => $commentBanType, ':time' => $time, ':reason' => $reason]);
 $query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES (15, 4, :value, :value2, :timestamp, :id)");
 $query->execute([':value' => $userName, ':value2' => $commentBanType, ':timestamp' => $uploadDate, ':id' => $accountID]);

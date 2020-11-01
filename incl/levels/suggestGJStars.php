@@ -12,26 +12,26 @@ $stars = $ep->remove($_POST["stars"]);
 $feature = $ep->remove($_POST["feature"]);
 $levelID = $ep->remove($_POST["levelID"]);
 $accountID = $ep->remove($_POST["accountID"]);
-if($accountID != "" AND $gjp != ""){
+if ($accountID != "" AND $gjp != "") {
 	$GJPCheck = new GJPCheck();
-	$gjpresult = $GJPCheck->check($gjp,$accountID);
-	if($gjpresult == 1){
+	$gjpresult = $GJPCheck->check($gjp, $accountID);
+	if ($gjpresult == 1) {
 		$difficulty = $gs->getDiffFromStars($stars);
-		if($gs->checkPermission($accountID, "actionRateStars")){
+		if ($gs->checkPermission($accountID, "actionRateStars")) {
 			$gs->rateLevel($accountID, $levelID, $stars, $difficulty["diff"], $difficulty["auto"], $difficulty["demon"]);
 			$gs->featureLevel($accountID, $levelID, $feature);
 			$gs->verifyCoinsLevel($accountID, $levelID, 1);
 			echo 1;
-		}else if($gs->checkPermission($accountID, "actionSuggestRating")){
+		} elseif ($gs->checkPermission($accountID, "actionSuggestRating")) {
 			$gs->suggestLevel($accountID, $levelID, $difficulty["diff"], $stars, $feature, $difficulty["auto"], $difficulty["demon"]);
 			echo 1;
-		}else{
+		} else {
 			echo -2;
 		}
-	}else{
+	} else {
 		echo -2;
 	}
-}else{
+} else {
 	echo -2;
 }
 ?>

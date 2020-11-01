@@ -4,11 +4,11 @@ chdir(dirname(__FILE__));
 include "../lib/connection.php";
 include "../../config/levels.php";
 require_once "../lib/GJPCheck.php";
+$GJPCheck = new GJPCheck();
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
-$GJPCheck = new GJPCheck();
 require "../lib/generateHash.php";
 $hash = new generateHash();
 
@@ -77,14 +77,14 @@ if(!empty($_POST["onlyCompleted"]) AND $_POST["onlyCompleted"] == 1){
 if(!empty($_POST["song"])){
 	if(empty($_POST["customSong"])){
 		$song = $ep->number($_POST["song"]);
-		$song = $song -1;
+		$song = $song - 1;
 		$params[] = "audioTrack = '$song' AND songID = 0";
 	}else{
 		$song = $ep->number($_POST["song"]);
 		$params[] = "songID = '$song'";
 	}
 }
-if(!empty($_POST["twoPlayer"]) AND $_POST["twoPlayer"]==1){
+if(!empty($_POST["twoPlayer"]) AND $_POST["twoPlayer"] == 1){
 	$params[] = "twoPlayer = 1";
 }
 if(!empty($_POST["star"])){
@@ -101,7 +101,7 @@ if(!empty($_POST["gauntlet"])){
 	$actualgauntlet = $query->fetch();
 	$str = $actualgauntlet["level1"].",".$actualgauntlet["level2"].",".$actualgauntlet["level3"].",".$actualgauntlet["level4"].",".$actualgauntlet["level5"];
 	$params[] = "levelID IN ($str)";
-	$type = -1;
+	$type = - 1;
 }
 if(!empty($_POST["len"])){
 	$len = $ep->numbercolon($_POST["len"]);
@@ -182,7 +182,7 @@ if($type == 2){
 	$order = "likes";
 }
 if($type == 3){ //TRENDING
-	$uploadDate = time() - (7 * 24 * 60 * 60);
+	$uploadDate = time() - 604800;
 	$params[] = "uploadDate > $uploadDate ";
 	$order = "likes";
 }
@@ -191,7 +191,7 @@ if($type == 5){
 }
 if($type == 6 OR $type == 17){ //featured
 	$params[] = "NOT starFeatured = 0";
-	$order = "rateDate DESC,uploadDate";
+	$order = "rateDate DESC, uploadDate";
 }
 if($type == 16){ //HALL OF FAME
 	if ($epicInHall == 1) {
@@ -199,7 +199,7 @@ if($type == 16){ //HALL OF FAME
 	} else {
 		$params[] = "NOT starHall = 0";
 	}
-	$order = "rateDate DESC,uploadDate";
+	$order = "rateDate DESC, uploadDate";
 }
 if($type == 7){ //MAGIC
 	if ($isMagicSectionManual == 1) {
@@ -268,7 +268,7 @@ foreach($result as &$level1) {
 			$lvlstring .= "44:$gauntlet:";
 		}
 		$lvlstring .= "1:".$level1["levelID"].":2:".$level1["levelName"].":5:".$level1["levelVersion"].":6:".$level1["userID"].":8:10:9:".$level1["starDifficulty"].":10:".$level1["downloads"].":12:".$level1["audioTrack"].":13:".$level1["gameVersion"].":14:".$level1["likes"].":17:".$level1["starDemon"].":43:".$level1["starDemonDiff"].":25:".$level1["starAuto"].":18:".$level1["starStars"].":19:".$level1["starFeatured"].":42:".$level1["starEpic"].":45:".$level1["objects"].":3:".$level1["levelDesc"].":15:".$level1["levelLength"].":30:".$level1["original"].":31:0:37:".$level1["coins"].":38:".$level1["starCoins"].":39:".$level1["requestedStars"].":46:1:47:2:40:".$level1["isLDM"].":35:".$level1["songID"]."|";
-		if($level1["songID"] != 0){
+		if($level1["songID"] != 0 AND $gameVersion > 18){
 			$song = $gs->getSongString($level1["songID"]);
 			if($song){
 				$songsstring .= $gs->getSongString($level1["songID"]) . "~:~";
@@ -285,7 +285,6 @@ echo $lvlstring."#".$userstring;
 if($gameVersion > 18){
 	echo "#".$songsstring;
 }
-echo "#".$totallvlcount.":".$offset.":10";
-echo "#";
+echo "#".$totallvlcount.":".$offset.":10#";
 echo $hash->genMulti($lvlsmultistring);
 ?>

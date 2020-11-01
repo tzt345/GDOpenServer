@@ -1,5 +1,4 @@
 <?php
-//error_reporting(0);
 include "../../incl/lib/connection.php";
 require_once "../../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
@@ -47,7 +46,7 @@ if($type =="stars" OR $type == "diamonds" OR $type == "usrcoins" OR $type == "co
 		case "friends":
 			$thing = "friendsCount";
 	}
-	$query = "SELECT $thing , userName, extID FROM users WHERE isBanned = '0' ORDER BY $thing DESC LIMIT 10 OFFSET $page";
+	$query = "SELECT $thing, userName, extID FROM users WHERE isBanned = 0 ORDER BY $thing DESC LIMIT 10 OFFSET $page";
 	if($type == "friends"){
 		$query = "SELECT userName, friendsCount, accountID FROM accounts ORDER BY friendsCount DESC LIMIT 10 OFFSET $page";
 	}

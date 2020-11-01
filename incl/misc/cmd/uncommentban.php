@@ -10,9 +10,8 @@ $query->execute([':userName' => $userName]);
 if ($query->rowCount() == 0) {
     exit("temp_0_Error: No user found with the name or account ID '$userName'.");
 }
-$time = time();
 $userID = $query->fetchColumn();
-$query = $db->prepare("UPDATE users SET isCommentBanned = 0, commentBanTime = NULL, commentBanReason = NULL WHERE userID=:userID");
+$query = $db->prepare("UPDATE users SET isCommentBanned = 0, commentBanTime = NULL, commentBanReason = NULL WHERE userID = :userID");
 $query->execute([':userID' => $userID]);
 $query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES (15, 4, :value, 0, :timestamp, :id)");
 $query->execute([':value' => $userID, ':timestamp' => $uploadDate, ':id' => $accountID]);

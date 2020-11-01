@@ -10,7 +10,7 @@ $gjp = $ep->remove($_POST["gjp"]);
 $accountID = $ep->remove($_POST["accountID"]);
 if($accountID != "" AND $gjp != ""){
 	$GJPCheck = new GJPCheck();
-	$gjpresult = $GJPCheck->check($gjp,$accountID);
+	$gjpresult = $GJPCheck->check($gjp, $accountID);
 	if($gjpresult == 1){
 		if ($gs->getMaxValuePermission($accountID,"actionRequestMod") == 1) { // checks if they have mod
 		$permState = $gs->getMaxValuePermission($accountID,"modBadgeLevel"); // checks mod badge level so it knows what to show					   

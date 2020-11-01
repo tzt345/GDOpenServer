@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `cisuomi`
+-- Database: `gdopenserver`
 --
 
 -- --------------------------------------------------------
@@ -48,7 +48,7 @@ CREATE TABLE `accounts` (
   `userName` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `verifySecret` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'unused',
+  `verifySecret` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `isVerified` int(11) NOT NULL DEFAULT 1,
   `accountID` int(11) NOT NULL,
   `saveData` longtext COLLATE utf8_unicode_ci NOT NULL,
@@ -501,7 +501,7 @@ CREATE TABLE `suggest` (
   `ID` int(11) NOT NULL,
   `suggestBy` int(11) NOT NULL DEFAULT 0,
   `suggestLevelId` int(11) NOT NULL DEFAULT 0,
-  `suggestDifficulty` int(11) NOT NULL DEFAULT 0 COMMENT '0 - NA 10 - Easy 20 - Normal 30 - Hard 40 - Harder 50 - Insane/Demon/Auto',
+  `suggestDifficulty` int(11) NOT NULL DEFAULT 0 COMMENT '0 - NA, 10 - Easy, 20 - Normal, 30 - Hard, 40 - Harder, 50 - Insane/Demon/Auto',
   `suggestStars` int(11) NOT NULL DEFAULT 0,
   `suggestFeatured` int(11) NOT NULL DEFAULT 0,
   `suggestAuto` int(11) NOT NULL DEFAULT 0,

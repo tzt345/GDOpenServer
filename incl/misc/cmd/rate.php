@@ -39,7 +39,7 @@ if ($starStars != 0) {
     $query = $db->prepare("SELECT starStars, starFeatured, isCPShared FROM levels WHERE levelID = :levelID");
     $query->execute([':levelID' => $levelID]);
     $result = $query->fetch();
-    if ($result["starStars"] != 0) {
+    if ($result["starStars"] == 0) {
         if ($result["isCPShared"] == 1) {
             $query3 = $db->prepare("SELECT userID FROM cpshares WHERE levelID = :levelID");
             $query3->execute([':levelID' => $levelID]);
@@ -72,23 +72,19 @@ $query = $db->prepare("UPDATE levels SET starStars = :starStars, starDifficulty 
 $query->execute([':starStars' => $starStars, ':starDifficulty' => $starDifficulty, ':starDemon' => $starDemon, ':starAuto' => $starAuto, ':levelID' => $levelID]);
 $query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES (1, :value, :value2, :levelID, :timestamp, :id)");
 $query->execute([':value' => ucfirst($commentarray[1]), ':timestamp' => $uploadDate, ':id' => $accountID, ':value2' => $starStars, ':levelID' => $levelID]);
-if ($starFeatured == 1) {
-    if ($featureLevel == 1) {
-        $query = $db->prepare("UPDATE levels SET starFeatured = 1 WHERE levelID = :levelID");
-        $query->execute([':levelID' => $levelID]);
-        $query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES (2, 1, :levelID, :timestamp, :id)");
-        $query->execute([':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
-        $response .= " and featured it";
-    }
+if ($starFeatured == 1 AND $featureLevel == 1) {
+    $query = $db->prepare("UPDATE levels SET starFeatured = 1 WHERE levelID = :levelID");
+    $query->execute([':levelID' => $levelID]);
+    $query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES (2, 1, :levelID, :timestamp, :id)");
+    $query->execute([':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+    $response .= " and featured it";
 }
-if ($starCoins == 1) {
-    if ($gs->checkPermission($accountID, "commandVerifycoins")) {
-        $query = $db->prepare("UPDATE levels SET starCoins = 1 WHERE levelID = :levelID");
-        $query->execute([':levelID' => $levelID]);
-        $query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES (3, 1, :levelID, :timestamp, :id)");
-        $query->execute([':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
-        $response .= "and verified it's coins";
-    }
+if ($starCoins == 1 AND $gs->checkPermission($accountID, "commandVerifycoins")) {
+    $query = $db->prepare("UPDATE levels SET starCoins = 1 WHERE levelID = :levelID");
+    $query->execute([':levelID' => $levelID]);
+    $query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES (3, 1, :levelID, :timestamp, :id)");
+    $query->execute([':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+    $response .= "and verified it's coins";
 }
 exit("temp_0_Level successfully rated to $response.");
 ?>

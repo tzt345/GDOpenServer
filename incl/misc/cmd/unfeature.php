@@ -2,7 +2,7 @@
 $query = $db->prepare("SELECT starFeatured, isCPShared FROM levels WHERE levelID = :levelID");
 $query->execute([':levelID' => $levelID]);
 $result = $query->fetch();
-if ($result["starFeatured"] == 0) {
+if ($result["starFeatured"] == 1) {
     $query = $db->prepare("UPDATE levels SET starFeatured = 0 WHERE levelID = :levelID");
     $query->execute([':levelID' => $levelID]);
     if ($result["isCPShared"] == 1) {
@@ -25,7 +25,7 @@ if ($result["starFeatured"] == 0) {
         $query4->execute([':extID' => $targetExtID, ':addCP' => $featureCP]);
     }
 } else {
-    exit("temp_0_Error: This level is already not Epic.");
+    exit("temp_0_Error: This level is already unfeatured.");
 }
 $query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES (2, 0, :levelID, :timestamp, :id)");
 $query->execute([':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);

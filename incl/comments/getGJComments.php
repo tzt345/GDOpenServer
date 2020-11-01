@@ -26,8 +26,8 @@ if(isset($_POST["count"]) AND is_numeric($_POST["count"])){
 	$count = 10;
 }
 $page = $ep->remove($_POST["page"]);
-$commentpage = $page*$count;
-if($mode==0){
+$commentpage = $page * $count;
+if($mode == 0){
 	$modeColumn = "commentID";
 }else{
 	$modeColumn = "likes";
@@ -54,16 +54,16 @@ $query->execute([':levelID' => $levelID]);
 $result = $query->fetchAll();
 function timing ($time) {
     $time = time() - $time; // to get the time since that moment
-    $time = ($time<1)? 1 : $time;
+    $time = ($time < 1) ? 1 : $time;
     $tokens = array (31536000 => 'year', 2592000 => 'month', 604800 => 'week', 86400 => 'day', 3600 => 'hour', 60 => 'minute', 0 => 'second');
     foreach ($tokens as $unit => $text) {
         if ($time < $unit) continue;
         $numberOfUnits = floor($time / $unit);
-        return $numberOfUnits.' '.$text.(($numberOfUnits>1)?'s':'');
+        return $numberOfUnits.' '.$text.(($numberOfUnits > 1) ? 's' : '');
     }
 }
 foreach($result as &$comment1) {
-	if($comment1["commentID"]!=""){
+	if($comment1["commentID"] != ""){
 		$uploadDate = timing($comment1["timestamp"]);
 		$actualcomment = $comment1["comment"];
 		if($gameVersion < 20){

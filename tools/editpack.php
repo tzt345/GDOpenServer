@@ -20,7 +20,7 @@ else if ($stage AND array_key_exists("levels", $_POST) == false)
 	$pass = $generatePass->isValidUsrname($_POST["userName"], $_POST["password"]);
 	if ($pass == 1)
 	{
-		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName=:userName AND isAdmin = 1");	
+		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName = :userName AND isAdmin = 1");	
 		$query->execute([':userName' => $_POST["userName"]]);
 		if($query->rowCount()==0)
 		{
@@ -29,7 +29,7 @@ else if ($stage AND array_key_exists("levels", $_POST) == false)
 		
 		$query1 = $db->prepare("SELECT * FROM mappacks WHERE name LIKE :name");
 		$query1->execute([':name' => $_POST["packName"]]);
-		if ($query->rowCount()==0)
+		if ($query->rowCount() == 0)
 		{
 			exit("<p>Cannot find map pack, did you enter the name correctly?</p>");
 		}
@@ -63,16 +63,16 @@ else
 	$pass = $generatePass->isValidUsrname($_POST["userName"], $_POST["password"]);
 	if ($pass == 1)
 	{
-		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName=:userName AND isAdmin = 1");	
+		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName = :userName AND isAdmin = 1");	
 		$query->execute([':userName' => $_POST["userName"]]);
-		if($query->rowCount()==0)
+		if($query->rowCount() == 0)
 		{
 			exit("<p>Account isn't mod</p>");
 		}
 		
 		$query1 = $db->prepare("SELECT * FROM mappacks WHERE name LIKE :name");
 		$query1->execute([':name' => $_POST["packName"]]);
-		if ($query->rowCount()==0)
+		if ($query->rowCount() == 0)
 		{
 			exit("<p>Cannot find map pack, did you enter the name correctly?</p>");
 		}
@@ -91,7 +91,7 @@ else
 		{
 			exit("<p>Unknown color value</p>");
 		}
-		$rgb = hexdec(substr($color,0,2)).",".hexdec(substr($color,2,2)).",".hexdec(substr($color,4,2));
+		$rgb = hexdec(substr($color,0,2)).",".hexdec(substr($color, 2, 2)).",".hexdec(substr($color, 4, 2));
 		
 		$accid = $query->fetchAll()[0]["accountID"];
 		$lvlsarray = explode(",", $levels);
@@ -101,7 +101,7 @@ else
 			{
 				exit("<p>$level isn't a number</p>");
 			}
-			$query = $db->prepare("SELECT levelName FROM levels WHERE levelID=:levelID");	
+			$query = $db->prepare("SELECT levelName FROM levels WHERE levelID = :levelID");	
 			$query->execute([':levelID' => $level]);
 			if($query->rowCount() == 0)
 			{
@@ -148,13 +148,13 @@ else
 				break;
 		}
 		
-		$queryFIN = $db->prepare("UPDATE mappacks SET name=:name, levels=:levels, stars=:stars, coins=:coins, difficulty=:difficulty, rgbcolors=:rgbcolors WHERE name LIKE :pName");
+		$queryFIN = $db->prepare("UPDATE mappacks SET name = :name, levels = :levels, stars = :stars, coins = :coins, difficulty = :difficulty, rgbcolors = :rgbcolors WHERE name LIKE :pName");
 		$queryFIN->execute([':name' => $packName, ':levels' => $levels, ':stars' => $stars, ':coins' => $coins, ':difficulty' => $diff, ':rgbcolors' => $rgb, ':pName' => $packName]);
 		
 		echo "<p>Map Pack edited: ".$queryFIN->rowCount()."</p>";
 		
-		$query = $db->prepare("INSERT INTO modactions (type, value, timestamp, account, value2, value3, value4, value7) VALUES ('11',:value,:timestamp,:account,:levels, :stars, :coins, :rgb)");
-			$query->execute([':value' => $packName, ':timestamp' => time(), ':account' => $accid, ':levels' => $levels, ':stars' => $stars, ':coins' => $coins, ':rgb' => $rgb]);
+		$query = $db->prepare("INSERT INTO modactions (type, value, timestamp, account, value2, value3, value4, value7) VALUES (11, :value, :timestamp, :account, :levels, :stars, :coins, :rgb)");
+		$query->execute([':value' => $packName, ':timestamp' => time(), ':account' => $accid, ':levels' => $levels, ':stars' => $stars, ':coins' => $coins, ':rgb' => $rgb]);
 		
 	}
 }

@@ -32,7 +32,7 @@ class Commands {
 			exit("temp_0_Error: You are banned, meaning you cannot take any moderational actions.");
 		}
 		$comment = $ep->remove(strtolower($comment));
-		$commentarray = explode(' ', $comment);
+		$commentarray = explode(" ", $comment);
 		$prefixLen = strlen($prefix);
 		if (substr($comment, 0, $prefixLen) == $prefix) {
 			$commentarray[0] = str_replace($prefix, "", $commentarray[0]);
@@ -56,9 +56,10 @@ class Commands {
 					exit("temp_0_Error: You do not have proper permission to use this command.");
 				}
 			} elseif ($permissions[$commentarray[0]] == "non-admin") {
-				$commandFirstUpper = ucfirst(str_replace("un", "", $commentarray[0]));
+				$commandPerm = str_replace("un", "", $commentarray[0]);
+				$commandFirstUpper = ucfirst($commandPerm);
 				$commandConfig = "$"."command".$commandFirstUpper;
-				if ($this->ownCommand($comment, $commentarray[0], $accountID, $targetExtID) AND (eval("return $commandConfig == 1;") == 1)) {
+				if ($this->ownCommand($comment, $commandPerm, $accountID, $targetExtID) AND (eval("return $commandConfig == 1;") == 1)) {
 					include "cmd/".$commentarray[0].".php";
 				} else {
 					exit("temp_0_Error: You do not have proper permission to use this command.");
@@ -76,9 +77,10 @@ class Commands {
 							exit("temp_0_Error: You do not have proper permission to use this command.");
 						}
 					} else {
-						$commandFirstUpper = ucfirst(str_replace("un", "", $command));
+						$commandPerm = str_replace("un", "", $command);
+						$commandFirstUpper = ucfirst($commandPerm);
 						$commandConfig = "$"."command".$commandFirstUpper;
-						if ($this->ownCommand($comment, $command, $accountID, $targetExtID) AND (eval("return $commandConfig == 1;") == 1)) {
+						if ($this->ownCommand($comment, $commandPerm, $accountID, $targetExtID) AND (eval("return $commandConfig == 1;") == 1)) {
 							include "cmd/".$command.".php";
 						} else {
 							exit("temp_0_Error: You do not have proper permission to use this command.");

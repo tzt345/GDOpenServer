@@ -2,7 +2,7 @@
 $query = $db->prepare("SELECT starEpic, isCPShared FROM levels WHERE levelID = :levelID");
 $query->execute([':levelID' => $levelID]);
 $result = $query->fetch();
-if ($result["starEpic"] == 0) {
+if ($result["starEpic"] == 1) {
     $query = $db->prepare("UPDATE levels SET starEpic = 0 WHERE levelID = :levelID");
     $query->execute([':levelID' => $levelID]);
     if ($result["isCPShared"] == 1) {

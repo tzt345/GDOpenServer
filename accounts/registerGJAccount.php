@@ -1,12 +1,12 @@
 <?php
 include "../incl/lib/connection.php";
+include "../config/security.php";
 require_once "../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
-include "../config/security.php";
+if ($onlyWebRegistration == 1) {
+	exit("-1");
+}
 if($_POST["userName"] != ""){
-	if ($onlyWebRegistration == 1) {
-		exit("-1");
-	}
 	//here im getting all the data
 	$userName = $ep->remove($_POST["userName"]);
 	$password = $_POST["password"];
@@ -21,8 +21,8 @@ if($_POST["userName"] != ""){
 		$hashpass = password_hash($password, PASSWORD_DEFAULT);
 		if ($accountVerification == 2) {
 			require "../incl/lib/mainLib.php";
-			require "../incl/email/sendMail.php";
 			$ss = new mainLib();
+			require "../incl/email/sendMail.php";
 			$secret = $ss->randomString(16);
 			$query = $db->prepare("INSERT INTO accounts (userName, password, email, saveData, registerDate, saveKey, isVerified, verifySecret) VALUES (:userName, :password, :email, '', :time, '', 0, :secret)");
 			$query->execute([':userName' => $username, ':password' => $hashpass, ':email' => $email, ':time' => time(), ':secret' => $secret]);
@@ -37,5 +37,7 @@ if($_POST["userName"] != ""){
 		}
 		echo "1";
 	}
+} else {
+	echo "-1";
 }
 ?>

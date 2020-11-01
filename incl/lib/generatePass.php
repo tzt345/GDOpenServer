@@ -1,6 +1,5 @@
 <?php
-class generatePass
-{
+class generatePass {
 	public function isValidUsrname($userName, $pass) {
 		include dirname(__FILE__)."/connection.php";
 		require_once dirname(__FILE__)."/mainLib.php";
@@ -13,7 +12,7 @@ class generatePass
 		if($query6->fetchColumn() > 7){
 			return -1;
 		}else{
-			$query = $db->prepare("SELECT accountID, salt, password, isAdmin, isVerified FROM accounts WHERE userName LIKE :userName");
+			$query = $db->prepare("SELECT accountID, salt, password, isAdmin, isVerified FROM accounts WHERE userName = :userName");
 			$query->execute([':userName' => $userName]);
 			if($query->rowCount() == 0){
 				return 0;
@@ -28,7 +27,7 @@ class generatePass
 					$query4 = $db->prepare("SELECT count(*) FROM modips WHERE accountID = :id");
 					$query4->execute([':id' => $result["accountID"]]);
 					if ($query4->fetchColumn() > 0) {
-						$query6 = $db->prepare("UPDATE modips SET IP=:hostname, modipCategory=:modipCategory WHERE accountID=:id");
+						$query6 = $db->prepare("UPDATE modips SET IP = :hostname, modipCategory = :modipCategory WHERE accountID = :id");
 					}else{
 						$query6 = $db->prepare("INSERT INTO modips (IP, accountID, isMod, modipCategory) VALUES (:hostname, :id, 1, :modipCategory)");
 					}
@@ -44,14 +43,14 @@ class generatePass
 				if ($hashed_pass == $result['password']) {
 					$pass = password_hash($pass, PASSWORD_DEFAULT);
 					//updating hash
-					$query = $db->prepare("UPDATE accounts SET password=:password WHERE userName=:userName");
+					$query = $db->prepare("UPDATE accounts SET password = :password WHERE userName = :userName");
 					$query->execute([':userName' => $userName, ':password' => $pass]);
 					return 1;
 				} else {
 					if($md5pass == $result['password']){
 						$pass = password_hash($pass, PASSWORD_DEFAULT);
 						//updating hash
-						$query = $db->prepare("UPDATE accounts SET password=:password WHERE userName=:userName");
+						$query = $db->prepare("UPDATE accounts SET password = :password WHERE userName = :userName");
 						$query->execute([':userName' => $userName, ':password' => $pass]);
 						return 1;
 					} else {
