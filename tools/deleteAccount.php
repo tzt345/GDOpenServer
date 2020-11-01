@@ -5,7 +5,7 @@ require "../incl/lib/generatePass.php";
 $ep = new exploitPatch();
 $generatePass = new generatePass();
 
-if (!empty($_POST["accountid"]) AND !empty($_POST["p"]) AND !empty($_POST["us"])){
+if (isset($_POST["accountid"]) AND isset($_POST["p"]) AND isset($_POST["us"])){
     $accounti = $ep->remove($_POST["accountid"]);
     $psw = $ep->remove($_POST["p"]);
     $us = $ep->remove($_POST["us"]);

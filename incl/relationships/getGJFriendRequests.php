@@ -6,7 +6,7 @@ require_once "../lib/GJPCheck.php";
 $ep = new exploitPatch();
 $GJPCheck = new GJPCheck();
 $reqstring = "";
-if(!empty($_POST["getSent"])){
+if(isset($_POST["getSent"])){
 	$getSent = $ep->remove($_POST["getSent"]);
 }else{
 	$getSent = 0;

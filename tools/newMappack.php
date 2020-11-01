@@ -6,7 +6,7 @@ require "../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
 require "../incl/lib/mainLib.php";
 $gs = new mainLib();
-if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["packName"]) AND !empty($_POST["levels"]) AND !empty($_POST["stars"]) AND !empty($_POST["coins"]) AND !empty($_POST["color"])){
+if(isset($_POST["userName"]) AND isset($_POST["password"]) AND isset($_POST["packName"]) AND isset($_POST["levels"]) AND isset($_POST["stars"]) AND isset($_POST["coins"]) AND isset($_POST["color"])){
 	$userName = $ep->remove($_POST["userName"]);
 	$password = $ep->remove($_POST["password"]);
 	$packName = $ep->remove($_POST["packName"]);

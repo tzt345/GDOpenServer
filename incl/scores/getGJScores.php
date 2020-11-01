@@ -14,7 +14,7 @@ if(empty($gameVersion)){
 	$sign = "> 19";
 }
 if ($gameVersion >= 20){
-	if(!empty($_POST["accountID"])){
+	if(isset($_POST["accountID"])){
 		$accountID = $ep->remove($_POST["accountID"]);
 		$gjp = $ep->remove($_POST["gjp"]);
 		$gjpresult = $GJPCheck->check($gjp, $accountID);
@@ -28,7 +28,7 @@ if ($gameVersion >= 20){
 		}
 	}
 } else {
-	if(!empty($_POST["accountID"]) AND $_POST["accountID"] != "0"){
+	if(isset($_POST["accountID"]) AND $_POST["accountID"] != "0"){
 		$id = $ep->remove($_POST["accountID"]);
 		if ($gs->getAccountName($id) != $userName) {
 			exit("-1");

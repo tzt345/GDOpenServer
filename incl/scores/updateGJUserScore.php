@@ -8,17 +8,17 @@ $ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
 //here im getting all the data
-if(!empty($_POST["gameVersion"])){
+if(isset($_POST["gameVersion"])){
 	$gameVersion = $ep->remove($_POST["gameVersion"]);
 }else{
 	$gameVersion = 21;
 }
-if(!empty($_POST["binaryVersion"])){
+if(isset($_POST["binaryVersion"])){
 	$binaryVersion = $ep->remove($_POST["binaryVersion"]);
 }else{
 	$binaryVersion = 1;
 }
-if(!empty($_POST["coins"])){
+if(isset($_POST["coins"])){
 	$coins = $ep->remove($_POST["coins"]);
 }else{
 	$coins = 0;
@@ -33,67 +33,67 @@ $demons = $ep->remove($_POST["demons"]);
 $icon = $ep->remove($_POST["icon"]);
 $color1 = $ep->remove($_POST["color1"]);
 $color2 = $ep->remove($_POST["color2"]);
-if(!empty($_POST["iconType"])){
+if(isset($_POST["iconType"])){
 	$iconType = $ep->remove($_POST["iconType"]);
 }else{
 	$iconType = 0;
 }
-if(!empty($_POST["userCoins"])){
+if(isset($_POST["userCoins"])){
 	$userCoins = $ep->remove($_POST["userCoins"]);
 }else{
 	$userCoins = 0;
 }
-if(!empty($_POST["special"])){
+if(isset($_POST["special"])){
 	$special = $ep->remove($_POST["special"]);
 }else{
 	$special = 0;
 }
-if(!empty($_POST["accIcon"])){
+if(isset($_POST["accIcon"])){
 	$accIcon = $ep->remove($_POST["accIcon"]);
 }else{
 	$accIcon = 0;
 }
-if(!empty($_POST["accShip"])){
+if(isset($_POST["accShip"])){
 	$accShip = $ep->remove($_POST["accShip"]);
 }else{
 	$accShip = 0;
 }
-if(!empty($_POST["accBall"])){
+if(isset($_POST["accBall"])){
 	$accBall = $ep->remove($_POST["accBall"]);
 }else{
 	$accBall = 0;
 }
-if(!empty($_POST["accBird"])){
+if(isset($_POST["accBird"])){
 	$accBird = $ep->remove($_POST["accBird"]);
 }else{
 	$accBird = 0;
 }
-if(!empty($_POST["accDart"])){
+if(isset($_POST["accDart"])){
 	$accDart = $ep->remove($_POST["accDart"]);
 }else{
 	$accDart = 0;
 }
-if(!empty($_POST["accRobot"])){
+if(isset($_POST["accRobot"])){
 	$accRobot = $ep->remove($_POST["accRobot"]);
 }else{
 	$accRobot = 0;
 }
-if(!empty($_POST["accGlow"])){
+if(isset($_POST["accGlow"])){
 	$accGlow = $ep->remove($_POST["accGlow"]);
 }else{
 	$accGlow = 0;
 }
-if(!empty($_POST["accSpider"])){
+if(isset($_POST["accSpider"])){
 	$accSpider = $ep->remove($_POST["accSpider"]);
 }else{
 	$accSpider = 0;
 }
-if(!empty($_POST["accExplosion"])){
+if(isset($_POST["accExplosion"])){
 	$accExplosion = $ep->remove($_POST["accExplosion"]);
 }else{
 	$accExplosion = 0;
 }
-if(!empty($_POST["diamonds"])){
+if(isset($_POST["diamonds"])){
 	$diamonds = $ep->remove($_POST["diamonds"]);
 }else{
 	$diamonds = 0;
@@ -103,14 +103,14 @@ $accountID = "";
 if(empty($_POST["udid"]) AND empty($_POST["accountID"])){
 	exit("-1");
 }
-if(!empty($_POST["udid"])){
+if(isset($_POST["udid"])){
 	$id = $ep->remove($_POST["udid"]);
 	if(is_numeric($id)){
 		exit("-1");
 	}
 }
 if ($gameVersion >= 20) {
-	if(!empty($_POST["accountID"]) AND $_POST["accountID"] != "0"){
+	if(isset($_POST["accountID"]) AND $_POST["accountID"] != "0"){
 		$id = $ep->remove($_POST["accountID"]);
 		$gjp = $ep->remove($_POST["gjp"]);
 		$GJPCheck = new GJPCheck(); //gjp check
@@ -122,7 +122,7 @@ if ($gameVersion >= 20) {
 		$register = 0;
 	}
 } else {
-	if(!empty($_POST["accountID"]) AND $_POST["accountID"] != "0"){
+	if(isset($_POST["accountID"]) AND $_POST["accountID"] != "0"){
 		$id = $ep->remove($_POST["accountID"]);
 		if ($gs->getAccountName($id) != $userName) {
 			exit("-1");

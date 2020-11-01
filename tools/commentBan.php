@@ -6,7 +6,7 @@ require "../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
 require "../incl/lib/mainLib.php";
 $gs = new mainLib();
-if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["userID"]) AND !empty($_POST["banType"]) AND !empty($_POST["banReason"])){
+if(isset($_POST["userName"]) AND isset($_POST["password"]) AND isset($_POST["userID"]) AND isset($_POST["banType"]) AND isset($_POST["banReason"])){
 	$userName = $ep->remove($_POST["userName"]);
 	$password = $ep->remove($_POST["password"]);
 	$userID = $ep->remove($_POST["userID"]);

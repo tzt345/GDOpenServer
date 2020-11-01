@@ -22,7 +22,7 @@ $order = "uploadDate";
 $orderenabled = true;
 $params = array("NOT unlisted = 1");
 
-if(!empty($_POST["gameVersion"])){
+if(isset($_POST["gameVersion"])){
 	$gameVersion = $ep->number($_POST["gameVersion"]);
 }else{
 	$gameVersion = 0;
@@ -36,12 +36,12 @@ if($gameVersion >= 20){
 		$gameVersion++;
 	}
 }
-if(!empty($_POST["type"])){
+if(isset($_POST["type"])){
 	$type = $ep->number($_POST["type"]);
 }else{
 	$type = 0;
 }
-if(!empty($_POST["diff"])){
+if(isset($_POST["diff"])){
 	$diff = $ep->numbercolon($_POST["diff"]);
 }else{
 	$diff = "-";
@@ -54,27 +54,27 @@ if($gameVersion == 0){
 }else{
 	$params[] = "gameVersion <= '$gameVersion'";
 }
-if(!empty($_POST["featured"]) AND $_POST["featured"] == 1){
+if(isset($_POST["featured"]) AND $_POST["featured"] == 1){
 	$params[] = "starFeatured = 1";
 }
-if(!empty($_POST["original"]) AND $_POST["original"] == 1){
+if(isset($_POST["original"]) AND $_POST["original"] == 1){
 	$params[] = "original = 0";
 }
-if(!empty($_POST["coins"]) AND $_POST["coins"] == 1){
+if(isset($_POST["coins"]) AND $_POST["coins"] == 1){
 	$params[] = "starCoins = 1 AND NOT coins = 0";
 }
-if(!empty($_POST["epic"]) AND $_POST["epic"] == 1){
+if(isset($_POST["epic"]) AND $_POST["epic"] == 1){
 	$params[] = "starEpic = 1";
 }
-if(!empty($_POST["uncompleted"]) AND $_POST["uncompleted"] == 1){
+if(isset($_POST["uncompleted"]) AND $_POST["uncompleted"] == 1){
 	$completedLevels = $ep->numbercolon($_POST["completedLevels"]);
 	$params[] = "NOT levelID IN ($completedLevels)";
 }
-if(!empty($_POST["onlyCompleted"]) AND $_POST["onlyCompleted"] == 1){
+if(isset($_POST["onlyCompleted"]) AND $_POST["onlyCompleted"] == 1){
 	$completedLevels = $ep->numbercolon($_POST["completedLevels"]);
 	$params[] = "levelID IN ($completedLevels)";
 }
-if(!empty($_POST["song"])){
+if(isset($_POST["song"])){
 	if(empty($_POST["customSong"])){
 		$song = $ep->number($_POST["song"]);
 		$song = $song - 1;
@@ -84,16 +84,16 @@ if(!empty($_POST["song"])){
 		$params[] = "songID = '$song'";
 	}
 }
-if(!empty($_POST["twoPlayer"]) AND $_POST["twoPlayer"] == 1){
+if(isset($_POST["twoPlayer"]) AND $_POST["twoPlayer"] == 1){
 	$params[] = "twoPlayer = 1";
 }
-if(!empty($_POST["star"])){
+if(isset($_POST["star"])){
 	$params[] = "NOT starStars = 0";
 }
-if(!empty($_POST["noStar"])){
+if(isset($_POST["noStar"])){
 	$params[] = "starStars = 0";
 }
-if(!empty($_POST["gauntlet"])){
+if(isset($_POST["gauntlet"])){
 	$order = false;
 	$gauntlet = $ep->remove($_POST["gauntlet"]);
 	$query=$db->prepare("SELECT * FROM gauntlets WHERE ID = :gauntlet");
@@ -103,12 +103,12 @@ if(!empty($_POST["gauntlet"])){
 	$params[] = "levelID IN ($str)";
 	$type = - 1;
 }
-if(!empty($_POST["len"])){
+if(isset($_POST["len"])){
 	$len = $ep->numbercolon($_POST["len"]);
 }else{
 	$len = "-";
 }
-if($len != "-" AND !empty($len)){
+if($len != "-" AND isset($len)){
 	$params[] = "levelLength IN ($len)";
 }
 
@@ -121,7 +121,7 @@ switch($diff){
 		$params[] = "starAuto = '1'";
 		break;
 	case -2:
-		if(!empty($_POST["demonFilter"])){
+		if(isset($_POST["demonFilter"])){
 			$demonFilter = $ep->number($_POST["demonFilter"]);
 		}else{
 			$demonFilter = 0;
@@ -157,7 +157,7 @@ switch($diff){
 		break;
 }
 //TYPE DETECTION
-if(!empty($_POST["str"])){
+if(isset($_POST["str"])){
 	$str = $ep->remove($_POST["str"]);
 }
 if(isset($_POST["page"]) AND is_numeric($_POST["page"])){
@@ -167,7 +167,7 @@ if(isset($_POST["page"]) AND is_numeric($_POST["page"])){
 }
 if($type == 0 OR $type == 15){ //most liked, changed to 15 in GDW for whatever reason
 	$order = "likes";
-	if(!empty($str)){
+	if(isset($str)){
 		if(is_numeric($str)){
 			$params = array("levelID = '$str'");
 		}else{
@@ -233,7 +233,7 @@ if($type == 13){ //FRIENDS
 
 //ACTUAL QUERY EXECUTION
 $querybase = "FROM levels";
-if(!empty($params)){
+if(isset($params)){
 	$querybase .= " WHERE (" . implode(" ) AND ( ", $params) . ")";
 }
 $query = "SELECT * $querybase ";
@@ -264,7 +264,7 @@ $result = $query->fetchAll();
 foreach($result as &$level1) {
 	if($level1["levelID"] != ""){
 		$lvlsmultistring .= $level1["levelID"].",";
-		if(!empty($gauntlet)){
+		if(isset($gauntlet)){
 			$lvlstring .= "44:$gauntlet:";
 		}
 		$lvlstring .= "1:".$level1["levelID"].":2:".$level1["levelName"].":5:".$level1["levelVersion"].":6:".$level1["userID"].":8:10:9:".$level1["starDifficulty"].":10:".$level1["downloads"].":12:".$level1["audioTrack"].":13:".$level1["gameVersion"].":14:".$level1["likes"].":17:".$level1["starDemon"].":43:".$level1["starDemonDiff"].":25:".$level1["starAuto"].":18:".$level1["starStars"].":19:".$level1["starFeatured"].":42:".$level1["starEpic"].":45:".$level1["objects"].":3:".$level1["levelDesc"].":15:".$level1["levelLength"].":30:".$level1["original"].":31:0:37:".$level1["coins"].":38:".$level1["starCoins"].":39:".$level1["requestedStars"].":46:1:47:2:40:".$level1["isLDM"].":35:".$level1["songID"]."|";

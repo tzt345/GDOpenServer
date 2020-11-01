@@ -6,10 +6,10 @@ class userAPI {
         require_once "../incl/lib/exploitPatch.php";
         $ep = new exploitPatch();
         $mainLib = new mainLib();
-        if(!empty($_GET["userID"])){
+        if(isset($_GET["userID"])){
                    $response = $_GET["userID"];
         }
-        else if(!empty($_POST["userID"])){
+        else if(isset($_POST["userID"])){
                    $response = $_POST["userID"];
         }
         $user = array();

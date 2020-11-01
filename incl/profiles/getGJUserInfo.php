@@ -9,7 +9,7 @@ $gs = new mainLib();
 $appendix = "";
 $gjp = $ep->remove($_POST["gjp"]);
 $extid = $ep->number($_POST["targetAccountID"]);
-if(!empty($_POST["accountID"])){
+if(isset($_POST["accountID"])){
 	$me = $ep->number($_POST["accountID"]);
 	$GJPCheck = new GJPCheck(); //gjp check
 	$gjpresult = $GJPCheck->check($gjp, $me);

@@ -714,7 +714,7 @@ class SMTP
 
         $field = substr($lines[0], 0, strpos($lines[0], ':'));
         $in_headers = false;
-        if (!empty($field) && strpos($field, ' ') === false) {
+        if (isset($field) && strpos($field, ' ') === false) {
             $in_headers = true;
         }
 
@@ -751,7 +751,7 @@ class SMTP
             //Send the lines to the server
             foreach ($lines_out as $line_out) {
                 //RFC2821 section 4.5.2
-                if (!empty($line_out) && $line_out[0] === '.') {
+                if (isset($line_out) && $line_out[0] === '.') {
                     $line_out = '.' . $line_out;
                 }
                 $this->client_send($line_out . static::LE, 'DATA');
@@ -829,7 +829,7 @@ class SMTP
                 continue;
             }
             $fields = explode(' ', $s);
-            if (!empty($fields)) {
+            if (isset($fields)) {
                 if (!$n) {
                     $name = $type;
                     $fields = $fields[0];

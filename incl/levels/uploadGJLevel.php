@@ -13,7 +13,7 @@ include "../../config/users.php";
 //here im getting all the data
 $gameVersion = $ep->remove($_POST["gameVersion"]);
 if ($gameVersion >= 20) {
-	if(!empty($_POST["gjp"])){
+	if(isset($_POST["gjp"])){
 		$gjp = $ep->remove($_POST["gjp"]);
 	} elseif ($unregisteredUploadLevels == 0) {
 		exit("-1");
@@ -25,13 +25,13 @@ if ($gameVersion >= 20) {
 		exit("-1");
 	}
 }
-if(!empty($_POST["accountID"]) AND $_POST["accountID"] != "0"){
+if(isset($_POST["accountID"]) AND $_POST["accountID"] != "0"){
 	$id = $ep->remove($_POST["accountID"]);
 	$register = 1;
 } elseif ($unregisteredUploadLevels == 0) {
 	exit("-1");
 } else {
-	if(!empty($_POST["udid"])){
+	if(isset($_POST["udid"])){
 		$id = $ep->remove($_POST["udid"]);
 		if(is_numeric($id)){
 			exit("-1");
@@ -60,7 +60,7 @@ $query->execute([':time' => $uploadDate - $uploadRateLimit, ':userID' => $userID
 if($query->fetchColumn() > 0){
 	exit("-1");
 }
-if(!empty($_POST["binaryVersion"])){
+if(isset($_POST["binaryVersion"])){
 	$binaryVersion = $ep->remove($_POST["binaryVersion"]);	
 }else{
 	$binaryVersion = 0;
@@ -75,7 +75,7 @@ if($gameVersion < 20){
 $levelVersion = $ep->remove($_POST["levelVersion"]);
 $levelLength = $ep->remove($_POST["levelLength"]);
 $audioTrack = $ep->remove($_POST["audioTrack"]);
-if(!empty($_POST["auto"])){
+if(isset($_POST["auto"])){
 	$auto = $ep->remove($_POST["auto"]);
 }else{
 	$auto = 0;
@@ -89,53 +89,53 @@ if(isset($_POST["password"])){
 		$password = 1;
 	}
 }
-if(!empty($_POST["original"])){
+if(isset($_POST["original"])){
 	$original = $ep->remove($_POST["original"]);
 }else{
 	$original = 0;
 }
-if(!empty($_POST["twoPlayer"])){
+if(isset($_POST["twoPlayer"])){
 	$twoPlayer = $ep->remove($_POST["twoPlayer"]);
 }else{
 	$twoPlayer = 0;
 }
-if(!empty($_POST["songID"])){
+if(isset($_POST["songID"])){
 	$songID = $ep->remove($_POST["songID"]);
 }else{
 	$songID = 0;
 }
-if(!empty($_POST["objects"])){
+if(isset($_POST["objects"])){
 	$objects = $ep->remove($_POST["objects"]);
 }else{
 	$objects = 0;
 }
-if(!empty($_POST["coins"])){
+if(isset($_POST["coins"])){
 	$coins = $ep->remove($_POST["coins"]);
 }else{
 	$coins = 0;
 }
-if(!empty($_POST["requestedStars"])){
+if(isset($_POST["requestedStars"])){
 	$requestedStars = $ep->remove($_POST["requestedStars"]);
 }else{
 	$requestedStars = 0;
 }
-if(!empty($_POST["extraString"])){
+if(isset($_POST["extraString"])){
 	$extraString = $ep->remove($_POST["extraString"]);
 }else{
 	$extraString = "29_29_29_40_29_29_29_29_29_29_29_29_29_29_29_29";
 }
 $levelString = $ep->remove($_POST["levelString"]);
-if(!empty($_POST["levelInfo"])){
+if(isset($_POST["levelInfo"])){
 	$levelInfo = $ep->remove($_POST["levelInfo"]);
 }else{
 	$levelInfo = 0;
 }
-if(!empty($_POST["unlisted"])){
+if(isset($_POST["unlisted"])){
 	$unlisted = $ep->remove($_POST["unlisted"]);
 }else{
 	$unlisted = 0;
 }
-if(!empty($_POST["ldm"])){
+if(isset($_POST["ldm"])){
 	$ldm = $ep->remove($_POST["ldm"]);
 }else{
 	$ldm = 0;

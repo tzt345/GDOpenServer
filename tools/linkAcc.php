@@ -10,7 +10,7 @@ require_once "../incl/lib/generatePass.php";
 $generatePass = new generatePass();
 require_once "../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
-if(!empty($_POST["userhere"]) AND !empty($_POST["passhere"]) AND !empty($_POST["usertarg"]) AND !empty($_POST["passtarg"])){
+if(isset($_POST["userhere"]) AND isset($_POST["passhere"]) AND isset($_POST["usertarg"]) AND isset($_POST["passtarg"])){
 	$userhere = $ep->remove($_POST["userhere"]);
 	$passhere = $ep->remove($_POST["passhere"]);
 	$usertarg = $ep->remove($_POST["usertarg"]);

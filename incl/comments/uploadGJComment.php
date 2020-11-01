@@ -18,7 +18,7 @@ if($gameVersion < 20){
 	$comment = base64_encode($comment);
 }
 $levelID = $ep->remove($_POST["levelID"]);
-if(!empty($_POST["percent"])){
+if(isset($_POST["percent"])){
 	$percent = $ep->remove($_POST["percent"]);
 }else{
 	$percent = 0;

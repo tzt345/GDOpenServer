@@ -10,7 +10,7 @@ $query = $db->prepare("SELECT * FROM actions WHERE type = 9 AND timestamp > :tim
 $query->execute([':time' => $time]);
 $result = $query->fetchAll();
 foreach($result as &$gain){
-	if(!empty($starsgain[$gain["account"]])){
+	if(isset($starsgain[$gain["account"]])){
 		$starsgain[$gain["account"]] += $gain["value"];
 	}else{
 		$starsgain[$gain["account"]] = $gain["value"];
