@@ -1,3 +1,3 @@
 <?php
-include "./incl/rewards/getGJChallenges.php";
+include __DIR__ . "/incl/rewards/getGJChallenges.php";
 ?>

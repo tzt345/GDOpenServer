@@ -1,3 +1,3 @@
 <?php
-include "./incl/relationships/unblockGJUser.php";
+include __DIR__ . "/incl/relationships/unblockGJUser.php";
 ?>

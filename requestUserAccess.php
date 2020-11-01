@@ -1,3 +1,3 @@
 <?php
-include "./incl/mods/requestUserAccess.php";
+include __DIR__ . "/incl/mods/requestUserAccess.php";
 ?>

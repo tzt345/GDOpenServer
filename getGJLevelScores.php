@@ -1,3 +1,3 @@
 <?php
-include "./incl/scores/getGJLevelScores.php";
+include __DIR__ . "/incl/scores/getGJLevelScores.php";
 ?>

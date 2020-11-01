@@ -1,3 +1,3 @@
 <?php
-include "./incl/profiles/updateGJAccSettings.php";
+include __DIR__ . "/incl/profiles/updateGJAccSettings.php";
 ?>

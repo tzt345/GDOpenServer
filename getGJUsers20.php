@@ -1,3 +1,3 @@
 <?php
-include "./incl/profiles/getGJUsers.php";
+include __DIR__ . "/incl/profiles/getGJUsers.php";
 ?>

@@ -1,3 +1,3 @@
 <?php
-include "./incl/levelpacks/getGJMapPacks.php";
+include __DIR__ . "/incl/levelpacks/getGJMapPacks.php";
 ?>

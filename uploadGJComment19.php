@@ -1,3 +1,3 @@
 <?php
-include "./incl/comments/uploadGJComment.php";
+include __DIR__ . "/incl/comments/uploadGJComment.php";
 ?>

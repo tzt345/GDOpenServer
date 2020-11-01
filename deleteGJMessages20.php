@@ -1,3 +1,3 @@
 <?php
-include "./incl/messages/deleteGJMessages.php";
+include __DIR__ . "/incl/messages/deleteGJMessages.php";
 ?>

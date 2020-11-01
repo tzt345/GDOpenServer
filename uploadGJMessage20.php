@@ -1,3 +1,3 @@
 <?php
-include "./incl/messages/uploadGJMessage.php";
+include __DIR__ . "/incl/messages/uploadGJMessage.php";
 ?>

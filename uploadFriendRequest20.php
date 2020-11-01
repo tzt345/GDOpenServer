@@ -1,3 +1,3 @@
 <?php
-include "./incl/relationships/uploadFriendRequest.php";
+include __DIR__ . "/incl/relationships/uploadFriendRequest.php";
 ?>

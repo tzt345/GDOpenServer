@@ -1,3 +1,3 @@
 <?php
-include "./incl/levels/uploadGJLevel.php";
+include __DIR__ . "/incl/levels/uploadGJLevel.php";
 ?>

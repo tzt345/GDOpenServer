@@ -1,3 +1,3 @@
 <?php
-include "./incl/scores/getGJCreators.php";
+include __DIR__ . "/incl/scores/getGJCreators.php";
 ?>
