@@ -72,7 +72,6 @@ if(!is_numeric($levelID)){
 		//password xor
 		$pass = $result["password"];
 		$desc = $result["levelDesc"];
-		$xorPass = 0;
 		if($gs->checkModIPPermission("actionFreeCopy") == 1){
 			$xorPass = "1";
 		}
@@ -80,7 +79,7 @@ if(!is_numeric($levelID)){
 			if($pass != 0){
 				require "../lib/XORCipher.php";
 				$xor = new XORCipher();
-				$xorPass = base64_encode($xor->cipher($pass, 26364));
+				$xorPass = base64_encode($xor->cipher($xorPass, 26364));
 			}
 		}else{
 			$desc = $ep->remove(base64_decode($desc));
