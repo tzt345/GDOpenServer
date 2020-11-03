@@ -9,7 +9,7 @@ include_once "../../incl/lib/defuse-crypto.phar";
 use Defuse\Crypto\KeyProtectedByPassword;
 use Defuse\Crypto\Crypto;
 use Defuse\Crypto\Key;
-if(isset($_POST["userName"]) AND isset($_POST["oldPassword"]) AND isset($_POST["newPassword"])){
+if(!empty($_POST["userName"]) AND !empty($_POST["oldPassword"]) AND !empty($_POST["newPassword"])){
 	$userName = $ep->remove($_POST["userName"]);
 	$oldPass = $_POST["oldPassword"];
 	$newPass = $_POST["newPassword"];

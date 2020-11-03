@@ -6,11 +6,11 @@ class levelAPI {
         require_once "../incl/lib/exploitPatch.php";
         $ep = new exploitPatch();
         $mainLib = new mainLib();
-        if(isset($_GET["levelID"]))
+        if(!empty($_GET["levelID"]))
         {
                    $response = $_GET["levelID"];
         }
-        else if(isset($_POST["levelID"]))
+        else if(!empty($_POST["levelID"]))
         {
                    $response = $_POST["levelID"];
         }

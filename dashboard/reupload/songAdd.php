@@ -6,7 +6,7 @@ require_once dirname(__FILE__)."/../incl/dashboardLib.php";
 $dl = new dashboardLib();
 require_once dirname(__FILE__)."/../../incl/lib/mainLib.php";
 $gs = new mainLib();
-if(isset($_POST["url"])){
+if(!empty($_POST["url"])){
 	$songID = $gs->songReupload($_SESSION["accountID"], $_POST["url"]);
 	if($songID < 0){
 		$errorDesc = $dl->getLocalizedString("songAddError$songID");

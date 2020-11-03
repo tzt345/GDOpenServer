@@ -10,9 +10,9 @@ include dirname(__FILE__)."/../config/reupload.php";
 if ($song_reupload == -1) {
 	exit("Song reuploading to this GDPS is disabled.");
 }
-if (isset($_POST["songLink"])) {
+if (!empty($_POST["songLink"])) {
 	if ($song_reupload != 0) {
-		if (isset($_POST["userName"]) AND isset($_POST["password"])){
+		if (!empty($_POST["userName"]) AND !empty($_POST["password"])){
 			$userName = $ep->remove($_POST["userName"]);
 			$password = $ep->remove($_POST["password"]);
 			$query = $db->prepare("SELECT accountID FROM accounts WHERE userName=:userName");	

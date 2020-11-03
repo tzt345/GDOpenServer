@@ -6,7 +6,7 @@ require_once "../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../incl/lib/mainLib.php";
 $gs = new mainLib();
-if(isset($_POST["userName"]) AND isset($_POST["password"]) AND isset($_POST["levelID"]) AND isset($_POST["timestamp"])){
+if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["levelID"]) AND !empty($_POST["timestamp"])){
 	$userName = $ep->remove($_POST["userName"]);
 	$password = $ep->remove($_POST["password"]);
 	$levelID = $ep->remove($_POST["levelID"]);

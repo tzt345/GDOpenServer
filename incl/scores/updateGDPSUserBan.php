@@ -6,7 +6,7 @@ require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
-if(isset($_POST["userID"]) AND isset($_POST["accountID"]) AND isset($_POST["gjp"])){
+if(!empty($_POST["userID"]) AND !empty($_POST["accountID"]) AND !empty($_POST["gjp"])){
 	$userID = $ep->remove($_POST["userID"]);
 	$accountID = $ep->remove($_POST["accountID"]);
 	$gjp = $ep->remove($_POST["gjp"]);

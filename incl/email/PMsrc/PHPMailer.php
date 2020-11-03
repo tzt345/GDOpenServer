@@ -1393,7 +1393,7 @@ class PHPMailer
     {
         // Verify we have required functions, CharSet, and at-sign.
         $pos = strrpos($address, '@');
-        if (isset($this->CharSet) &&
+        if (!empty($this->CharSet) &&
             false !== $pos &&
             static::idnSupported()
         ) {
@@ -1553,10 +1553,10 @@ class PHPMailer
             }
 
             // Sign with DKIM if enabled
-            if (isset($this->DKIM_domain)
-                && isset($this->DKIM_selector)
-                && (isset($this->DKIM_private_string)
-                    || (isset($this->DKIM_private)
+            if (!empty($this->DKIM_domain)
+                && !empty($this->DKIM_selector)
+                && (!empty($this->DKIM_private_string)
+                    || (!empty($this->DKIM_private)
                         && static::isPermittedPath($this->DKIM_private)
                         && file_exists($this->DKIM_private)
                     )
@@ -1640,7 +1640,7 @@ class PHPMailer
         $header = static::stripTrailingWSP($header) . static::$LE . static::$LE;
 
         // CVE-2016-10033, CVE-2016-10045: Don't pass -f if characters will be escaped.
-        if (isset($this->Sender) && self::isShellSafe($this->Sender)) {
+        if (!empty($this->Sender) && self::isShellSafe($this->Sender)) {
             if ('qmail' === $this->Mailer) {
                 $sendmailFmt = '%s -f%s';
             } else {
@@ -1801,10 +1801,10 @@ class PHPMailer
         //Qmail docs: http://www.qmail.org/man/man8/qmail-inject.html
         //Example problem: https://www.drupal.org/node/1057954
         // CVE-2016-10033, CVE-2016-10045: Don't pass -f if characters will be escaped.
-        if (isset($this->Sender) && static::validateAddress($this->Sender) && self::isShellSafe($this->Sender)) {
+        if (!empty($this->Sender) && static::validateAddress($this->Sender) && self::isShellSafe($this->Sender)) {
             $params = sprintf('-f%s', $this->Sender);
         }
-        if (isset($this->Sender) && static::validateAddress($this->Sender)) {
+        if (!empty($this->Sender) && static::validateAddress($this->Sender)) {
             $old_from = ini_get('sendmail_from');
             ini_set('sendmail_from', $this->Sender);
         }
@@ -2680,7 +2680,7 @@ class PHPMailer
                 );
                 $body .= $this->encodeString($this->Body, $bodyEncoding);
                 $body .= static::$LE;
-                if (isset($this->Ical)) {
+                if (!empty($this->Ical)) {
                     $method = static::ICAL_METHOD_REQUEST;
                     foreach (static::$IcalMethods as $imethod) {
                         if (stripos($this->Ical, 'METHOD:' . $imethod) !== false) {
@@ -2748,7 +2748,7 @@ class PHPMailer
                 );
                 $body .= $this->encodeString($this->Body, $bodyEncoding);
                 $body .= static::$LE;
-                if (isset($this->Ical)) {
+                if (!empty($this->Ical)) {
                     $method = static::ICAL_METHOD_REQUEST;
                     foreach (static::$IcalMethods as $imethod) {
                         if (stripos($this->Ical, 'METHOD:' . $imethod) !== false) {
@@ -3086,7 +3086,7 @@ class PHPMailer
 
                 $mime[] = sprintf('--%s%s', $boundary, static::$LE);
                 //Only include a filename property if we have one
-                if (isset($name)) {
+                if (!empty($name)) {
                     $mime[] = sprintf(
                         'Content-Type: %s; name=%s%s',
                         $type,
@@ -3111,9 +3111,9 @@ class PHPMailer
                 }
 
                 // Allow for bypassing the Content-Disposition header
-                if (isset($disposition)) {
+                if (!empty($disposition)) {
                     $encoded_name = $this->encodeHeader($this->secureHeader($name));
-                    if (isset($encoded_name)) {
+                    if (!empty($encoded_name)) {
                         $mime[] = sprintf(
                             'Content-Disposition: %s; filename=%s%s',
                             $disposition,
@@ -3618,7 +3618,7 @@ class PHPMailer
     ) {
         try {
             // If a MIME type is not specified, try to work it out from the name
-            if ('' === $type && isset($name)) {
+            if ('' === $type && !empty($name)) {
                 $type = static::filenameToType($name);
             }
 
@@ -3729,7 +3729,7 @@ class PHPMailer
      */
     public function alternativeExists()
     {
-        return isset($this->AltBody);
+        return !empty($this->AltBody);
     }
 
     /**
@@ -3830,15 +3830,15 @@ class PHPMailer
         ++$this->error_count;
         if ('smtp' === $this->Mailer && null !== $this->smtp) {
             $lasterror = $this->smtp->getError();
-            if (isset($lasterror['error'])) {
+            if (!empty($lasterror['error'])) {
                 $msg .= $this->lang('smtp_error') . $lasterror['error'];
-                if (isset($lasterror['detail'])) {
+                if (!empty($lasterror['detail'])) {
                     $msg .= ' Detail: ' . $lasterror['detail'];
                 }
-                if (isset($lasterror['smtp_code'])) {
+                if (!empty($lasterror['smtp_code'])) {
                     $msg .= ' SMTP code: ' . $lasterror['smtp_code'];
                 }
-                if (isset($lasterror['smtp_code_ex'])) {
+                if (!empty($lasterror['smtp_code_ex'])) {
                     $msg .= ' Additional SMTP info: ' . $lasterror['smtp_code_ex'];
                 }
             }
@@ -3869,7 +3869,7 @@ class PHPMailer
     protected function serverHostname()
     {
         $result = '';
-        if (isset($this->Hostname)) {
+        if (!empty($this->Hostname)) {
             $result = $this->Hostname;
         } elseif (isset($_SERVER) && array_key_exists('SERVER_NAME', $_SERVER)) {
             $result = $_SERVER['SERVER_NAME'];
@@ -4063,7 +4063,7 @@ class PHPMailer
                     continue;
                 }
                 if (// Only process relative URLs if a basedir is provided (i.e. no absolute local paths)
-                    isset($basedir)
+                    !empty($basedir)
                     // Ignore URLs containing parent dir traversal (..)
                     && (strpos($url, '..') === false)
                     // Do not change urls that are already inline images
@@ -4500,7 +4500,7 @@ class PHPMailer
 
             return '';
         }
-        $privKeyStr = isset($this->DKIM_private_string) ?
+        $privKeyStr = !empty($this->DKIM_private_string) ?
             $this->DKIM_private_string :
             file_get_contents($this->DKIM_private);
         if ('' !== $this->DKIM_passphrase) {
@@ -4835,7 +4835,7 @@ class PHPMailer
      */
     protected function doCallback($isSent, $to, $cc, $bcc, $subject, $body, $from, $extra)
     {
-        if (isset($this->action_function) && is_callable($this->action_function)) {
+        if (!empty($this->action_function) && is_callable($this->action_function)) {
             call_user_func($this->action_function, $isSent, $to, $cc, $bcc, $subject, $body, $from, $extra);
         }
     }

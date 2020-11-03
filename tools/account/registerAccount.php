@@ -2,7 +2,7 @@
 session_start();
 require "../../config/security.php";
 // here begins the checks
-if(isset($_POST["userName"]) AND isset($_POST["email"]) AND isset($_POST["password"]) AND isset($_POST["repeatPassword"])){
+if(!empty($_POST["userName"]) AND !empty($_POST["email"]) AND !empty($_POST["password"]) AND !empty($_POST["repeatPassword"])){
 	require "../../incl/lib/connection.php";
 	require "../../incl/lib/exploitPatch.php";
 	$ep = new exploitPatch();

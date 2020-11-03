@@ -11,7 +11,7 @@ $gjp = $ep->remove($_POST["gjp"]);
 $accountID = $ep->remove($_POST["accountID"]);
 $targetAccountID = $ep->remove($_POST["targetAccountID"]);
 //REMOVING THE REQUEST
-if(isset($_POST["isSender"]) AND $_POST["isSender"] == 1){
+if(!empty($_POST["isSender"]) AND $_POST["isSender"] == 1){
 		$query = $db->prepare("DELETE from friendreqs WHERE accountID=:accountID AND toAccountID=:targetAccountID LIMIT 1");
 }else{
 		$query = $db->prepare("DELETE from friendreqs WHERE toAccountID=:accountID AND accountID=:targetAccountID LIMIT 1");

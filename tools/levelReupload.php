@@ -23,7 +23,7 @@ include "../config/reupload.php";
 if ($level_reupload == -1) {
 	exit("Level reuploading to this GDPS is disabled.");
 }
-if(isset($_POST["levelid"])){
+if(!empty($_POST["levelid"])){
 	$levelID = $_POST["levelid"];
 	$levelID = preg_replace("/[^0-9]/", '', $levelID);
 	$url = $_POST["server"];
