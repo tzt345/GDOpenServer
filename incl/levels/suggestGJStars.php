@@ -22,7 +22,7 @@ if ($accountID != "" AND $gjp != "") {
 			$gs->featureLevel($accountID, $levelID, $feature);
 			$gs->verifyCoinsLevel($accountID, $levelID, 1);
 			echo 1;
-		} elseif ($gs->checkPermission($accountID, "actionSuggestRating")) {
+		} elseif ($gs->checkPermission($accountID, "actionSuggestRating") || $nonModsCanSuggest == 1) {
 			$gs->suggestLevel($accountID, $levelID, $difficulty["diff"], $stars, $feature, $difficulty["auto"], $difficulty["demon"]);
 			echo 1;
 		} else {

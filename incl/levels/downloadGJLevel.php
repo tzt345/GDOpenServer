@@ -60,7 +60,7 @@ if(!is_numeric($levelID)){
 		function timing ($time) {
 			$time = time() - $time; // to get the time since that moment
 			$time = ($time < 1) ? 1 : $time;
-			$tokens = array (31536000 => 'year', 2592000 => 'month', 604800 => 'week', 86400 => 'day', 3600 => 'hour', 60 => 'minute', 0 => 'second');
+			$tokens = array (31536000 => 'year', 2592000 => 'month', 604800 => 'week', 86400 => 'day', 3600 => 'hour', 60 => 'minute', 1 => 'second');
 			foreach ($tokens as $unit => $text) {
 				if ($time < $unit) continue;
 				$numberOfUnits = floor($time / $unit);
@@ -98,6 +98,7 @@ if(!is_numeric($levelID)){
 				$levelstring = str_replace("+", "-", $levelstring);
 			}
 		}
+		// todo: replace value in :8: with vote count and starDifficulty with projected/calculated difficulty from the suggest table, if the level is rated (with stars) just do :8:10:9:".$result["starDifficulty"]
 		$response = "1:".$result["levelID"].":2:".$result["levelName"].":3:".$desc.":4:".$levelstring.":5:".$result["levelVersion"].":6:".$result["userID"].":8:10:9:".$result["starDifficulty"].":10:".$result["downloads"].":11:1:12:".$result["audioTrack"].":13:".$result["gameVersion"].":14:".$result["likes"].":17:".$result["starDemon"].":43:".$result["starDemonDiff"].":25:".$result["starAuto"].":18:".$result["starStars"].":19:".$result["starFeatured"].":42:".$result["starEpic"].":45:".$result["objects"].":15:".$result["levelLength"].":30:".$result["original"].":31:1:28:".$uploadDate. ":29:".$updateDate. ":35:".$result["songID"].":36:".$result["extraString"].":37:".$result["coins"].":38:".$result["starCoins"].":39:".$result["requestedStars"].":46:1:47:2:48:1:40:".$result["isLDM"].":27:$xorPass";
 		if($daily == 1){
 			$response .= ":41:".$feaID;
