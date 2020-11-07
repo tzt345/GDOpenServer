@@ -45,7 +45,7 @@ if ($pass == 1) { //success
 		}
 		$userID = $result["userID"];
 		$query = $db->prepare("UPDATE users SET lastPlayed = :lastPlayed WHERE extID = :id");
-		$query->execute([':id' => $userID]);
+		$query->execute([':id' => $userID, ':lastPlayed' => time()]);
 	} else {
 		$query = $db->prepare("INSERT INTO users (isRegistered, extID, userName, lastPlayed) VALUES (1, :id, :userName, :lastPlayed)");
 		$query->execute([':id' => $id, ':userName' => $userName, ':lastPlayed' => time()]);
@@ -63,8 +63,8 @@ if ($pass == 1) { //success
 			$usrid2 = $query2->fetchColumn();
 			$query2 = $db->prepare("UPDATE levels SET userID = :userID, extID = :extID WHERE userID = :usrid2");
 			$query2->execute([':userID' => $userID, ':extID' => $id, ':usrid2' => $usrid2]);
-			$query2 = $db->prepare("UPDATE comments SET userID = :userID, extID = :extID WHERE userID = :usrid2");
-			$query2->execute([':userID' => $userID, ':extID' => $id, ':usrid2' => $usrid2]);
+			$query2 = $db->prepare("UPDATE comments SET userID = :userID WHERE userID = :usrid2");
+			$query2->execute([':userID' => $userID, ':usrid2' => $usrid2]);
 		}
 	}
 } elseif ($pass == -1) { //failure

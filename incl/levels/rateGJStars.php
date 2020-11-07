@@ -1,6 +1,7 @@
 <?php
 chdir(dirname(__FILE__));
 include "../lib/connection.php";
+include "../../config/users.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
@@ -14,12 +15,14 @@ if($accountID != "" AND $gjp != ""){
 	$GJPCheck = new GJPCheck();
 	$gjpresult = $GJPCheck->check($gjp, $accountID);
 	if($gjpresult == 1){
-		$permState = $gs->checkPermission($accountID, "actionRateStars");
-		if($permState){
-			$difficulty = $gs->getDiffFromStars($stars);
+		$difficulty = $gs->getDiffFromStars($stars);
+		if($gs->checkPermission($accountID, "actionRateStars")){
 			$gs->rateLevel($accountID, $levelID, 0, $difficulty["diff"], $difficulty["auto"], $difficulty["demon"]);
 			echo 1;
-		}else{
+		} elseif ($gs->checkPermission($accountID, "actionSuggestRating") || $nonModsCanSuggest == 1) {
+			$gs->suggestLevel($accountID, $levelID, $difficulty["diff"], $stars, $feature, $difficulty["auto"], $difficulty["demon"]);
+			echo 1;
+		} else {
 			echo -1;
 		}
 	}else{
