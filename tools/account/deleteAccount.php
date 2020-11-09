@@ -1,4 +1,4 @@
 <?php
-chdir(dirname(__FILE__));
+chdir(__DIR__);
 include "../../lib/connection.php";
 ?>

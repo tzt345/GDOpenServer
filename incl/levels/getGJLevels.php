@@ -1,6 +1,6 @@
 <?php
 //header
-chdir(dirname(__FILE__));
+chdir(__DIR__);
 include "../lib/connection.php";
 include "../../config/levels.php";
 require_once "../lib/GJPCheck.php";

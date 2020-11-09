@@ -1,7 +1,7 @@
 <?php
 class Commands {
 	private function ownCommand($comment, $command, $accountID, $targetExtID){
-		chdir(dirname(__FILE__));
+		chdir(__DIR__);
 		include "../../config/commands.php";
 		require_once "../../lib/mainLib.php";
 		$gs = new mainLib();
@@ -14,7 +14,7 @@ class Commands {
 		return false;
 	}
 	public function doCommands($accountID, $comment, $levelID) {
-		chdir(dirname(__FILE__));
+		chdir(__DIR__);
 		include "../lib/connection.php";
 		include "../../config/commands.php";
 		include "../../config/levels.php";
@@ -50,7 +50,7 @@ class Commands {
 			if ($permissions[$commentarray[0]] == "admin" OR $permissions[$commentarray[0]] != "non-admin" OR !isset($permissions[$commentarray[0]])) {
 				$commandFirstUpper = ucfirst(str_replace("un", "", $commentarray[0]));
 				$commandConfig = "$"."command".$commandFirstUpper;
-				if ($gs->checkPermission($accountID, "command".$commandFirstUpper) AND (eval("return $commandConfig == 1;") == 1)) {
+				if ($gs->checkPermission($accountID, $commandFirstUpper) AND (eval("return $commandConfig == 1;") == 1)) {
 					include "cmd/".$commentarray[0].".php";
 				} else {
 					exit("temp_0_Error: You do not have proper permission to use this command.");
@@ -71,7 +71,7 @@ class Commands {
 					if ($permissions[$command] == "admin" OR $permissions[$command] != "non-admin" OR !isset($permissions[$command])) {
 						$commandFirstUpper = ucfirst(str_replace("un", "", $command));
 						$commandConfig = "$"."command".$commandFirstUpper;
-						if ($gs->checkPermission($accountID, "command".$commandFirstUpper) AND (eval("return $commandConfig == 1;") == 1)) {
+						if ($gs->checkPermission($accountID, $commandFirstUpper) AND (eval("return $commandConfig == 1;") == 1)) {
 							include "cmd/".$command.".php";
 						} else {
 							exit("temp_0_Error: You do not have proper permission to use this command.");
@@ -92,7 +92,7 @@ class Commands {
 		}
 	}
 	public function doProfileCommands($accountID, $command){
-		include dirname(__FILE__)."/../lib/connection.php";
+		include __DIR__."/../lib/connection.php";
 		require_once "../lib/exploitPatch.php";
 		$ep = new exploitPatch();
 		require_once "../lib/mainLib.php";

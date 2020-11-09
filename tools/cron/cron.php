@@ -1,5 +1,5 @@
 <?php
-chdir(dirname(__FILE__));
+chdir(__DIR__);
 set_time_limit(0);
 if(file_exists("../logs/cronlastrun.txt")){
 	$cptime = file_get_contents("../logs/cronlastrun.txt");

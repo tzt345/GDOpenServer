@@ -1,3 +1,3 @@
 <?php
-include dirname(__FILE__)."/../../api/discordLinkTransferRoles.php";
+include __DIR__."/../../api/discordLinkTransferRoles.php";
 ?>

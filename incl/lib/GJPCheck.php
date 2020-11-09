@@ -1,9 +1,9 @@
 <?php
 class GJPCheck {
 	public function check($gjp, $accountID) {
-		include dirname(__FILE__)."/connection.php";
-		include dirname(__FILE__)."/../../config/security.php";
-		include_once dirname(__FILE__)."/mainLib.php";
+		include __DIR__."/connection.php";
+		include __DIR__."/../../config/security.php";
+		include_once __DIR__."/mainLib.php";
 		$ml = new mainLib();
 		if($sessionGrants){
 			$ip = $ml->getIP();
@@ -21,8 +21,8 @@ class GJPCheck {
 				}
 			}
 		}
-		require_once dirname(__FILE__)."/XORCipher.php";
-		require_once dirname(__FILE__)."/generatePass.php";
+		require_once __DIR__."/XORCipher.php";
+		require_once __DIR__."/generatePass.php";
 		$xor = new XORCipher();
 		$gjpdecode = str_replace("_", "/", $gjp);
 		$gjpdecode = str_replace("-", "+", $gjpdecode);

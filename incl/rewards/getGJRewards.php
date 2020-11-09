@@ -1,5 +1,5 @@
 <?php
-chdir(dirname(__FILE__));
+chdir(__DIR__);
 include "../lib/connection.php";
 include "../../config/chests.php";
 require "../lib/XORCipher.php";

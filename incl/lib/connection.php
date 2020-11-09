@@ -1,6 +1,6 @@
 <?php
 //error_reporting(0);
-include dirname(__FILE__)."/../../config/connection.php";
+include __DIR__."/../../config/connection.php";
 @header('Content-Type: text/html; charset=utf-8');
 try {
 	$db = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password, array(

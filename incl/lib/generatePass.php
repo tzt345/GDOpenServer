@@ -1,10 +1,10 @@
 <?php
 class generatePass {
 	public function isValidUsrname($userName, $pass) {
-		include dirname(__FILE__)."/connection.php";
-		require_once dirname(__FILE__)."/mainLib.php";
+		include __DIR__."/connection.php";
+		require_once __DIR__."/mainLib.php";
 		$gs = new mainLib();
-		include dirname(__FILE__)."/../../config/security.php";
+		include __DIR__."/../../config/security.php";
 		$ip = $gs->getIP();
 		$newtime = time() - 3600;
 		$query6 = $db->prepare("SELECT count(*) FROM actions WHERE type = 6 AND timestamp > :time AND value2 = :ip");
@@ -63,7 +63,7 @@ class generatePass {
 		}
 	}
 	public function isValid($accid, $pass){
-		include dirname(__FILE__)."/connection.php";
+		include __DIR__."/connection.php";
 		$query = $db->prepare("SELECT userName FROM accounts WHERE accountID = :accid");
 		$query->execute([':accid' => $accid]);
 		if($query->rowCount() == 0){

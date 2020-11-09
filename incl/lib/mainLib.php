@@ -593,10 +593,7 @@ class mainLib {
 			foreach($roles as &$role){
 				if($role[$permission] == 1){
 					return true;
-				}
-				if($role[$permission] == 2){
-					return false;
-				}
+				}else{ return false; }
 			}
 		}
 		$query = $db->prepare("SELECT $permission FROM roles WHERE isDefault = 1");
@@ -604,11 +601,7 @@ class mainLib {
 		$permState = $query->fetchColumn();
 		if($permState == 1){
 			return true;
-		}
-		if($permState == 2){
-			return false;
-		}
-		return false;
+		}else{ return false; }
 	}
 	public function isCloudFlareIP($ip) {
 		$cf_ips = array(
@@ -844,7 +837,7 @@ class mainLib {
 					$query->execute([':name' => $name, ':download' => $song, ':author' => $author, ':size' => $size, ':hash' => $hash]);
 					$response = $db->lastInsertId();
 					if ($response > 999999) {
-						require_once dirname(__FILE__)."/../incl/lib/mainLib.php";
+						require_once __DIR__."/../incl/lib/mainLib.php";
 						$gs = new mainLib();
 						$queryd = $db->prepare("INSERT INTO levels (levelName, gameVersion, binaryVersion, userName, levelDesc, levelVersion, levelLength, audioTrack, auto, password, original, twoPlayer, songID, objects, coins, requestedStars, extraString, levelString, levelInfo, uploadDate, userID, extID, updateDate, unlisted, hostname, isLDM) VALUES (:levelName, 19, 19, :userName, 'QXV0by1HZW5lcmF0ZWQgU29uZyBMZXZlbA==', 1, 0, 0, 0, 0, 0, 0, :songID, 1, 0, 0, '29_29_29_40_29_29_29_29_29_29_29_29_29_29_29_29', '', 0, :uploadDate, :userID, :id, :uploadDate, 1, '127.0.0.1', 0)");
 						$queryd->execute([':levelName' => "Song ID ".$db->lastInsertId(), ':userName' => $gs->getAccountName($botAID), ':songID' => $db->lastInsertId(), ':uploadDate' => time(), ':userID' => $botUID, ':id' => $botAID]);
@@ -878,8 +871,8 @@ class mainLib {
 		$query->execute([':account' => $accountID, ':level' => $levelID, ':diff' => $difficulty, ':stars' => $stars, ':feat' => $feat, ':auto' => $auto, ':demon' => $demon, ':timestamp' => time()]);
 	}
 	public function checkBan($ID, $type = 1, $isAccountID = 0){
-		include dirname(__FILE__)."/../../config/security.php";
-		include dirname(__FILE__)."/../../config/users.php";
+		include __DIR__."/../../config/security.php";
+		include __DIR__."/../../config/users.php";
 		if ($isAccountID == 1) {
 			$ID = $this->getUserID($ID);
 		}

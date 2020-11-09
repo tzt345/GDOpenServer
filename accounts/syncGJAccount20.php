@@ -1,5 +1,5 @@
 <?php
-chdir(dirname(__FILE__));
+chdir(__DIR__);
 //error_reporting(0);
 include "../incl/lib/connection.php";
 require "../incl/lib/generatePass.php";

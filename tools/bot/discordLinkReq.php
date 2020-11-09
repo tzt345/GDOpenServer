@@ -1,3 +1,3 @@
 <?php
-include dirname(__FILE__)."/../../api/discordLinkReq.php";
+include __DIR__."/../../api/discordLinkReq.php";
 ?>

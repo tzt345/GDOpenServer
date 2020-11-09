@@ -1,3 +1,3 @@
 <?php
-include dirname(__FILE__)."/../../api/playerStatsBot.php";
+include __DIR__."/../../api/playerStatsBot.php";
 ?>

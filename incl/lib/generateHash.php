@@ -3,7 +3,7 @@
 class generateHash {
 	public function genMulti($lvlsmultistring) {
 		$lvlsarray = explode(",", $lvlsmultistring);
-		include dirname(__FILE__)."/connection.php";
+		include __DIR__."/connection.php";
 		$hash = "";
 		foreach($lvlsarray as $id){
 			//moving levels into the new system
@@ -15,8 +15,8 @@ class generateHash {
 			$result2 = $query->fetchAll();
 			$result = $result2[0];
 			$levelString = $result["levelString"];
-			if(!file_exists(dirname(__FILE__)."/../../data/levels/$id")){
-				file_put_contents(dirname(__FILE__)."/../../data/levels/$id",$levelString);
+			if(!file_exists(__DIR__."/../../data/levels/$id")){
+				file_put_contents(__DIR__."/../../data/levels/$id",$levelString);
 				$query = $db->prepare("UPDATE levels SET levelString = '' WHERE levelID = :levelID");
 				$query->execute([':levelID' => $id]);
 			}
@@ -48,7 +48,7 @@ class generateHash {
 	}
 	public function genPack($lvlsmultistring) {
 		$lvlsarray = explode(",", $lvlsmultistring);
-		include dirname(__FILE__)."/connection.php";
+		include __DIR__."/connection.php";
 		$hash = "";
 		foreach($lvlsarray as $id){
 			$query=$db->prepare("SELECT ID,stars,coins FROM mappacks WHERE ID = :id");

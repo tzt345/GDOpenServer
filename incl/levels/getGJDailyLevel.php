@@ -1,5 +1,5 @@
 <?php
-chdir(dirname(__FILE__));
+chdir(__DIR__);
 include "../lib/connection.php";
 if(empty($_POST["weekly"]) OR $_POST["weekly"] == 0){
 	$weekly = 0;

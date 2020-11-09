@@ -1,5 +1,5 @@
 <?php
-chdir(dirname(__FILE__));
+chdir(__DIR__);
 set_time_limit(0);
 $frndlog = "";
 include "../../incl/lib/connection.php";

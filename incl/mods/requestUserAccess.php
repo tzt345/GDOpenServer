@@ -1,5 +1,5 @@
 <?php
-chdir(dirname(__FILE__));
+chdir(__DIR__);
 //error_reporting(0);
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";

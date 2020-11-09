@@ -1,5 +1,5 @@
 <?php
-chdir(dirname(__FILE__));
+chdir(__DIR__);
 echo "Please wait...<br>";
 ob_flush();
 flush();

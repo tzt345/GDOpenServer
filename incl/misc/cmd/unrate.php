@@ -40,7 +40,7 @@ if ($result["starStars"] == 0) {
         $query3 = $db->prepare("SELECT userID FROM cpshares WHERE levelID = :levelID");
         $query3->execute([':levelID' => $levelID]);
         $deservedcp = $rateCP;
-        if($gs->checkPermission($accountID, "commandFeature") AND $result["starFeatured"] == 0){
+        if($gs->checkPermission($accountID, "Feature") AND $result["starFeatured"] == 0){
             $deservedcp += $featureCP;
             $featureLevel = 1;
         }
@@ -86,7 +86,7 @@ if ($unfeature == 1) {
     }
 }
 if ($unverifyCoins == 1) {
-    if ($gs->checkPermission($accountID, "commandVerifycoins")) {
+    if ($gs->checkPermission($accountID, "Verifycoins")) {
         $query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES (3, 0, :levelID, :timestamp, :id)");
         $query->execute([':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
         $query = $db->prepare("UPDATE levels SET starCoins = 0 WHERE levelID = :levelID");

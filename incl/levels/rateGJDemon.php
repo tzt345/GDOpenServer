@@ -1,6 +1,6 @@
 <?php
 //error_reporting(0);
-chdir(dirname(__FILE__));
+chdir(__DIR__);
 include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 $GJPCheck = new GJPCheck();

@@ -4,8 +4,8 @@ include "../../incl/lib/connection.php";
 require "../incl/dashboardLib.php";
 $dl = new dashboardLib();
 if(isset($_GET["lang"]) AND ctype_alpha($_GET["lang"])){
-	setcookie("lang", strtoupper($_GET["lang"]), time() - 3600, dirname(__FILE__)."/../../dashboard");
-	setcookie("lang", strtoupper($_GET["lang"]), time() - 3600, dirname(__FILE__)."/../../dashboard/lang");
+	setcookie("lang", strtoupper($_GET["lang"]), time() - 3600, __DIR__."/../../dashboard");
+	setcookie("lang", strtoupper($_GET["lang"]), time() - 3600, __DIR__."/../../dashboard/lang");
 	setcookie("lang", strtoupper($_GET["lang"]), 2147483647, "/");
 	if(isset($_SERVER["HTTP_REFERER"])){
 		header('Location: ' . $_SERVER["HTTP_REFERER"]);

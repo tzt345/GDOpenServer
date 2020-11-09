@@ -1,10 +1,10 @@
 <?php
 session_start();
 //error_reporting(0);
-include dirname(__FILE__)."/../../incl/lib/connection.php";
-require_once dirname(__FILE__)."/../incl/dashboardLib.php";
+include __DIR__."/../../incl/lib/connection.php";
+require_once __DIR__."/../incl/dashboardLib.php";
 $dl = new dashboardLib();
-require_once dirname(__FILE__)."/../../incl/lib/mainLib.php";
+require_once __DIR__."/../../incl/lib/mainLib.php";
 $gs = new mainLib();
 if(!empty($_POST["url"])){
 	$songID = $gs->songReupload($_SESSION["accountID"], $_POST["url"]);
