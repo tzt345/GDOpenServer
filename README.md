@@ -1,20 +1,21 @@
-## GDOpenServer
-Basically a "server emulator" for Geometry Dash, except it's rewritten soon.  
-Coming with new features, tools, configurations and literally no need of knowledge on how to use PHPMyAdmin, all documentated and easy to use!  
-[![CodeFactor](https://www.codefactor.io/repository/github/jecket22/gdopenserver/badge/master)](https://www.codefactor.io/repository/github/jecket22/gdopenserver/overview/master)
-
 # EY, LISTEN UP!
+**Seriously, read this before crying out loud for getting a bunch of errors.**  
 There haven't been made lots of tests so far, and it's currently still under heavy development.  
 Most features are **NOT** working, even if there's a config provided. So please don't expect to think everything is working out of the box.  
 I advise you to not use this for a public server until a release will be pushed.
 Currently, tests are done on a Linux server, with MariaDB and PHP 7.4 installed.
+
+## GDOpenServer
+Basically a "server emulator" for Geometry Dash, except it's rewritten soon.  
+Coming with new features, tools, configurations and literally no need of knowledge on how to use PHPMyAdmin, all documentated and easy to use!  
+[![CodeFactor](https://www.codefactor.io/repository/github/jecket22/gdopenserver/badge/master)](https://www.codefactor.io/repository/github/jecket22/gdopenserver/overview/master)
 
 ### Setup (extremely simplified)
 1. Upload all files to your webserver
 2. Import the database into an existing MySQL/MariaDB database
 3. Configurate files in /config (at least connection.php or your GDPS will completely fail)
 4. Edit the links in the application (some links are encoded in Base64 since update 2.1)
-- Requirements: Currently unknown.
+- Requirements: +5.4, currently unknown if it's guaranteed to work on that specific version
 
 ### Credits
 Most said code changes are already credited in https://github.com/Cvolton/GMDprivateServer.  
