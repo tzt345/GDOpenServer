@@ -15,13 +15,13 @@ Coming with new features, tools, configurations and literally no need of knowled
 2. Import the database into an existing MySQL/MariaDB database
 3. Configurate files in /config (at least connection.php or your GDPS will completely fail)
 4. Edit the links in the application (some links are encoded in Base64 since update 2.1)
-- Requirements: +5.4, currently unknown if it's guaranteed to work on that specific version
+- Requirements: PHP +5.4, currently unknown if it's guaranteed to work on that specific version
 
 ### Credits
 Most said code changes are already credited in https://github.com/Cvolton/GMDprivateServer.  
 Big thanks to Intelligent-Cat and Wyliemaster for helping me working on this project.  
 Additional credits to Alex1304 and DonAlex0 for some code they made that's included in here,  
-also thanks to erfg12 for the Newgrounds-Scraper code and PHPMailer org for the PHPMailer binaries.
+also thanks to erfg12 for the Newgrounds-Scraper code, spyc for their yaml parser and PHPMailer org for the PHPMailer binaries.
 
 ### Discord
 If you need support, want to be updated or just want to chat, then you might want to join our Discord. https://discord.gg/PjFXRf5
