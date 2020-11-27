@@ -28,7 +28,7 @@ if(!empty($_POST["pwcheck"])) {
 	$smolWait = $_POST["smolWait"] || 3600;
 	$bigWait = $_POST["bigWait"] || 14400;
 	// ono
-	$string = "";
+	$string = "<?php".PHP_EOL;
 	$string .= '$chest1minOrbs = '.$smolMinOrbs.';'.PHP_EOL;
 	$string .= '$chest1minOrbs = '.$smolMaxOrbs.';'.PHP_EOL;
 	$string .= '$chest1minOrbs = '.$smolMinDiamonds.';'.PHP_EOL;
@@ -47,6 +47,7 @@ if(!empty($_POST["pwcheck"])) {
 	$string .= '$chest2minOrbs = '.$bigMaxKeys.';'.PHP_EOL;
 	$string .= '$chest1wait = '.$smolWait.';'.PHP_EOL;
 	$string .= '$chest1wait = '.$bigWait.';'.PHP_EOL;
+	$string .= "?>".PHP_EOL;
 	try {
 		file_put_contents("../config/chests.php", $string);
 		exit ("Success!");
