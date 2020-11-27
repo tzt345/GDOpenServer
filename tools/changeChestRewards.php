@@ -30,23 +30,23 @@ if(!empty($_POST["pwcheck"])) {
 	// ono
 	$string = "<?php".PHP_EOL;
 	$string .= '$chest1minOrbs = '.$smolMinOrbs.';'.PHP_EOL;
-	$string .= '$chest1minOrbs = '.$smolMaxOrbs.';'.PHP_EOL;
-	$string .= '$chest1minOrbs = '.$smolMinDiamonds.';'.PHP_EOL;
-	$string .= '$chest1minOrbs = '.$smolMaxDiamonds.';'.PHP_EOL;
-	$string .= '$chest1minOrbs = '.$smolMinShards.';'.PHP_EOL;
-	$string .= '$chest1minOrbs = '.$smolMaxShards.';'.PHP_EOL;
-	$string .= '$chest1minOrbs = '.$smolMinKeys.';'.PHP_EOL;
-	$string .= '$chest1minOrbs = '.$smolMaxKeys.';'.PHP_EOL;
+	$string .= '$chest1maxOrbs = '.$smolMaxOrbs.';'.PHP_EOL;
+	$string .= '$chest1minDiamonds = '.$smolMinDiamonds.';'.PHP_EOL;
+	$string .= '$chest1maxDiamonds = '.$smolMaxDiamonds.';'.PHP_EOL;
+	$string .= '$chest1minShards = '.$smolMinShards.';'.PHP_EOL;
+	$string .= '$chest1maxShards = '.$smolMaxShards.';'.PHP_EOL;
+	$string .= '$chest1minKeys = '.$smolMinKeys.';'.PHP_EOL;
+	$string .= '$chest1maxKeys = '.$smolMaxKeys.';'.PHP_EOL;
 	$string .= '$chest2minOrbs = '.$bigMinOrbs.';'.PHP_EOL;
-	$string .= '$chest2minOrbs = '.$bigMaxOrbs.';'.PHP_EOL;
-	$string .= '$chest2minOrbs = '.$bigMinDiamonds.';'.PHP_EOL;
-	$string .= '$chest2minOrbs = '.$bigMaxDiamonds.';'.PHP_EOL;
-	$string .= '$chest2minOrbs = '.$bigMinShards.';'.PHP_EOL;
-	$string .= '$chest2minOrbs = '.$bigMaxShards.';'.PHP_EOL;
-	$string .= '$chest2minOrbs = '.$bigMinKeys.';'.PHP_EOL;
-	$string .= '$chest2minOrbs = '.$bigMaxKeys.';'.PHP_EOL;
+	$string .= '$chest2maxOrbs = '.$bigMaxOrbs.';'.PHP_EOL;
+	$string .= '$chest2minDiamonds = '.$bigMinDiamonds.';'.PHP_EOL;
+	$string .= '$chest2maxDiamonds = '.$bigMaxDiamonds.';'.PHP_EOL;
+	$string .= '$chest2minShards = '.$bigMinShards.';'.PHP_EOL;
+	$string .= '$chest2maxShards = '.$bigMaxShards.';'.PHP_EOL;
+	$string .= '$chest2minKeys = '.$bigMinKeys.';'.PHP_EOL;
+	$string .= '$chest2maxKeys = '.$bigMaxKeys.';'.PHP_EOL;
 	$string .= '$chest1wait = '.$smolWait.';'.PHP_EOL;
-	$string .= '$chest1wait = '.$bigWait.';'.PHP_EOL;
+	$string .= '$chest2wait = '.$bigWait.';'.PHP_EOL;
 	$string .= "?>".PHP_EOL;
 	try {
 		file_put_contents("../config/chests.php", $string);
