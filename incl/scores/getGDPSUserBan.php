@@ -1,13 +1,13 @@
 <?php
 chdir(__DIR__);
-include "../lib/connection.php";
+require "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
 //here im getting all the data
-if(!isset($_POST["userID"])){
+if (!isset($_POST["userID"])) {
 	exit("-2");
 }
 $userID = $_POST["userID"];

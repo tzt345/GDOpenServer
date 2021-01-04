@@ -1,31 +1,44 @@
 <?php
-$query = $db->prepare("SELECT starFeatured, isCPShared FROM levels WHERE levelID = :levelID");
+$query = $db->prepare("SELECT starStars, starFeatured, starEpic, starMagic, isCPShared FROM levels WHERE levelID = :levelID");
 $query->execute([':levelID' => $levelID]);
 $result = $query->fetch();
-if ($result["starFeatured"] != 0) {
-    $query = $db->prepare("UPDATE levels SET starFeatured = 1 WHERE levelID = :levelID");
-    $query->execute([':levelID' => $levelID]);
-    if ($result["isCPShared"] == 1) {
-        $query3 = $db->prepare("SELECT userID FROM cpshares WHERE levelID = :levelID");
-        $query3->execute([':levelID' => $levelID]);
-        if ($CPSharedWhole == 1) {
-            $addCP = $featureCP;
-        } else {
-            $sharecount = $query3->rowCount() + 1;
-            $addCP = round($featureCP / $sharecount);
-        }
-        $shares = $query->fetchAll();
-        $CPShare = round($addCP);
-        foreach($shares as &$share){
-            $query4 = $db->prepare("UPDATE users SET creatorPoints = creatorPoints + :CPShare WHERE userID = :userID");
-            $query4->execute([':userID' => $share["userID"], ':CPShare' => $CPShare]);
-        }
-    } else {
-        $query4 = $db->prepare("UPDATE users SET creatorPoints = creatorPoints + :addCP WHERE extID = :extID");
-        $query4->execute([':extID' => $targetExtID, ':addCP' => $featureCP]);
-    }
+$deservedCP = 0;
+$deservedCP2 = 0;
+if ($result["starFeatured"] == 0) {
+    $deservedCP2 = $featureCP;
 } else {
     exit("temp_0_Error: This level is already featured.");
+}
+$deservedCP += $epicCP;
+if ($result["starStars"] != 0) {
+    $deservedCP += $rateCP;
+}
+if ($result["starEpic"] != 0) {
+    $deservedCP += $epicCP;
+}
+if ($isMagicSectionManual == 1 AND $result["starMagic"] != 0) {
+    $deservedCP += $magicCP;
+}
+$deservedCP2 += $deservedCP;
+$removeCP = round($deservedCP);
+$addCP = round($deservedCP2);
+if ($removeCP > 0) {
+    if ($result["isCPShared"] == 1) {
+        $query2 = $db->prepare("SELECT userID FROM cpshares WHERE levelID = :levelID");
+        $query2->execute([':levelID' => $levelID]);
+        $shares = $query2->fetch(); 
+        foreach ($shares as &$share){
+            $query3 = $db->prepare("UPDATE users SET creatorPoints = creatorPoints - :CPShare WHERE userID = :userID");
+            $query3->execute([':userID' => $share["userID"], ':CPShare' => $removeCP]);
+            $query4 = $db->prepare("UPDATE users SET creatorPoints = creatorPoints + :CPShare WHERE userID = :userID");
+            $query4->execute([':userID' => $share["userID"], ':CPShare' => $addCP]);
+        }
+    } else {
+        $query2 = $db->prepare("UPDATE users SET creatorPoints = creatorPoints - :CPShare WHERE userID = :userID");
+        $query2->execute([':userID' => $targetExtID, ':CPShare' => $removeCP]);
+        $query3 = $db->prepare("UPDATE users SET creatorPoints = creatorPoints + :CPShare WHERE userID = :userID");
+        $query3->execute([':userID' => $targetExtID, ':CPShare' => $addCP]);
+    }
 }
 $query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES (2, 1, :levelID, :timestamp, :id)");
 $query->execute([':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);

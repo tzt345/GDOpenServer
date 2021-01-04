@@ -1,3 +1,5 @@
+# You can put "1" instead of admin and 0 for non-admin command permissions.
+
 ban: admin
 commentban: admin
 daily: admin

@@ -14,7 +14,7 @@ $query2 = "DELETE FROM friendships WHERE person2 = :accountID AND person1 = :tar
 $query2 = $db->prepare($query2);
 //EXECUTING THE QUERIES
 $GJPCheck = new GJPCheck();
-$gjpresult = $GJPCheck->check($gjp,$accountID);
+$gjpresult = $GJPCheck->check($gjp, $accountID);
 if($gjpresult == 1){
 	$query->execute([':accountID' => $accountID, ':targetAccountID' => $targetAccountID]);
 	$query2->execute([':accountID' => $accountID, ':targetAccountID' => $targetAccountID]);

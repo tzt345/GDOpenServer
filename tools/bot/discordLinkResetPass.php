@@ -1,3 +1,3 @@
 <?php
-include __DIR__."/../../api/discordLinkResetPass.php";
+include __DIR__ . "/../../api/discordLinkResetPass.php";
 ?>

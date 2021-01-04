@@ -2,18 +2,17 @@
 <table border="1">
 <tr><th>Moderator</th><th>Count</th><th>Levels rated</th><th>Last time online</th></tr>
 <?php
-//error_reporting(0);
-include "../../incl/lib/connection.php";
-require "../../incl/lib/mainLib.php";
+require "../../incl/lib/connection.php";
+require_once "../../incl/lib/mainLib.php";
 $gs = new mainLib();
-$accounts = implode(",",$gs->getAccountsWithPermission("toolModactions"));
-if($accounts == ""){
+$accounts = implode(",", $gs->getAccountsWithPermission("toolModactions"));
+if ($accounts == "") {
 	exit("Error: No accounts with the 'toolModactions' permission have been found");
 }
 $query = $db->prepare("SELECT accountID, userName FROM accounts WHERE accountID IN ($accounts) ORDER BY userName ASC");
 $query->execute();
 $result = $query->fetchAll();
-foreach($result as &$mod){
+foreach ($result as &$mod) {
 	$query = $db->prepare("SELECT lastPlayed FROM users WHERE extID = :id");
 	$query->execute([':id' => $mod["accountID"]]);
 	$time = date("d/m/Y G:i:s", $query->fetchColumn());
@@ -23,7 +22,7 @@ foreach($result as &$mod){
 	$query = $db->prepare("SELECT count(*) FROM modactions WHERE account = :id AND type = 1");
 	$query->execute([':id' => $mod["accountID"]]);
 	$lvlcount = $query->fetchColumn();
-	echo "<tr><td>".$mod["userName"]."</td><td>".$actionscount."</td><td>".$lvlcount."</td><td>".$time."</td></tr>";
+	echo "<tr><td>" . $mod["userName"] . "</td><td>" . $actionscount . "</td><td>" . $lvlcount . "</td><td>" . $time . "</td></tr>";
 }
 ?>
 </table>
@@ -33,7 +32,7 @@ foreach($result as &$mod){
 $query = $db->prepare("SELECT * FROM modactions ORDER BY ID DESC");
 $query->execute();
 $result = $query->fetchAll();
-foreach($result as &$action){
+foreach ($result as &$action) {
 	//detecting mod
 	$account = $action["account"];
 	$query = $db->prepare("SELECT userName FROM accounts WHERE accountID = :id");
@@ -42,7 +41,7 @@ foreach($result as &$action){
 	//detecting action
 	$value = $action["value"];
 	$value2 = $action["value2"];
-	switch($action["type"]){
+	switch ($action["type"]) {
 		case 1:
 			$actionname = "Level rate change";
 			break;
@@ -57,7 +56,7 @@ foreach($result as &$action){
 			break;
 		case 5:
 			$actionname = "Set as daily feature";
-			if(is_numeric($value2)){
+			if (is_numeric($value2)) {
 				$value2 = date("d/m/Y G:i:s", $value2);
 			}
 			break;
@@ -101,21 +100,21 @@ foreach($result as &$action){
 			$actionname = $action["type"];
 			break;
 		}
-	if($action["type"] == 2 OR $action["type"] == 3 OR $action["type"] == 4 OR $action["type"] == 15 OR $action["type"] == 16){
-		if($action["value"] == 1){
+	if ($action["type"] == 2 OR $action["type"] == 3 OR $action["type"] == 4 OR $action["type"] == 15 OR $action["type"] == 16) {
+		if ($action["value"] == 1) {
 			$value = "True";
-		}else{
+		} else {
 			$value = "False";
 		}
 	}
-	if($action["type"] == 5 OR $action["type"] == 6){
+	if ($action["type"] == 5 OR $action["type"] == 6) {
 		$value = "";
 	}
 	$time = date("d/m/Y G:i:s", $action["timestamp"]);
-	if($action["type"] == 5 AND $action["value2"] > time()){
-		echo "<tr><td>".$account."</td><td>".$actionname."</td><td>".$value."</td><td>".$value2."</td><td>future</td><td>".$time."</td></tr>";
-	}else{
-		echo "<tr><td>".$account."</td><td>".$actionname."</td><td>".$value."</td><td>".$value2."</td><td>".$action["value3"]."</td><td>".$time."</td></tr>";
+	if ($action["type"] == 5 AND $action["value2"] > time()) {
+		echo "<tr><td>" . $account."</td><td>" . $actionname . "</td><td>" . $value . "</td><td>" . $value2 . "</td><td>future</td><td>" . $time . "</td></tr>";
+	} else {
+		echo "<tr><td>" . $account."</td><td>" . $actionname . "</td><td>" . $value . "</td><td>" . $value2 . "</td><td>" . $action["value3"] . "</td><td>" . $time . "</td></tr>";
 	}
 	
 }

@@ -32,5 +32,5 @@ include "fixnames.php";
 ob_flush();
 flush();
 touch("../logs/cronlastrun.txt");
-file_put_contents("../logs/cronlastrun.txt",time());
+file_put_contents("../logs/cronlastrun.txt", time());
 ?>

@@ -1,22 +1,22 @@
 <?php
-include "../../incl/lib/connection.php";
-require_once "../../incl/lib/exploitPatch.php";
+include "../incl/lib/connection.php";
+require_once "../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
 $type = strtolower($ep->remove($_GET["type"]));
 $page = $ep->remove($_GET["page"]);
 $page = $db->quote($page);
 $page = str_replace("'", "", $page);
-if($page == ""){
+if ($page == "") {
 	$page = 0;
 }
 $page--;
-if($page < 0){
+if ($page < 0) {
 	$page = 0;
 }
 $page = $page * 10;
-if($type =="stars" OR $type == "diamonds" OR $type == "usrcoins" OR $type == "coins" OR $type == "demons" OR $type == "cp" OR $type == "orbs" OR $type == "levels" OR $type == "friends"){
+if ($type =="stars" OR $type == "diamonds" OR $type == "usrcoins" OR $type == "coins" OR $type == "demons" OR $type == "cp" OR $type == "orbs" OR $type == "levels" OR $type == "friends") {
 	$typename = $type;
-	switch($type){
+	switch ($type) {
 		case "stars":
 			$thing = "stars";
 			break;
@@ -46,8 +46,8 @@ if($type =="stars" OR $type == "diamonds" OR $type == "usrcoins" OR $type == "co
 		case "friends":
 			$thing = "friendsCount";
 	}
-	$query = "SELECT $thing, userName, extID FROM users WHERE isBanned = 0 ORDER BY $thing DESC LIMIT 10 OFFSET $page";
-	if($type == "friends"){
+	$query = "SELECT $thing, userName, extID FROM users WHERE isLeaderboardBanned = 0 AND isBanned = 0 ORDER BY $thing DESC LIMIT 10 OFFSET $page";
+	if ($type == "friends") {
 		$query = "SELECT userName, friendsCount, accountID FROM accounts ORDER BY friendsCount DESC LIMIT 10 OFFSET $page";
 	}
 	$query = $db->prepare($query);
@@ -56,28 +56,28 @@ if($type =="stars" OR $type == "diamonds" OR $type == "usrcoins" OR $type == "co
 	echo "`#	|		Username | ".str_pad($typename, 16, " ", STR_PAD_LEFT)." | Linked? |`\r\n";
 	echo "`-----|-----------------|------------------|---------|`\r\n";
 	$xi = $page;
-	foreach($result as &$user){
+	foreach ($result as &$user) {
 		$query = $db->prepare("SELECT discordID FROM accounts WHERE accountID = :extID");
-		if($type == "friends"){
+		if ($type == "friends") {
 			$query->execute([':extID' => $user["accountID"]]);
-		}else{
+		} else {
 			$query->execute([':extID' => $user["extID"]]);
 		}
-		if($query->rowCount() == 0){
+		if ($query->rowCount() == 0) {
 			$link = "N/A";
-		}else{
-			if($query->fetchColumn() == 0){
+		} else {
+			if ($query->fetchColumn() == 0) {
 				$link = "No";
-			}else{
+			} else {
 				$link = "Yes";
 			}
 		}
 		$xi++;
 		$xyz = str_pad($xi, 4, " ", STR_PAD_RIGHT);
 		//$date = date("d/m/Y H:i", $user["lastPlayed"]);
-		echo "`$xyz | ".str_pad($user["userName"], 15, " ", STR_PAD_LEFT)." | ".str_pad($user[$thing], 16, " ", STR_PAD_LEFT)." | " . str_pad($link, 7, " ", STR_PAD_LEFT) . " |`\r\n";
+		echo "`$xyz | " . str_pad($user["userName"], 15, " ", STR_PAD_LEFT) . " | " . str_pad($user[$thing], 16, " ", STR_PAD_LEFT) . " | " . str_pad($link, 7, " ", STR_PAD_LEFT) . " |`\r\n";
 	}
-}else{
+} else {
 	echo "**Command usage: *!top <type> <page>*\r\nValid types are: Stars, Diamonds, Coins, Usrcoins, Demons, CP, Orbs, Levels, Friends**";
 }
 ?>

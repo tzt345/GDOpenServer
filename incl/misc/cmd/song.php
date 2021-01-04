@@ -1,6 +1,6 @@
 <?php
-if (isset($commentarray[1]) AND is_numeric($commentarray[1])) {
-	$song = $commentarray[1];
+if (isset($commentArray[1]) AND is_numeric($commentArray[1])) {
+	$song = $commentArray[1];
 } else {
 	exit("temp_0_Error: No input given for required argument 'Song ID'.");
 }

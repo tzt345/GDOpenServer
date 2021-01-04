@@ -2,23 +2,23 @@
 <table border="1">
 <tr><th>Difficulty</th><th>Total</th><th>Unrated</th><th>Rated</th><th>Featured</th><th>Epic</th></tr>
 <?php
-include "../../incl/lib/connection.php";
+require "../../incl/lib/connection.php";
 function genLvlRow($params, $params2, $params3, $params4){
 	$query = $db->prepare("SELECT count(*) FROM levels ".$params4." ".$params2);
 	$query->execute();
-	$row = "<tr><td>$params3</td><td>".$query->fetchColumn()."</td>";
-	$query = $db->prepare("SELECT count(*) FROM levels WHERE starStars = 0 ".$params." ".$params2);
+	$row = "<tr><td>$params3</td><td>" . $query->fetchColumn()."</td>";
+	$query = $db->prepare("SELECT count(*) FROM levels WHERE starStars = 0 " . $params . " " . $params2);
 	$query->execute();
-	$row .= "<td>".$query->fetchColumn()."</td>";
-	$query = $db->prepare("SELECT count(*) FROM levels WHERE starStars <> 0 ".$params." ".$params2);
+	$row .= "<td>" . $query->fetchColumn() . "</td>";
+	$query = $db->prepare("SELECT count(*) FROM levels WHERE starStars <> 0 " . $params . " " . $params2);
 	$query->execute();
-	$row .= "<td>".$query->fetchColumn()."</td>";
-	$query = $db->prepare("SELECT count(*) FROM levels WHERE starFeatured <> 0 ".$params." ".$params2);
+	$row .= "<td>" . $query->fetchColumn() . "</td>";
+	$query = $db->prepare("SELECT count(*) FROM levels WHERE starFeatured <> 0 " . $params . " " . $params2);
 	$query->execute();
-	$row .= "<td>".$query->fetchColumn()."</td>";
-	$query = $db->prepare("SELECT count(*) FROM levels WHERE starEpic <> 0 ".$params." ".$params2);
+	$row .= "<td>" . $query->fetchColumn() . "</td>";
+	$query = $db->prepare("SELECT count(*) FROM levels WHERE starEpic <> 0 " . $params . " " . $params2);
 	$query->execute();
-	$row .= "<td>".$query->fetchColumn()."</td></tr>";
+	$row .= "<td>" . $query->fetchColumn() . "</td></tr>";
 	return $row;
 }
 echo genLvlRow("", "", "Total", "");

@@ -1,6 +1,6 @@
 <?php
-$commandName = $commentarray[0];
-if (isset($commentarray[1])) {
+$commandName = $commentArray[0];
+if (isset($commentArray[1])) {
 	$desc = base64_encode(str_replace($prefix.$commandName." ", "", $comment));
 } else {
 	exit("temp_0_Error: No input given for required argument 'Description'.");

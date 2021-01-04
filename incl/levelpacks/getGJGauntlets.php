@@ -5,7 +5,7 @@ require_once "../lib/generateHash.php";
 $generateHash = new generateHash();
 $gauntletstring = "";
 $string = "";
-$query = $db->prepare("SELECT ID,level1,level2,level3,level4,level5 FROM gauntlets WHERE level5 != '0' ORDER BY ID ASC");
+$query = $db->prepare("SELECT ID, level1, level2, level3, level4, level5 FROM gauntlets WHERE level5 != 0 ORDER BY ID ASC");
 $query->execute();
 $result = $query->fetchAll();
 foreach($result as &$gauntlet){

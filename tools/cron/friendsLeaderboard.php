@@ -16,14 +16,14 @@ foreach($result as $account){
 	$frndlog .= $account["userName"] . " - " . $friendscount . "\r\n";
 	//inserting friends count value
 	if($friendscount != 0){
-		echo htmlspecialchars($account["userName"],ENT_QUOTES) . " now has $friendscount friends... <br>";
+		echo htmlspecialchars($account["userName"], ENT_QUOTES) . " now has $friendscount friends... <br>";
 		ob_flush();
 		flush();
-		$query4 = $db->prepare("UPDATE accounts SET friendsCount=:friendscount WHERE accountID=:me");
+		$query4 = $db->prepare("UPDATE accounts SET friendsCount = :friendscount WHERE accountID = :me");
 		$query4->execute([':friendscount' => $friendscount, ':me' => $me]);
 	}
 }
 touch("../logs/frndlog.txt");
-file_put_contents("../logs/frndlog.txt",$frndlog);
+file_put_contents("../logs/frndlog.txt", $frndlog);
 echo "<hr>";
 ?>

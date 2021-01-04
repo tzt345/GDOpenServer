@@ -2,22 +2,22 @@
 class Commands {
 	private function ownCommand($comment, $command, $accountID, $targetExtID){
 		chdir(__DIR__);
-		include "../../config/commands.php";
+		require "../../config/commands.php";
 		require_once "../../lib/mainLib.php";
 		$gs = new mainLib();
 		$commandInComment = strtolower($prefix.$command);
 		$commandInPerms = ucfirst(strtolower($command));
 		$commandlength = strlen($commandInComment);
-		if(substr($comment, 0, $commandlength) == $commandInComment AND (($gs->checkPermission($accountID, "command".$commandInPerms."All") OR ($targetExtID == $accountID AND $gs->checkPermission($accountID, "command".$commandInPerms."Own"))))){
+		if (substr($comment, 0, $commandlength) == $commandInComment AND (($gs->checkPermission($accountID, "command" . $commandInPerms . "All") OR ($targetExtID == $accountID AND $gs->checkPermission($accountID, "command" . $commandInPerms . "Own"))))) {
 			return true;
 		}
 		return false;
 	}
 	public function doCommands($accountID, $comment, $levelID) {
 		chdir(__DIR__);
-		include "../lib/connection.php";
-		include "../../config/commands.php";
-		include "../../config/levels.php";
+		require "../lib/connection.php";
+		require "../../config/commands.php";
+		require "../../config/levels.php";
 		require_once "../lib/exploitPatch.php";
 		$ep = new exploitPatch();
 		require_once "../lib/mainLib.php";
@@ -31,14 +31,15 @@ class Commands {
 		if ($query->fetchColumn() != 0) {
 			exit("temp_0_Error: You are banned, meaning you cannot take any moderational actions.");
 		}
-		$comment = $ep->remove(strtolower($comment));
-		$commentarray = explode(" ", $comment);
 		$prefixLen = strlen($prefix);
-		if (substr($comment, 0, $prefixLen) == $prefix) {
-			$commentarray[0] = str_replace($prefix, "", $commentarray[0]);
+		$comment = strtolower($comment);
+		if (substr($comment, 0, $prefixLen) == strtolower($prefix)) {
+			$comment = substr_replace($comment, "", 0, $prefixLen);
 		} else {
 			return false;
 		}
+		$comment = $ep->remove($comment);
+		$commentArray = explode(" ", $comment);
 		$uploadDate = time();
 		// Getting level owner's account ID
 		$query2 = $db->prepare("SELECT extID FROM levels WHERE levelID = :id");
@@ -46,42 +47,40 @@ class Commands {
 		$targetExtID = $query2->fetchColumn();
 		$aliases = spyc_load_file("cmd/config/commands.yaml");
 		$permissions = spyc_load_file("cmd/config/permissions.yaml");
-		if (file_exists("cmd/".$commentarray[0].".php")) {
-			if ($permissions[$commentarray[0]] == "admin" OR $permissions[$commentarray[0]] != "non-admin" OR !isset($permissions[$commentarray[0]])) {
-				$commandFirstUpper = ucfirst(str_replace("un", "", $commentarray[0]));
-				$commandConfig = "$"."command".$commandFirstUpper;
+		if (file_exists("cmd/" . $commentArray[0] . ".php")) {
+			if ($permissions[$commentArray[0]] == "admin" OR $permissions[$commentArray[0]] != "non-admin" OR !isset($permissions[$commentArray[0]])) {
+				$commandFirstUpper = ucfirst(str_replace("un", "", $commentArray[0]));
+				$commandConfig = "$" . "command" . $commandFirstUpper;
 				if ($gs->checkPermission($accountID, $commandFirstUpper) AND (eval("return $commandConfig == 1;") == 1)) {
-					include "cmd/".$commentarray[0].".php";
+					include "cmd/" . $commentArray[0] . ".php";
 				} else {
 					exit("temp_0_Error: You do not have proper permission to use this command.");
 				}
-			} elseif ($permissions[$commentarray[0]] == "non-admin") {
-				$commandPerm = str_replace("un", "", $commentarray[0]);
-				$commandFirstUpper = ucfirst($commandPerm);
-				$commandConfig = "$"."command".$commandFirstUpper;
+			} else {
+				$commandPerm = str_replace("un", "", $commentArray[0]);
+				$commandConfig = "$" . "command" . ucfirst($commandPerm);
 				if ($this->ownCommand($comment, $commandPerm, $accountID, $targetExtID) AND (eval("return $commandConfig == 1;") == 1)) {
-					include "cmd/".$commentarray[0].".php";
+					include "cmd/" . $commentArray[0] . ".php";
 				} else {
 					exit("temp_0_Error: You do not have proper permission to use this command.");
 				}
 			}
 		} else {
-			foreach($aliases as $command => $alias) {
-				if ($aliases[$command][$commentarray[0]]) {
+			foreach ($aliases as $command => $alias) {
+				if (in_array($commentArray[0], $aliases[$command])) {
 					if ($permissions[$command] == "admin" OR $permissions[$command] != "non-admin" OR !isset($permissions[$command])) {
 						$commandFirstUpper = ucfirst(str_replace("un", "", $command));
-						$commandConfig = "$"."command".$commandFirstUpper;
+						$commandConfig = "$" . "command" . $commandFirstUpper;
 						if ($gs->checkPermission($accountID, $commandFirstUpper) AND (eval("return $commandConfig == 1;") == 1)) {
-							include "cmd/".$command.".php";
+							include "cmd/" . $command . ".php";
 						} else {
 							exit("temp_0_Error: You do not have proper permission to use this command.");
 						}
 					} else {
 						$commandPerm = str_replace("un", "", $command);
-						$commandFirstUpper = ucfirst($commandPerm);
-						$commandConfig = "$"."command".$commandFirstUpper;
+						$commandConfig = "$" . "command" . ucfirst($commandPerm);
 						if ($this->ownCommand($comment, $commandPerm, $accountID, $targetExtID) AND (eval("return $commandConfig == 1;") == 1)) {
-							include "cmd/".$command.".php";
+							include "cmd/" . $command . ".php";
 						} else {
 							exit("temp_0_Error: You do not have proper permission to use this command.");
 						}
@@ -92,28 +91,32 @@ class Commands {
 		}
 	}
 	public function doProfileCommands($accountID, $command){
-		include __DIR__."/../lib/connection.php";
+		require __DIR__ . "/../lib/connection.php";
+		require "../../config/commands.php";
+		require "../../config/discord.php";
 		require_once "../lib/exploitPatch.php";
 		$ep = new exploitPatch();
 		require_once "../lib/mainLib.php";
 		$gs = new mainLib();
-		include "../../config/commands.php";
 		$prefixLen = strlen($prefix);
-		if(substr($command, 0, 7 + $prefixLen) == $prefix."discord"){
-			if(substr($command, 8 + $prefixLen, 6) == "accept"){
-				include "cmd/discord/accept.php";
-				return true;
+		if ($discordEnabled == 1 AND substr($command, 0, 7 + $prefixLen) == $prefix . "discord") {
+			$commentArray = explode($command, " ");
+			switch ($commentArray[1]) {
+				case "accept":
+					require_once "cmd/discord/accept.php";
+					return true;
+				case "deny":
+					require_once "cmd/discord/deny.php";
+					return true;
+				case "unlink":
+					require_once "cmd/discord/unlink.php";
+					return true;
+				default:
+					return false;
 			}
-			if(substr($command, 8 + $prefixLen, 4) == "deny"){
-				include "cmd/discord/deny.php";
-				return true;
-			}
-			if(substr($command, 8 + $prefixLen, 6) == "unlink"){
-				include "cmd/discord/unlink.php";
-				return true;
-			}
+		} else {
+			return false;
 		}
-		return false;
 	}
 }
 ?>

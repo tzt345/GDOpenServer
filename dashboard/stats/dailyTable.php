@@ -16,12 +16,13 @@ if(isset($_GET["page"]) AND is_numeric($_GET["page"]) AND $_GET["page"] > 0){
 	$actualpage = 1;
 }
 $dailytable = "";
+$time = time();
 //getting data
 $query = $db->prepare("SELECT feaID, levelID, timestamp FROM dailyfeatures WHERE timestamp < :time ORDER BY feaID DESC LIMIT 10 OFFSET $page");
-$query->execute([':time' => time()]);
+$query->execute([':time' => $time]);
 $result = $query->fetchAll();
 $query = $db->prepare("SELECT count(*) FROM dailyfeatures WHERE timestamp < :time");
-$query->execute([':time' => time()]);
+$query->execute([':time' => $time]);
 $dailycount = $query->fetchColumn();
 $x = $dailycount - $page;
 //printing data

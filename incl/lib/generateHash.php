@@ -3,25 +3,25 @@
 class generateHash {
 	public function genMulti($lvlsmultistring) {
 		$lvlsarray = explode(",", $lvlsmultistring);
-		include __DIR__."/connection.php";
+		require __DIR__ . "/connection.php";
 		$hash = "";
-		foreach($lvlsarray as $id){
+		foreach ($lvlsarray as $id) {
 			//moving levels into the new system
-			if(!is_numeric($id)){
+			if (!is_numeric($id)) {
 				exit("-1");
 			}
-			$query=$db->prepare("SELECT levelString, levelID, starStars, starCoins FROM levels WHERE levelID = :id");
+			$query = $db->prepare("SELECT levelString, levelID, starStars, starCoins FROM levels WHERE levelID = :id");
 			$query->execute([':id' => $id]);
 			$result2 = $query->fetchAll();
 			$result = $result2[0];
 			$levelString = $result["levelString"];
-			if(!file_exists(__DIR__."/../../data/levels/$id")){
-				file_put_contents(__DIR__."/../../data/levels/$id",$levelString);
+			if (!file_exists(__DIR__ . "/../../data/levels/$id")) {
+				file_put_contents(__DIR__ . "/../../data/levels/$id", $levelString);
 				$query = $db->prepare("UPDATE levels SET levelString = '' WHERE levelID = :levelID");
 				$query->execute([':levelID' => $id]);
 			}
 			//generating the hash
-			$hash = $hash . $result["levelID"][0].$result["levelID"][strlen($result["levelID"])-1].$result["starStars"].$result["starCoins"];
+			$hash = $hash . $result["levelID"][0] . $result["levelID"][strlen($result["levelID"]) - 1] . $result["starStars"] . $result["starCoins"];
 		}
 		return sha1($hash . "xI25fpAapCQg");
 	}
@@ -30,8 +30,8 @@ class generateHash {
 		$len = strlen($levelstring);
 		$divided = intval($len/40);
 		$p = 0;
-		for($k = 0; $k < $len ; $k= $k+$divided){
-			if($p > 39) break;
+		for ($k = 0; $k < $len; $k = $k + $divided) {
+			if ($p > 39) break;
 			$hash[$p] = $levelstring[$k]; 
 			$p++;
 		}
@@ -48,28 +48,28 @@ class generateHash {
 	}
 	public function genPack($lvlsmultistring) {
 		$lvlsarray = explode(",", $lvlsmultistring);
-		include __DIR__."/connection.php";
+		require __DIR__ . "/connection.php";
 		$hash = "";
-		foreach($lvlsarray as $id){
-			$query=$db->prepare("SELECT ID,stars,coins FROM mappacks WHERE ID = :id");
+		foreach ($lvlsarray as $id) {
+			$query = $db->prepare("SELECT ID, stars, coins FROM mappacks WHERE ID = :id");
 			$query->execute([':id' => $id]);
 			$result2 = $query->fetchAll();
 			$result = $result2[0];
-			$hash = $hash . $result["ID"][0].$result["ID"][strlen($result["ID"])-1].$result["stars"].$result["coins"];
+			$hash = $hash . $result["ID"][0] . $result["ID"][strlen($result["ID"]) - 1] . $result["stars"] . $result["coins"];
 		}
 		return sha1($hash . "xI25fpAapCQg");
 	}
 	public function genSeed2noXor($levelstring) {
 		$hash = "aaaaa";
 		$len = strlen($levelstring);
-		$divided = intval($len/50);
+		$divided = intval($len / 50);
 		$p = 0;
-		for($k = 0; $k < $len ; $k= $k+$divided){
-			if($p > 49) break;
+		for ($k = 0; $k < $len; $k = $k + $divided) {
+			if ($p > 49) break;
 			$hash[$p] = $levelstring[$k]; 
 			$p++;
 		}
-		$hash = sha1($hash."xI25fpAapCQg");
+		$hash = sha1($hash . "xI25fpAapCQg");
 		return $hash;
 	}
 }

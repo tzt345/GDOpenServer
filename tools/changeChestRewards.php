@@ -49,17 +49,18 @@ if(!empty($_POST["pwcheck"])) {
 	$string .= '$chest2wait = '.$bigWait.';'.PHP_EOL;
 	$string .= "?>".PHP_EOL;
 	try {
-		file_put_contents("../config/chests.php", $string);
+		file_put_contents("../config/dailyChests.php", $string);
 		exit ("Success!");
 	} catch (Exception $e) {
 		exit ("Couldn't change rewards...");
 	}
 	
 }
-require "../config/chests.php";
+require "../config/dailyChests.php";
 ?>
 <form action="" method="POST">
 	<!-- Don't even try to SQL-Inject, there's no SQL query involved in here! ;) -->
+	<span style="opacity:25%">Tool made by Rya#8632 - please <b>tag</b> him before making a ticket if you have issues.</span>
 	Database Password <input name="pwcheck" type="password" placeholder="Check GDPS Bot DM"/><br>
 	<b>Small Chest rewards</b><br>
 	Min. Orbs <input name="smolMiO" type="number" value="<?php echo ($chest1minOrbs); ?>" min=0 /><br>

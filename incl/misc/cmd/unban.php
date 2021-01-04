@@ -1,11 +1,11 @@
 <?php
-if (isset($commentarray[1])) {
-    $userName = $commentarray[1];
+if (isset($commentArray[1])) {
+    $userName = $commentArray[1];
 } else {
     exit("temp_0_Error: No input given for required argument 'User'.");
 }
-if (isset($commentarray[2]) AND is_numeric($commentarray[2])) {
-	$banTypeArg = $commentarray[2];
+if (isset($commentArray[2]) AND is_numeric($commentArray[2])) {
+	$banTypeArg = $commentArray[2];
 	if ($banTypeArg >= 2) {
 		$banType = 2;
 	} elseif ($banTypeArg <= 0) {
@@ -24,21 +24,21 @@ if ($query->rowCount() == 0) {
 $userID = $query->fetchColumn();
 switch ($banType) {
     case 0:
-        $query = $db->prepare("UPDATE users SET isBanned = 0, banTime = NULL, banReason = NULL WHERE userID = :userID");
+        $query = $db->prepare("UPDATE users SET isBanned = 0, banTime = '', banReason = '' WHERE userID = :userID");
         $query->execute([':userID' => $userID]);
         $query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES (15, 1, :value, 0, :timestamp, :id)");
         $query->execute([':value' => $userID, ':timestamp' => $uploadDate, ':id' => $accountID]);
         $banResponse = "unbanned";
         break;
     case 1:
-        $query = $db->prepare("UPDATE users SET isLeaderboardBanned = 0, leaderboardBanTime = NULL, leaderboardBanReason = NULL WHERE userID = :userID");
+        $query = $db->prepare("UPDATE users SET isLeaderboardBanned = 0, leaderboardBanTime = '', leaderboardBanReason = '' WHERE userID = :userID");
         $query->execute([':userID' => $userID]);
         $query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES (15, 2, :value, 0, :timestamp, :id)");
         $query->execute([':value' => $userID, ':timestamp' => $uploadDate, ':id' => $accountID]);
         $banResponse = "leaderboard unbanned";
         break;
     case 2:
-        $query = $db->prepare("UPDATE users SET isCreatorBanned = 0, creatorBanTime = NULL, creatorBanReason = NULL WHERE userID = :userID");
+        $query = $db->prepare("UPDATE users SET isCreatorBanned = 0, creatorBanTime = '', creatorBanReason = '' WHERE userID = :userID");
         $query->execute([':userID' => $userID]);
         $query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES (15, 3, :value, 0, :timestamp, :id)");
         $query->execute([':value' => $userID, ':timestamp' => $uploadDate, ':id' => $accountID]);

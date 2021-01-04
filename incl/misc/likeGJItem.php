@@ -1,6 +1,6 @@
 <?php
 chdir(__DIR__);
-include "../lib/connection.php";
+require "../lib/connection.php";
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../lib/mainLib.php";
@@ -10,7 +10,7 @@ $ip = $gs->getIP();
 $itemID = $ep->remove($_POST["itemID"]);
 $query6 = $db->prepare("SELECT count(*) FROM actions WHERE type = :type AND value = :itemID AND value2 = :ip");
 $query6->execute([':type' => $type, ':itemID' => $itemID, ':ip' => $ip]);
-if($query6->fetchColumn() > 2){
+if ($query6->fetchColumn() > 2) {
 	exit("-1");
 }
 $query6 = $db->prepare("INSERT INTO actions (type, value, timestamp, value2) VALUES (:type, :itemID, :time, :ip)");
@@ -29,15 +29,12 @@ switch($_POST["type"]){
 		$column = "commentID";
 		break;
 }
-$query = $db->prepare("SELECT likes FROM $table WHERE $column = :itemID LIMIT 1");
-$query->execute([':itemID' => $itemID]);
-$likes = $query->fetchColumn();
-if($_POST["like"] == 1){
-	$likes++;
-}else{
-	$likes--;
+if ($_POST["like"] == 1) {
+	$likes = "1";
+} else {
+	$likes = "-1";
 }
-$query2 = $db->prepare("UPDATE $table SET likes = :likes WHERE $column = :itemID");
+$query2 = $db->prepare("UPDATE $table SET likes = likes + :likes WHERE $column = :itemID");
 $query2->execute([':itemID' => $itemID, ':likes' => $likes]);
 echo "1";
 ?>

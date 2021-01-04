@@ -1,6 +1,6 @@
 <?php
-if (isset($commentarray[1]) AND is_numeric($commentarray[1])) {
-    $keepDiff = $commentarray[1];
+if (isset($commentArray[1]) AND is_numeric($commentArray[1])) {
+    $keepDiff = $commentArray[1];
     if ($keepDiff >= 1) {
         $keepDiff = 1;
     } else {
@@ -9,8 +9,8 @@ if (isset($commentarray[1]) AND is_numeric($commentarray[1])) {
 } else {
     $keepDiff = 0;
 }
-if (isset($commentarray[2]) AND is_numeric($commentarray[2])) {
-    $unfeature = $commentarray[2];
+if (isset($commentArray[2]) AND is_numeric($commentArray[2])) {
+    $unfeature = $commentArray[2];
     if ($unfeature >= 1) {
         $unfeature = 1;
     } else {
@@ -19,8 +19,8 @@ if (isset($commentarray[2]) AND is_numeric($commentarray[2])) {
 } else {
     $unfeature = 0;
 }
-if (isset($commentarray[3]) AND is_numeric($commentarray[3])) {
-    $unverifyCoins = $commentarray[3];
+if (isset($commentArray[3]) AND is_numeric($commentArray[3])) {
+    $unverifyCoins = $commentArray[3];
     if ($unverifyCoins >= 1) {
         $unverifyCoins = 1;
     } else {
@@ -32,15 +32,15 @@ if (isset($commentarray[3]) AND is_numeric($commentarray[3])) {
 
 $response = "unrated";
 $featureLevel = 0;
-$query = $db->prepare("SELECT starStars, starFeatured, isCPShared FROM levels WHERE levelID=:levelID");
+$query = $db->prepare("SELECT starStars, starFeatured, isCPShared FROM levels WHERE levelID = :levelID");
 $query->execute([':levelID' => $levelID]);
 $result = $query->fetch();
-if ($result["starStars"] == 0) {
+if ($result["starStars"] == 1) {
     if ($result["isCPShared"] == 1) {
         $query3 = $db->prepare("SELECT userID FROM cpshares WHERE levelID = :levelID");
         $query3->execute([':levelID' => $levelID]);
         $deservedcp = $rateCP;
-        if($gs->checkPermission($accountID, "Feature") AND $result["starFeatured"] == 0){
+        if ($gs->checkPermission($accountID, "commandFeature") AND $result["starFeatured"] == 0 AND $unfeature == 1) {
             $deservedcp += $featureCP;
             $featureLevel = 1;
         }
@@ -52,7 +52,7 @@ if ($result["starStars"] == 0) {
         }
         $shares = $query->fetchAll();
         $CPShare = round($addCP);
-        foreach($shares as &$share){
+        foreach ($shares as &$share) {
             $query4 = $db->prepare("UPDATE users SET creatorPoints = creatorPoints + :CPShare WHERE userID = :userID");
             $query4->execute([':userID' => $share["userID"], ':CPShare' => $CPShare]);
         }
@@ -64,7 +64,7 @@ if ($result["starStars"] == 0) {
 if ($keepDiff == 1) {
     $query = $db->prepare("UPDATE levels SET starStars = 0, starDemon = 0, starAuto = 0 WHERE levelID = :levelID");
     $query->execute([':levelID' => $levelID]);
-    $query = $db->prepare("SELECT starDifficulty FROM levels WHERE levelID=:levelID");
+    $query = $db->prepare("SELECT starDifficulty FROM levels WHERE levelID = :levelID");
     $query->execute([':levelID' => $levelID]);
     $levelDiff = $query->fetchColumn();
     $query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES (1, :value, 0, :levelID, :timestamp, :id)");
@@ -76,23 +76,19 @@ if ($keepDiff == 1) {
     $query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES (1, 'N/A', 0, :levelID, :timestamp, :id)");
     $query->execute([':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
 }
-if ($unfeature == 1) {
-    if ($featureLevel == 1) {
-        $query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES (2, 0, :levelID, :timestamp, :id)");
-        $query->execute([':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
-        $query = $db->prepare("UPDATE levels SET starFeatured=0 WHERE levelID = :levelID");
-        $query->execute([':levelID' => $levelID]);
-        $response .= " and unfeatured";
-    }
+if ($featureLevel == 1) {
+    $query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES (2, 0, :levelID, :timestamp, :id)");
+    $query->execute([':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+    $query = $db->prepare("UPDATE levels SET starFeatured=0 WHERE levelID = :levelID");
+    $query->execute([':levelID' => $levelID]);
+    $response .= " and unfeatured";
 }
-if ($unverifyCoins == 1) {
-    if ($gs->checkPermission($accountID, "Verifycoins")) {
-        $query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES (3, 0, :levelID, :timestamp, :id)");
-        $query->execute([':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
-        $query = $db->prepare("UPDATE levels SET starCoins = 0 WHERE levelID = :levelID");
-        $query->execute([':levelID' => $levelID]);
-        $response .= " and coins unverified"; 
-    }
+if ($unverifyCoins == 1 AND $gs->checkPermission($accountID, "commandVerifycoins")) {
+    $query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES (3, 0, :levelID, :timestamp, :id)");
+    $query->execute([':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
+    $query = $db->prepare("UPDATE levels SET starCoins = 0 WHERE levelID = :levelID");
+    $query->execute([':levelID' => $levelID]);
+    $response .= " and coins unverified";
 }
 exit("temp_0_Level successfully $response.");
 ?>

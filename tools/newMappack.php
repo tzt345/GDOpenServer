@@ -1,12 +1,12 @@
 <?php
-include "../incl/lib/connection.php";
-require "../incl/lib/generatePass.php";
+require "../incl/lib/connection.php";
+require_once "../incl/lib/generatePass.php";
 $gp = new generatePass();
-require "../incl/lib/exploitPatch.php";
+require_once "../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
-require "../incl/lib/mainLib.php";
+require_once "../incl/lib/mainLib.php";
 $gs = new mainLib();
-if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["packName"]) AND !empty($_POST["levels"]) AND !empty($_POST["stars"]) AND !empty($_POST["coins"]) AND !empty($_POST["color"])){
+if (!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["packName"]) AND !empty($_POST["levels"]) AND !empty($_POST["stars"]) AND !empty($_POST["coins"]) AND !empty($_POST["color"])) {
 	$userName = $ep->remove($_POST["userName"]);
 	$password = $ep->remove($_POST["password"]);
 	$packName = $ep->remove($_POST["packName"]);
@@ -16,38 +16,36 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 	$color = $ep->remove($_POST["color"]);
 	$pass = $gp->isValidUsrname($userName, $password);
 	if ($pass == 1) {
-		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName=:userName");	
+		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName = :userName");	
 		$query->execute([':userName' => $userName]);
 		$accountID = $query->fetchColumn();
-		if($gs->checkPermission($accountID, "toolNewmappack") == false){
+		if ($gs->checkPermission($accountID, "toolNewmappack") == false) {
 			echo "This account doesn't have the permissions to access this tool. <a href='newMappack.php'>Try again</a>";
-		}else{
-			if(!is_numeric($stars) OR !is_numeric($coins) OR $stars > 10 OR $coins > 2){
-				exit("Invalid stars/coins value. <a href='newMappack.php'>Try again</a>");
+		} else {
+			if (!is_numeric($stars) OR !is_numeric($coins) OR $stars > 10 OR $coins > 2) {
+				exit("Invalid stars/coins value. <a href='newMappack.php'>Try again.</a>");
 			}
-			if(strlen($color) != 6){
-				exit("Unknown color value. <a href='newMappack.php'>Try again</a>");
+			if (strlen($color) != 6) {
+				exit("Unknown color value. <a href='newMappack.php'>Try again.</a>");
 			}
-			$rgb = hexdec(substr($color, 0, 2)).
-				",".hexdec(substr($color, 2, 2)).
-				",".hexdec(substr($color, 4, 2));
+			$rgb = hexdec(substr($color, 0, 2)) . "," . hexdec(substr($color, 2, 2)) . "," . hexdec(substr($color, 4, 2));
 			$lvlsarray = explode(",", $levels);
-			foreach($lvlsarray AS &$level){
-				if(!is_numeric($level)){
-					exit("$level isn't a number. <a href='newMappack.php'>Try again</a>");
+			foreach ($lvlsarray AS &$level) {
+				if (!is_numeric($level)) {
+					exit("$level isn't a number. <a href='newMappack.php'>Try again.</a>");
 				}
-				$query = $db->prepare("SELECT levelName FROM levels WHERE levelID=:levelID");	
+				$query = $db->prepare("SELECT levelName FROM levels WHERE levelID = :levelID");	
 				$query->execute([':levelID' => $level]);
-				if($query->rowCount() == 0){
-					exit("Level #$level doesn't exist. <a href='newMappack.php'>Try again</a>");
+				if ($query->rowCount() == 0) {
+					exit("Level #$level doesn't exist. <a href='newMappack.php'>Try again.</a>");
 				}
 				$levelName = $query->fetchColumn();
 				$levelstring .= $levelName . ", ";
 			}
-			$levelstring = substr($levelstring,0,-2);
+			$levelstring = substr($levelstring, 0, -2);
 			$diff = 0;
 			$diffname = "Auto";
-			switch($stars){
+			switch ($stars) {
 				case 1:
 					$diffname = "Auto";
 					$diff = 0;
@@ -92,18 +90,20 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 			$query = $db->prepare("INSERT INTO modactions (type, value, timestamp, account, value2, value3, value4, value7) VALUES (11, :value, :timestamp, :account, :levels, :stars, :coins, :rgb)");
 			$query->execute([':value' => $packName, ':timestamp' => time(), ':account' => $accountID, ':levels' => $levels, ':stars' => $stars, ':coins' => $coins, ':rgb' => $rgb]);
 		}
-	}else{
-		echo "Invalid password or non-existant account. <a href='newMappack.php'>Try again.</a>";
+	} else {
+		echo "Invalid password or non-existent account. <a href='newMappack.php'>Try again.</a>";
 	}
-}else{
-	echo '<script src="incl/jscolor/jscolor.js"></script>
-		<form action="newMappack.php" method="post">Username: <input type="text" name="userName">
-		<br>Password: <input type="password" name="password">
-		<br>Pack Name: <input type="text" name="packName">
-		<br>Level IDs: <input type="text" name="levels"> (separate by commas)
-		<br>Stars: <input type="text" name="stars"> (max 10)
-		<br>Coins: <input type="text" name="coins"> (max 2)
-		<br>Color: <input name="color" class="jscolor" value="ffffff">
-		<input type="submit" value="Create"></form>';
+} else {
+	echo '<script src="incl/jscolor/jscolor.min.js"></script>
+	<form action="newMappack.php" method="post">
+		Username: <input type="text" name="userName"><br>
+		Password: <input type="password" name="password"><br>
+		Pack Name: <input type="text" name="packName"><br>
+		Level IDs (Separate by commas): <input type="text" name="levels"><br>
+		Stars (Max. 10): <input type="text" name="stars"><br>
+		Coins (Max. 2): <input type="text" name="coins"><br>
+		Color: <input name="color" class="jscolor" value="ffffff">
+		<input type="submit" value="Create">
+	</form>';
 }
 ?>

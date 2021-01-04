@@ -1,7 +1,7 @@
 <?php
-$commandName = $commentarray[0];
-if (isset($commentarray[1])) {
-	$userName = $commentarray[1];
+$commandName = $commentArray[0];
+if (isset($commentArray[1])) {
+	$userName = $commentArray[1];
 } else {
 	exit("temp_0_Error: No input given.");
 }

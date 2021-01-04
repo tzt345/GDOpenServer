@@ -1,25 +1,24 @@
 <?php
-//error_reporting(0);
 chdir(__DIR__);
-include "../lib/connection.php";
+require "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 $GJPCheck = new GJPCheck();
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
-if(!isset($_POST["gjp"]) OR !isset($_POST["rating"]) OR !isset($_POST["levelID"]) OR !isset($_POST["accountID"])){
+if (!isset($_POST["gjp"]) OR !isset($_POST["rating"]) OR !isset($_POST["levelID"]) OR !isset($_POST["accountID"])) {
 	exit("-1");
 }
 $gjp = $ep->remove($_POST["gjp"]);
-$rating = $ep->remove($_POST["rating"]);
-$levelID = $ep->remove($_POST["levelID"]);
 $id = $ep->remove($_POST["accountID"]);
 $gjpresult = $GJPCheck->check($gjp, $id);
-if($gs->checkPermission($id, "actionRateDemon") == false OR $gjpresult != 1){
+if ($gs->checkPermission($id, "actionRateDemon") == false OR $gjpresult != 1) {
 	exit("-1");
 }
-switch($rating){
+$rating = $ep->remove($_POST["rating"]);
+$levelID = $ep->remove($_POST["levelID"]);
+switch ($rating) {
 	case 1:
 		$dmn = 3;
 		$dmnname = "Easy";

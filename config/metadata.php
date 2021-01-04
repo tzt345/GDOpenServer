@@ -1,9 +1,8 @@
 <?php
-
 // Some of the settings provided here will be shown on various pages like dashboard/tools.
 
 /* -- Settings and Links -- */
-$gdps_name = "OpenGDPS"; // The name of your GDPS.
+$gdpsName = "OpenGDPS"; // The name of your GDPS.
 $discord_invite = ""; // The Discord invite link of your GDPS.
 
 /* -- GDPS Patcher -- */
@@ -26,9 +25,8 @@ OF THE ORIGINAL GAME BEFORE DOWNLOADING THE GDPS. SHARING PIRATED GAMES IS ILLEG
 */
 // Replace following empty fields with the download url. Preferrably a direct link.
 // Leave it empty to let it not show a download link in the dashboard.
-$pc_download = "";
-$macos_download = "";
-$android_download = "";
-$ios_download = "";
-
+$pcDownload = "";
+$macosDownload = "";
+$androidDownload = "";
+$iosDownload = "";
 ?>

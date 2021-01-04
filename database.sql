@@ -45,12 +45,12 @@ CREATE TABLE `acccomments` (
 --
 
 CREATE TABLE `accounts` (
+  `accountID` int(11) NOT NULL,
   `userName` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `verifySecret` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `isVerified` int(11) NOT NULL DEFAULT 1,
-  `accountID` int(11) NOT NULL,
   `saveData` longtext COLLATE utf8_unicode_ci NOT NULL,
   `isAdmin` int(11) NOT NULL DEFAULT 0,
   `userID` int(11) NOT NULL DEFAULT 0,
@@ -457,6 +457,7 @@ CREATE TABLE `roles` (
   `actionRateDifficulty` int(11) NOT NULL DEFAULT 0,
   `actionRequestMod` int(11) NOT NULL DEFAULT 0,
   `actionSuggestRating` int(11) NOT NULL DEFAULT 0,
+  `deleteComments` int(11) NOT NULL DEFAULT 0,
   `toolLeaderboardsban` int(11) NOT NULL DEFAULT 0,
   `toolRevertlikes` int(11) NOT NULL DEFAULT 0,
   `toolCommentban` int(11) NOT NULL DEFAULT 0,

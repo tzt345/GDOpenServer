@@ -42,7 +42,7 @@ if(isset($_POST["userName"]) AND isset($_POST["password"])){
 								<input type="password" class="form-control" id="passwordField" name="password" placeholder="Password">
 							</div>';
 	if(isset($_SERVER["HTTP_REFERER"])){
-		$loginbox .= '<input type="hidden" name="ref" value="'.$_SERVER["HTTP_REFERER"].'">';
+		$loginbox .= '<input type="hidden" name="ref" value="' . $_SERVER["HTTP_REFERER"] . '">';
 	}
 	$loginbox .= '<button type="submit" class="btn btn-primary">Log In</button>
 						</form>';

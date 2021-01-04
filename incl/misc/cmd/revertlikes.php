@@ -1,8 +1,8 @@
 <?php
-if (isset($commentarray[3])) {
-	$timeArg = $commentarray[3];
+if (isset($commentArray[3])) {
+	$timeArg = $commentArray[3];
 	$timeSuffix = substr($timeArg, -1);
-	switch($timeSuffix) {
+	switch ($timeSuffix) {
 		case "m":
 			try {
 				$time = int(trim($timeArg, "m")) * 60;

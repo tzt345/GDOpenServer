@@ -1,26 +1,27 @@
 <?php
 chdir(__DIR__);
-//error_reporting(0);
-include "../lib/connection.php";
+require "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
+$GJPCheck = new GJPCheck();
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
+require_once "../lib/mainLib.php";
+$gs = new mainLib();
 $msgstring = "";
 //code begins
 $toAccountID = $ep->remove($_POST["accountID"]);
 $gjp = $ep->remove($_POST["gjp"]);
 $page = $ep->remove($_POST["page"]);
 $offset = $page * 10;
-$GJPCheck = new GJPCheck();
 $gjpresult = $GJPCheck->check($gjp, $toAccountID);
-if($gjpresult != 1){
+if ($gjpresult != 1) {
 	exit("-1");
 }
-if(!isset($_POST["getSent"]) OR $_POST["getSent"] != 1){
+if (!isset($_POST["getSent"]) OR $_POST["getSent"] != 1) {
 	$query = "SELECT * FROM messages WHERE toAccountID = :toAccountID ORDER BY messageID DESC LIMIT 10 OFFSET $offset";
 	$countquery = "SELECT count(*) FROM messages WHERE toAccountID = :toAccountID";
 	$getSent = 0;
-}else{
+} else {
 	$query = "SELECT * FROM messages WHERE accID = :toAccountID ORDER BY messageID DESC LIMIT 10 OFFSET $offset";
 	$countquery = "SELECT count(*) FROM messages WHERE accID = :toAccountID";
 	$getSent = 1;
@@ -31,33 +32,23 @@ $result = $query->fetchAll();
 $countquery = $db->prepare($countquery);
 $countquery->execute([':toAccountID' => $toAccountID]);
 $msgcount = $countquery->fetchColumn();
-if($msgcount == 0){
+if ($msgcount == 0) {
 	exit("-2");
 }
-function timing ($time) {
-    $time = time() - $time; // to get the time since that moment
-    $time = ($time<1)? 1 : $time;
-    $tokens = array (31536000 => 'year', 2592000 => 'month', 604800 => 'week', 86400 => 'day', 3600 => 'hour', 60 => 'minute', 1 => 'second');
-    foreach ($tokens as $unit => $text) {
-        if ($time < $unit) continue;
-        $numberOfUnits = floor($time / $unit);
-        return $numberOfUnits.' '.$text.(($numberOfUnits>1)?'s':'');
-    }
-}
 foreach ($result as &$message1) {
-	if($message1["messageID"] != ""){
-		$uploadDate = timing($message1["timestamp"]);
-		if($getSent == 1){
+	if ($message1["messageID"] != "") {
+		$uploadDate = $gs->makeTime($message1["timestamp"]);
+		if ($getSent == 1) {
 			$accountID = $message1["toAccountID"];
-		}else{
+		} else {
 			$accountID = $message1["accID"];
 		}
-		$query=$db->prepare("SELECT * FROM users WHERE extID = :accountID");
+		$query = $db->prepare("SELECT * FROM users WHERE extID = :accountID");
 		$query->execute([':accountID' => $accountID]);
 		$result12 = $query->fetchAll()[0];
-		$msgstring .= "6:".$result12["userName"].":3:".$result12["userID"].":2:".$result12["extID"].":1:".$message1["messageID"].":4:".$message1["subject"].":8:".$message1["isNew"].":9:".$getSent.":7:".$uploadDate."|";
+		$msgstring .= "6:" . $result12["userName"] . ":3:" . $result12["userID"] . ":2:" . $result12["extID"] . ":1:" . $message1["messageID"] . ":4:" . $message1["subject"] . ":8:" . $message1["isNew"] . ":9:" . $getSent . ":7:" . $uploadDate . "|";
 	}
 }
 $msgstring = substr($msgstring, 0, -1);
-echo $msgstring ."#".$msgcount.":".$offset.":10";
+echo $msgstring . "#" . $msgcount . ":" . $offset . ":10";
 ?>

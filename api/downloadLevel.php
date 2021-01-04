@@ -1,24 +1,24 @@
 <?php
 class levelAPI {
-    function Select(){
-        include "../incl/lib/connection.php";
+    function Select() {
+        require "../incl/lib/connection.php";
         require_once "../incl/lib/mainLib.php";
+        $mainLib = new mainLib();
         require_once "../incl/lib/exploitPatch.php";
         $ep = new exploitPatch();
-        $mainLib = new mainLib();
-        if(!empty($_GET["levelID"])) {
+        if (!empty($_GET["levelID"])) {
             $response = $_GET["levelID"];
-        } elseif(!empty($_POST["levelID"])) {
+        } elseif (!empty($_POST["levelID"])) {
             $response = $_POST["levelID"];
         }
         $levelID = $ep->remove($response);
-		if(file_exists("../data/levels/$levelID")){
+		if (file_exists("../data/levels/$levelID")) {
 			$levelstring = file_get_contents("../data/levels/$levelID");
         }
         $levels = array();
         $data = $db->prepare('SELECT * FROM levels WHERE levelID = :levelID');
         $data->execute(['levelID' => $levelID]);
-        while($OutputData = $data->fetch(PDO::FETCH_ASSOC)){
+        while ($OutputData = $data->fetch(PDO::FETCH_ASSOC)) {
             $desc = base64_decode($OutputData['levelDesc']);
             $levels = array(
                 'levelName' => $OutputData['levelName'],

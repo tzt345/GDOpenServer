@@ -17,7 +17,7 @@ class dashboardLib{
 						<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 						<link async rel="stylesheet" href="incl/cvolton.css">
 						<link async rel="stylesheet" href="incl/font-awesome-4.7.0/css/font-awesome.min.css">
-						<title>[Beta] '.$gdps_name.' Dashboard</title>
+						<title>[Beta] '.$gdpsName.' Dashboard</title>
 						<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">';
 		echo '		</head>
 				<body>';
@@ -78,7 +78,7 @@ class dashboardLib{
 				break;
 		}
 		echo '<nav class="navbar navbar-expand-lg navbar-dark menubar">
-			<a class="navbar-brand" href="index.php">'.$gdps_name.'</a>
+			<a class="navbar-brand" href="index.php">'.$gdpsName.'</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>

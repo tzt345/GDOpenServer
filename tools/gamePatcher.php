@@ -30,13 +30,13 @@ if (isset($_FILES['userfile'])) {
 		$gdps_url_array = explode("/", $gdps_url);
 		array_splice($gdps_url_array, -1);
 		array_splice($gdps_url_array, -1);
-		if(isset($_SERVER['HTTPS']) AND $_SERVER['HTTPS'] === 'on') {
+		if (isset($_SERVER['HTTPS']) AND $_SERVER['HTTPS'] === 'on') {
 			$gdps_url = "https://";
 		} else {
 			$gdps_url = "http://";
 		}
-		foreach($gdps_url_array as $dir) {
-			$gdps_url .= $dir."/";
+		foreach ($gdps_url_array as $dir) {
+			$gdps_url .= $dir . "/";
 		}
 		// Fix URL length and convert them to hex if needed
 		$gdps_url = substr($gdps_url, 0, -1);
@@ -57,7 +57,7 @@ if (isset($_FILES['userfile'])) {
 		$hexContent = str_replace("68747470733A2F2F7777772E66616365626F6F6B2E636F6D2F67656F6D65747279646173680", $facebook, $hexContent);
 		// RobTop's website
 		$hexContent = str_replace("687474703A2F2F7777772E726F62746F7067616D65732E636F6D0", $robtopWebsite, $hexContent);
-		// Check wether you need to verify your account or not...
+		// Check whether you need to verify your account or not...
 		if ($accountVerification == 1) {
 			$hexContent = str_replace("4120636F6E6669726D6174696F6E20656D61696C20686173206265656E2073656E7420746F20796F757220696E626F78203C63793E25733C2F633E2E0A506C65617365203C63673E61637469766174653C2F633E20796F7572206163636F756E742E", "506C656173652076657269667920796F7572206163636F756E7420696E20746865203C63673E4163636F756E7420546F6F6C733C2F633E20706167652E00000000000000000000000000000000000000000000000000000000000000000000000000", $hexContent);
 		} elseif ($accountVerification == 0) {
@@ -68,7 +68,7 @@ if (isset($_FILES['userfile'])) {
 		header("Content-Description: File Transfer");
 		header("Content-Type: application/octet-stream");
 		header("Content-Transfer-Encoding: Binary");
-		header("Content-Disposition: attachment; filename=\"$gdps_name.exe\"");
+		header("Content-Disposition: attachment; filename=\"$gdpsName.exe\"");
 		exit(hex2bin($hexContent));
 	} else {
 		ob_end_clean();

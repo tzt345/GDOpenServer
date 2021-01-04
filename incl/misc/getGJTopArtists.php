@@ -1,19 +1,16 @@
 <?php
 chdir(__DIR__);
-include "../lib/connection.php";
-include "../../config/misc.php";
+require "../lib/connection.php";
+require "../../config/misc.php";
 require "../lib/exploitPatch.php";
 $ep = new exploitPatch();
-$str = "";
-
-if(isset($_POST["page"]) AND is_numeric($_POST["page"])){
+if (isset($_POST["page"]) AND is_numeric($_POST["page"])) {
 	$offset = $ep->number($_POST["page"]) . "0";
 	$offset = $offset * 2; // ask robtop
-}else{
+} else {
 	exit("-1");
 }
-
-if($topArtistsRedirectsMainGD == 1) {
+if ($topArtistsRedirectsMainGD == 1) {
 	// send result
 	$url = "http://boomlings.com/database/getGJTopArtists.php";
 	$request = "page=$offset&secret=Wmfd2893gb7";
@@ -26,6 +23,7 @@ if($topArtistsRedirectsMainGD == 1) {
 	curl_close($ch);
 	echo $robsult;
 } else {
+	$str = "";
 	// select
 	$querywhat = "SELECT authorName, download FROM songs WHERE (authorName NOT LIKE '%Reupload%' AND authorName NOT LIKE 'unknown') GROUP BY authorName ORDER BY COUNT(authorName) DESC LIMIT 20 OFFSET $offset"; // offset couldn't be used in prepare statement for some very odd reason
 	$query = $db->prepare($querywhat);
@@ -36,7 +34,7 @@ if($topArtistsRedirectsMainGD == 1) {
 	$countquery->execute();
 	$totalCount = $countquery->fetchColumn();
 	// parse
-	foreach($res as $sel){
+	foreach ($res as $sel) {
 		$str .= "4:$sel[0]";
 		// TO-DO: Fetch YouTube links from RobTop's servers, as we are unable to auto-determine YouTube links.
 		// Also credit to @Intelligent-Cat for this piece of code

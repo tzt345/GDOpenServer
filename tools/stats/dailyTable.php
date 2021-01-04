@@ -1,13 +1,12 @@
 <h1>Daily Levels</h1>
 <table border="1"><tr><th>#</th><th>ID</th><th>Name</th><th>Creator</th><th>Time</tr>
 <?php
-//error_reporting(0);
-include "../../incl/lib/connection.php";
+require "../../incl/lib/connection.php";
 $x = 1;
 $query = $db->prepare("SELECT feaID, levelID, timestamp FROM dailyfeatures WHERE timestamp < :time ORDER BY feaID DESC");
 $query->execute([':time' => time()]);
 $result = $query->fetchAll();
-foreach($result as &$daily){
+foreach ($result as &$daily) {
 	//basic daily info
 	$feaID = $daily["feaID"];
 	$levelID = $daily["levelID"];

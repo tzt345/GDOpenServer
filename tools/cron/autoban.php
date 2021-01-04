@@ -1,6 +1,6 @@
 <<hr>
 <?php
-include "../../incl/lib/connection.php";
+require "../../incl/lib/connection.php";
 echo "Initializing auto-ban";
 ob_flush();
 flush();
@@ -11,9 +11,9 @@ $levelstuff = $query->fetchAll();
 $stars = 0;
 $demons = 0;
 $coins = 0;
-foreach($levelstuff as $level){
+foreach ($levelstuff as $level) {
 	$stars += $level["starStars"];
-	if($level["starCoins"] != 0){
+	if ($level["starCoins"] != 0) {
 		$coins += $level["coins"];
 	}
 	$demons += $level["starDemon"];
@@ -22,21 +22,21 @@ foreach($levelstuff as $level){
 $query = $db->prepare("SELECT stars FROM mappacks");
 $query->execute();
 $result = $query->fetchAll();
-foreach($result as $pack){
+foreach ($result as $pack) {
 	$stars += $pack["stars"];
 }
 // gauntlet stars
 $query = $db->prepare("SELECT level1, level2, level3, level4, level5 FROM gauntlets");
 $query->execute();
 $result = $query->fetchAll();
-foreach($result as $gauntlet){
-	foreach($gauntlet as $level){
+foreach ($result as $gauntlet) {
+	foreach ($gauntlet as $level) {
 		$query = $db->prepare("SELECT starStars, starDemon, coins, starCoins FROM levels WHERE levelID = :levelid");
 		$query->execute([':levelid' => $level]);
 		$result = $query->fetch();
 		$stars += $result["starStars"];
 		$demons += $result["starDemon"];
-		if($result["starCoins"] != 0){
+		if ($result["starCoins"] != 0) {
 			$coins += $result["coins"];
 		}
 	}
@@ -66,10 +66,10 @@ echo "<h3>Stars based bans</h3>";
 ob_flush();
 flush();
 //banning ppl
-foreach($result as $user){
-	$query = $db->prepare("UPDATE users SET isBanned = 1 WHERE userID = :id");
+foreach ($result as $user) {
+	$query = $db->prepare("UPDATE users SET isLeaderboardBanned = 1 WHERE userID = :id");
 	$query->execute([':id' => $user["userID"]]);
-	echo "Banned ".htmlspecialchars($user["userName"], ENT_QUOTES)." - ".$user["userID"]."<br>";
+	echo "Banned " . htmlspecialchars($user["userName"], ENT_QUOTES) . " - " . $user["userID"] . "<br>";
 }
 //counting coins
 echo "<h3>User coins based bans</h3>";
@@ -83,10 +83,10 @@ echo "<h3>User coins based bans</h3>";
 ob_flush();
 flush();
 //banning ppl
-foreach($result as $user){
-	$query = $db->prepare("UPDATE users SET isBanned = 1 WHERE userID = :id");
+foreach ($result as $user) {
+	$query = $db->prepare("UPDATE users SET isLeaderboardBanned = 1 WHERE userID = :id");
 	$query->execute([':id' => $user["userID"]]);
-	echo "Banned ".htmlspecialchars($user["userName"], ENT_QUOTES)." - ".$user["userID"]."<br>";
+	echo "Banned " . htmlspecialchars($user["userName"], ENT_QUOTES) . " - " . $user["userID"] . "<br>";
 }
 $quarter = floor($demons / 16);
 $demons = $demons + 3 + $quarter;
@@ -98,16 +98,16 @@ echo "<h3>Demons based bans</h3>";
 ob_flush();
 flush();
 //banning ppl
-foreach($result as $user){
-	$query = $db->prepare("UPDATE users SET isBanned = 1 WHERE userID = :id");
+foreach ($result as $user) {
+	$query = $db->prepare("UPDATE users SET isLeaderboardBanned = 1 WHERE userID = :id");
 	$query->execute([':id' => $user["userID"]]);
-	echo "Banned ".htmlspecialchars($user["userName"], ENT_QUOTES)." - ".$user["userID"]."<br>";
+	echo "Banned " . htmlspecialchars($user["userName"], ENT_QUOTES) . " - " . $user["userID"] . "<br>";
 }
 //banips
 $query = $db->prepare("SELECT IP FROM bannedips");
 $query->execute();
 $result = $query->fetchAll();
-foreach($result as &$ip){
+foreach ($result as &$ip) {
 	if ($ip != "127.0.0.1") {
 		$query = $db->prepare("UPDATE users SET isBanned = 1 WHERE IP LIKE CONCAT(:ip, '%')");
 		$query->execute([':ip' => $ip["IP"]]);

@@ -1,3 +1,3 @@
 <?php
-include __DIR__."/../../api/discordLinkUnlink.php";
+include __DIR__ . "/../../api/discordLinkUnlink.php";
 ?>

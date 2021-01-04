@@ -1,137 +1,126 @@
 <?php
 chdir(__DIR__);
-//error_reporting(0);
-include "../lib/connection.php";
+require "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
 //here im getting all the data
-if(!empty($_POST["gameVersion"])){
+if (isset($_POST["gameVersion"])) {
 	$gameVersion = $ep->remove($_POST["gameVersion"]);
-}else{
+} else {
 	$gameVersion = 21;
 }
-if(!empty($_POST["binaryVersion"])){
+if (isset($_POST["binaryVersion"])) {
 	$binaryVersion = $ep->remove($_POST["binaryVersion"]);
-}else{
+} else {
 	$binaryVersion = 1;
 }
-if(!empty($_POST["coins"])){
+if (isset($_POST["coins"])) {
 	$coins = $ep->remove($_POST["coins"]);
-}else{
+} else {
 	$coins = 0;
 }
-if(!isset($_POST["userName"]) OR !isset($_POST["stars"]) OR !isset($_POST["demons"]) OR !isset($_POST["icon"]) OR !isset($_POST["color1"]) OR !isset($_POST["color2"])){
+if (!isset($_POST["userName"]) OR !isset($_POST["stars"]) OR !isset($_POST["demons"]) OR !isset($_POST["icon"]) OR !isset($_POST["color1"]) OR !isset($_POST["color2"])) {
 	exit("-1");
 }
-$userName = $ep->remove($_POST["userName"]);
-$userName = preg_replace("/[^A-Za-z0-9 ]/", '', $userName);
+//continuing the accounts system
+if (isset($_POST["udid"]) AND !is_numeric($_POST["udid"])) {
+	$id = $ep->remove($_POST["udid"]);
+	$userName = $ep->remove($_POST["userName"]);
+	$userName = preg_replace("/[^A-Za-z0-9 ]/", "", $userName);
+} elseif (isset($_POST["accountID"]) AND $_POST["accountID"] != "0") {
+	$id = $ep->remove($_POST["accountID"]);
+	$userName = $gs->getAccountName($id);
+	if ($gameVersion >= 20) {
+		if (isset($_POST["gjp"])) {
+			$gjp = $ep->remove($_POST["gjp"]);
+		} else {
+			exit("-1");
+		}
+		$GJPCheck = new GJPCheck(); //gjp check
+		$gjpresult = $GJPCheck->check($gjp, $id);
+		if ($gjpresult != 1) {
+			exit("-1");
+		}
+	}
+} else {
+	exit("-1");
+}
 $stars = $ep->remove($_POST["stars"]);
 $demons = $ep->remove($_POST["demons"]);
 $icon = $ep->remove($_POST["icon"]);
 $color1 = $ep->remove($_POST["color1"]);
 $color2 = $ep->remove($_POST["color2"]);
-if(!empty($_POST["iconType"])){
+if (isset($_POST["iconType"])) {
 	$iconType = $ep->remove($_POST["iconType"]);
-}else{
+} else {
 	$iconType = 0;
 }
-if(!empty($_POST["userCoins"])){
+if (isset($_POST["userCoins"])) {
 	$userCoins = $ep->remove($_POST["userCoins"]);
-}else{
+} else {
 	$userCoins = 0;
 }
-if(!empty($_POST["special"])){
+if (isset($_POST["special"])) {
 	$special = $ep->remove($_POST["special"]);
-}else{
+} else {
 	$special = 0;
 }
-if(!empty($_POST["accIcon"])){
+if (isset($_POST["accIcon"])) {
 	$accIcon = $ep->remove($_POST["accIcon"]);
-}else{
+} else {
 	$accIcon = 0;
 }
-if(!empty($_POST["accShip"])){
+if (isset($_POST["accShip"])) {
 	$accShip = $ep->remove($_POST["accShip"]);
-}else{
+} else {
 	$accShip = 0;
 }
-if(!empty($_POST["accBall"])){
+if (isset($_POST["accBall"])) {
 	$accBall = $ep->remove($_POST["accBall"]);
-}else{
+} else {
 	$accBall = 0;
 }
-if(!empty($_POST["accBird"])){
+if (isset($_POST["accBird"])) {
 	$accBird = $ep->remove($_POST["accBird"]);
-}else{
+} else {
 	$accBird = 0;
 }
-if(!empty($_POST["accDart"])){
+if (isset($_POST["accDart"])) {
 	$accDart = $ep->remove($_POST["accDart"]);
-}else{
+} else {
 	$accDart = 0;
 }
-if(!empty($_POST["accRobot"])){
+if (isset($_POST["accRobot"])) {
 	$accRobot = $ep->remove($_POST["accRobot"]);
-}else{
+} else {
 	$accRobot = 0;
 }
-if(!empty($_POST["accGlow"])){
+if (isset($_POST["accGlow"])) {
 	$accGlow = $ep->remove($_POST["accGlow"]);
-}else{
+} else {
 	$accGlow = 0;
 }
-if(!empty($_POST["accSpider"])){
+if (isset($_POST["accSpider"])) {
 	$accSpider = $ep->remove($_POST["accSpider"]);
-}else{
+} else {
 	$accSpider = 0;
 }
-if(!empty($_POST["accExplosion"])){
+if (isset($_POST["accExplosion"])) {
 	$accExplosion = $ep->remove($_POST["accExplosion"]);
-}else{
+} else {
 	$accExplosion = 0;
 }
-if(!empty($_POST["diamonds"])){
+if (isset($_POST["diamonds"])) {
 	$diamonds = $ep->remove($_POST["diamonds"]);
-}else{
+} else {
 	$diamonds = 0;
 }
-//continuing the accounts system
-$accountID = "";
-if(empty($_POST["udid"]) AND empty($_POST["accountID"])){
-	exit("-1");
-}
-if(!empty($_POST["udid"])){
-	$id = $ep->remove($_POST["udid"]);
-	if(is_numeric($id)){
-		exit("-1");
-	}
-}
-if ($gameVersion >= 20) {
-	if(!empty($_POST["accountID"]) AND $_POST["accountID"] != "0"){
-		$id = $ep->remove($_POST["accountID"]);
-		$gjp = $ep->remove($_POST["gjp"]);
-		$GJPCheck = new GJPCheck(); //gjp check
-		$gjpresult = $GJPCheck->check($gjp, $id);
-		if($gjpresult != 1){
-			exit("-1");
-		}
-	}else{
-		$register = 0;
-	}
-} else {
-	if(!empty($_POST["accountID"]) AND $_POST["accountID"] != "0"){
-		$id = $ep->remove($_POST["accountID"]);
-		if ($gs->getAccountName($id) != $userName) {
-			exit("-1");
-		}
-	}
-}
 $userID = $gs->getUserID($id, $userName);
-$uploadDate = time();
 $hostname = $gs->getIP();
+$uploadDate = time();
 $query = $db->prepare("SELECT stars, coins, demons, userCoins, diamonds FROM users WHERE userID = :userID LIMIT 1"); //getting differences
 $query->execute([':userID' => $userID]);
 $old = $query->fetch();

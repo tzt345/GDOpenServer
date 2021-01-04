@@ -1,6 +1,6 @@
 <?php
-if (isset($commentarray[1])) {
-    $userName = $commentarray[1];
+if (isset($commentArray[1])) {
+    $userName = $commentArray[1];
 } else {
     exit("temp_0_Error: No input given for required argument 'User'.");
 }
@@ -24,16 +24,16 @@ $query = $db->prepare("SELECT starStars, starFeatured, starEpic, starMagic, isCP
 $query->execute([':levelID' => $levelID]);
 $result = $query->fetch();
 $deservedcp = 0;
-if($result["starStars"] != 0){
+if ($result["starStars"] != 0) {
     $deservedcp += $rateCP;
 }
-if($result["starFeatured"] != 0){
+if ($result["starFeatured"] != 0) {
     $deservedcp += $featureCP;
 }
-if($result["starEpic"] != 0){
+if ($result["starEpic"] != 0) {
     $deservedcp += $epicCP;
 }
-if($isMagicSectionManual == 1 AND $result["starMagic"] != 0){
+if ($isMagicSectionManual == 1 AND $result["starMagic"] != 0) {
     $deservedcp += $magicCP;
 }
 $query4 = $db->prepare("SELECT userID FROM cpshares WHERE levelID = :levelID");
@@ -49,7 +49,7 @@ if ($CPSharedWhole == 1) {
 }
 if ($result["isCPShared"] == 1) {
     $CPShare = round($addCP);
-    foreach($shares as &$share){
+    foreach ($shares as &$share) {
         $query4 = $db->prepare("UPDATE users SET creatorPoints = creatorPoints - :CPShare WHERE userID = :userID");
         $query4->execute([':userID' => $share["userID"], ':CPShare' => $CPShare]);
     }
@@ -60,7 +60,7 @@ if ($result["isCPShared"] == 1) {
     $shares2 = $query->fetchAll();
     $CPShare2 = round($addCP2);
     if ($CPShare2 > 0) {
-        foreach($shares2 as &$share){
+        foreach ($shares2 as &$share) {
             $query4 = $db->prepare("UPDATE users SET creatorPoints = creatorPoints + :CPShare WHERE userID = :userID");
             $query4->execute([':userID' => $share["userID"], ':CPShare' => $CPShare2]);
         }
@@ -77,7 +77,7 @@ if ($result["isCPShared"] == 1) {
     $shares = $query->fetchAll();
     $CPShare = round($addCP);
     if ($CPShare > 0) {
-        foreach($shares as &$share){
+        foreach ($shares as &$share) {
             $query4 = $db->prepare("UPDATE users SET creatorPoints = creatorPoints + :CPShare WHERE userID = :userID");
             $query4->execute([':userID' => $share["userID"], ':CPShare' => $CPShare]);
         }

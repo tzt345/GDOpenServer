@@ -1,13 +1,12 @@
 <?php
-//error_reporting(0);
-include "../../config/discord.php";
-include "../../config/users.php";
-include "../../incl/lib/connection.php";
-require "../../incl/lib/XORCipher.php";
+require "../config/discord.php";
+require "../config/users.php";
+require "../incl/lib/connection.php";
+require_once "../incl/lib/XORCipher.php";
 $xc = new XORCipher();
-require "../../incl/lib/mainLib.php";
+require_once "../incl/lib/mainLib.php";
 $gs = new mainLib();
-if($discordEnabled != 1){
+if ($discordEnabled != 1) {
 	exit("Discord integration is disabled.");
 }
 $discordID = $_GET["discordID"];
@@ -15,17 +14,17 @@ $account = $_GET["account"];
 $query = $db->prepare("SELECT discordLinkReq FROM accounts WHERE userName = :account");
 $query->execute([':account' => $account]);
 $discordLinkReq = $query->fetchColumn();
-if($discordLinkReq != 0){
+if ($discordLinkReq != 0) {
 	exit("This user has an ongoing link request already");
 }
 $query = $db->prepare("SELECT count(*) FROM accounts WHERE discordID = :discordID OR discordLinkReq = :discordID");
 $query->execute([':discordID' => $discordID]);
-if($query->fetchColumn() != 0){
+if ($query->fetchColumn() != 0) {
 	exit("You're linked or have sent a link request to a different account already");
 }
 $query = $db->prepare("UPDATE accounts SET discordLinkReq = :discordID WHERE userName = :account");
 $query->execute([':account' => $account, ':discordID' => $discordID]);
-if($query->rowCount() == 0){
+if ($query->rowCount() == 0) {
 	exit("This account doesn't exist.");
 }
 //in-game message
@@ -34,13 +33,8 @@ $accinfo = $gs->getDiscordAcc($discordID);
 $query = $db->prepare("SELECT accountID FROM accounts WHERE userName = :account");
 $query->execute([':account' => $account]);
 $accountID = $query->fetchColumn();
-$message = $xc->cipher("The Discord account '$accinfo' has attempted to link to this GDPS account. If that was you, please comment '!discord accept' on your profile. If it wasn't you, please comment '!discord deny'. If you ever wish to unlink, please comment '!discord unlink' on your profile.", 14251);
-$message = base64_encode($message);
-$botUserName = $gs->getAccountName($botAID);
-if ($botUserName == false) {
-	$botUserName = "GDPS Bot";
-}
+$message = base64_encode($xc->cipher("The Discord account '$accinfo' has attempted to link to this GDPS account. If that was you, please comment '!discord accept' on your profile. If it wasn't you, please comment '!discord deny'. If you ever wish to unlink, please comment '!discord unlink' on your profile.", 14251));
 $query = $db->prepare("INSERT INTO messages (subject, body, accID, userID, userName, toAccountID, timestamp) VALUES ('TmV3IEFjY291bnQgTGluayBSZXF1ZXN0', :body, :ru, :ra, :username, :toAccountID, :uploadDate)");
-$query->execute([':body' => $message, ':toAccountID' => $accountID, ':ru' => $botUID, ':ra' => $botAID, ':username' => $botUserName, ':uploadDate' => time()]);
+$query->execute([':body' => $message, ':toAccountID' => $accountID, ':ru' => $gs->getBotUserID(), ':ra' => $gs->getBotAccountID(), ':username' => $gs->getBotAccountName(), ':uploadDate' => time()]);
 echo "Link request has been succesfully sent, please check your in-game messages";
 ?>

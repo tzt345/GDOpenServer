@@ -1,19 +1,19 @@
 <?php
-if (isset($commentarray[1])) {
-    $diffArray = $gs->getDiffFromName($commentarray[1]);
+if (isset($commentArray[1])) {
+    $diffArray = $gs->getDiffFromName($commentArray[1]);
 } else {
     exit("temp_0_Error: No input given.");
 }
 $starDifficulty = $diffArray[0];
 $starDemon = $diffArray[1];
 $starAuto = $diffArray[2];
-if (isset($commentarray[2]) AND is_numeric($commentarray[2])) {
-    $starStars = $commentarray[2];
+if (isset($commentArray[2]) AND is_numeric($commentArray[2])) {
+    $starStars = $commentArray[2];
 } else {
     $starStars = 0;
 }
-if (isset($commentarray[3]) AND is_numeric($commentarray[3])) {
-    $starFeatured = $commentarray[3];
+if (isset($commentArray[3]) AND is_numeric($commentArray[3])) {
+    $starFeatured = $commentArray[3];
     if ($starFeatured >= 1) {
         $starFeatured = 1;
     } else {
@@ -22,8 +22,8 @@ if (isset($commentarray[3]) AND is_numeric($commentarray[3])) {
 } else {
     $starFeatured = 0;
 }
-if (isset($commentarray[4]) AND is_numeric($commentarray[4])) {
-    $starCoins = $commentarray[4];
+if (isset($commentArray[4]) AND is_numeric($commentArray[4])) {
+    $starCoins = $commentArray[4];
     if ($starCoins >= 1) {
         $starCoins = 1;
     } else {
@@ -35,7 +35,7 @@ if (isset($commentarray[4]) AND is_numeric($commentarray[4])) {
 
 $featureLevel = 0;
 if ($starStars != 0) {
-    $response .= ucfirst($commentarray[1])." with $starStars stars";
+    $response .= ucfirst($commentArray[1]) . " with $starStars stars";
     $query = $db->prepare("SELECT starStars, starFeatured, isCPShared FROM levels WHERE levelID = :levelID");
     $query->execute([':levelID' => $levelID]);
     $result = $query->fetch();
@@ -44,7 +44,7 @@ if ($starStars != 0) {
             $query3 = $db->prepare("SELECT userID FROM cpshares WHERE levelID = :levelID");
             $query3->execute([':levelID' => $levelID]);
             $deservedcp = $rateCP;
-            if($gs->checkPermission($accountID, "Feature") AND $result["starFeatured"] != 0){
+            if ($gs->checkPermission($accountID, "Feature") AND $result["starFeatured"] != 0) {
                 $deservedcp += $featureCP;
                 $featureLevel = 1;
             }
@@ -56,7 +56,7 @@ if ($starStars != 0) {
             }
             $shares = $query->fetchAll();
             $CPShare = round($addCP);
-            foreach($shares as &$share){
+            foreach ($shares as &$share) {
                 $query4 = $db->prepare("UPDATE users SET creatorPoints = creatorPoints + :CPShare WHERE userID = :userID");
                 $query4->execute([':userID' => $share["userID"], ':CPShare' => $CPShare]);
             }
@@ -66,12 +66,12 @@ if ($starStars != 0) {
         }
     }
 } else {
-    $response .= ucfirst($commentarray[1])." with no stars";
+    $response .= ucfirst($commentArray[1]) . " with no stars";
 }
 $query = $db->prepare("UPDATE levels SET starStars = :starStars, starDifficulty = :starDifficulty, starDemon = :starDemon, starAuto = :starAuto WHERE levelID = :levelID");
 $query->execute([':starStars' => $starStars, ':starDifficulty' => $starDifficulty, ':starDemon' => $starDemon, ':starAuto' => $starAuto, ':levelID' => $levelID]);
 $query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES (1, :value, :value2, :levelID, :timestamp, :id)");
-$query->execute([':value' => ucfirst($commentarray[1]), ':timestamp' => $uploadDate, ':id' => $accountID, ':value2' => $starStars, ':levelID' => $levelID]);
+$query->execute([':value' => ucfirst($commentArray[1]), ':timestamp' => $uploadDate, ':id' => $accountID, ':value2' => $starStars, ':levelID' => $levelID]);
 if ($starFeatured == 1 AND $featureLevel == 1) {
     $query = $db->prepare("UPDATE levels SET starFeatured = 1 WHERE levelID = :levelID");
     $query->execute([':levelID' => $levelID]);

@@ -1,22 +1,18 @@
 <?php
 class userAPI {
-    function Select(){
-        include "../incl/lib/connection.php";
-        require_once "../incl/lib/mainLib.php";
+    function Select() {
         require_once "../incl/lib/exploitPatch.php";
         $ep = new exploitPatch();
-        $mainLib = new mainLib();
-        if(!empty($_GET["userID"])){
-                   $response = $_GET["userID"];
-        }
-        else if(!empty($_POST["userID"])){
-                   $response = $_POST["userID"];
+        if (isset($_GET["userID"])) {
+            $response = $_GET["userID"];
+        } elseif (!empty($_POST["userID"])) {
+            $response = $_POST["userID"];
         }
         $user = array();
         $userID = $ep->remove($response);
-        $data = $db->prepare('SELECT * FROM users WHERE userID = :userID');
+        $data = $db->prepare("SELECT * FROM users WHERE userID = :userID");
         $data->execute(['userID' => $userID]);
-        while($OutputData = $data->fetch(PDO::FETCH_ASSOC)){
+        while ($OutputData = $data->fetch(PDO::FETCH_ASSOC)) {
             $user = array(
                 'userName' => $OutputData['userName'],
                 'accountID' => $OutputData['extID'],

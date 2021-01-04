@@ -1,7 +1,6 @@
 <?php
-$commandName = $commentarray[0];
-if (isset($commentarray[1])) {
-	$name = str_replace($prefix.$commandName." ", "", $comment);
+if (isset($commentArray[1])) {
+	$name = str_replace($prefix . $commentArray[0] . " ", "", $comment);
 } else {
 	exit("temp_0_Error: No input given for required argument 'Name'.");
 }

@@ -1,7 +1,7 @@
 <?php
 session_start();
 // yoinked from 99webTools
-$code = rand(1000,9999);
+$code = rand(1000, 9999);
 $_SESSION["code"] = $code;
 $im = imagecreatetruecolor(50, 24);
 $bg = imagecolorallocate($im, 0, 0, 0); //background color black

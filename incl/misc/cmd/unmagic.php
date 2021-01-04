@@ -1,4 +1,7 @@
 <?php
+if ($isMagicSectionManual != 1) {
+    return false;
+}
 $query = $db->prepare("SELECT starMagic, isCPShared FROM levels WHERE levelID = :levelID");
 $query->execute([':levelID' => $levelID]);
 $result = $query->fetch();
@@ -16,7 +19,7 @@ if ($result["starMagic"] == 1) {
         }
         $shares = $query->fetchAll();
         $CPShare = round($addCP);
-        foreach($shares as &$share){
+        foreach ($shares as &$share) {
             $query4 = $db->prepare("UPDATE users SET creatorPoints = creatorPoints - :CPShare WHERE userID = :userID");
             $query4->execute([':userID' => $share["userID"], ':CPShare' => $CPShare]);
         }

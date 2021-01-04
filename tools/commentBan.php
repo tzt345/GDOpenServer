@@ -6,7 +6,7 @@ require "../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
 require "../incl/lib/mainLib.php";
 $gs = new mainLib();
-if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["userID"]) AND !empty($_POST["banType"]) AND !empty($_POST["banReason"])){
+if(isset($_POST["userName"]) AND isset($_POST["password"]) AND isset($_POST["userID"]) AND isset($_POST["banType"]) AND isset($_POST["banReason"])){
 	$userName = $ep->remove($_POST["userName"]);
 	$password = $ep->remove($_POST["password"]);
 	$userID = $ep->remove($_POST["userID"]);
@@ -14,7 +14,7 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 	$banReason = $ep->remove($_POST["banReason"]);
 	$pass = $gp->isValidUsrname($userName, $password);
 	if ($pass == 1) {
-		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName=:userName");	
+		$query = $db->prepare("SELECT accountID FROM accounts WHERE userName = :userName");	
 		$query->execute([':userName' => $userName]);
 		$accountID = $query->fetchColumn();
 		if($gs->checkPermission($accountID, "toolCommentban") == false){
@@ -43,6 +43,7 @@ if(!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["
 		<option value="3">Unban</option>
 	</select>
 	<br>Ban Reason: <input type="text" name="banReason">
-	<br><input type="submit" value="Ban"></form>';
+	<br><input type="submit" value="Ban">
+	</form>';
 }
 ?>	

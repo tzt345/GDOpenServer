@@ -22,22 +22,18 @@ if ($isMagicSectionManual == 1 AND $result["starMagic"] != 0) {
 $deservedCP2 += $deservedCP;
 $removeCP = round($deservedCP);
 $addCP = round($deservedCP2);
-if ($removeCP > 0) {
+if ($addCP - $removeCP != 0) {
     if ($result["isCPShared"] == 1) {
         $query2 = $db->prepare("SELECT userID FROM cpshares WHERE levelID = :levelID");
         $query2->execute([':levelID' => $levelID]);
         $shares = $query2->fetch(); 
-        foreach($shares as &$share){
-            $query3 = $db->prepare("UPDATE users SET creatorPoints = creatorPoints - :CPShare WHERE userID = :userID");
-            $query3->execute([':userID' => $share["userID"], ':CPShare' => $removeCP]);
+        foreach ($shares as &$share) {
             $query4 = $db->prepare("UPDATE users SET creatorPoints = creatorPoints + :CPShare WHERE userID = :userID");
-            $query4->execute([':userID' => $share["userID"], ':CPShare' => $addCP]);
+            $query4->execute([':userID' => $share["userID"], ':CPShare' => $addCP - $removeCP]);
         }
     } else {
-        $query2 = $db->prepare("UPDATE users SET creatorPoints = creatorPoints - :CPShare WHERE userID = :userID");
-        $query2->execute([':userID' => $targetExtID, ':CPShare' => $removeCP]);
         $query3 = $db->prepare("UPDATE users SET creatorPoints = creatorPoints + :CPShare WHERE userID = :userID");
-        $query3->execute([':userID' => $targetExtID, ':CPShare' => $addCP]);
+        $query3->execute([':userID' => $targetExtID, ':CPShare' => $addCP - $removeCP]);
     }
 }
 

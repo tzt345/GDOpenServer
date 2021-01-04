@@ -1,34 +1,34 @@
 <?php
 class generatePass {
 	public function isValidUsrname($userName, $pass) {
-		include __DIR__."/connection.php";
-		require_once __DIR__."/mainLib.php";
+		require __DIR__ . "/connection.php";
+		require_once __DIR__ . "/mainLib.php";
 		$gs = new mainLib();
-		include __DIR__."/../../config/security.php";
+		require __DIR__ . "/../../config/security.php";
 		$ip = $gs->getIP();
 		$newtime = time() - 3600;
 		$query6 = $db->prepare("SELECT count(*) FROM actions WHERE type = 6 AND timestamp > :time AND value2 = :ip");
 		$query6->execute([':time' => $newtime, ':ip' => $ip]);
-		if($query6->fetchColumn() > 7){
+		if ($query6->fetchColumn() > 7) {
 			return -1;
-		}else{
+		} else {
 			$query = $db->prepare("SELECT accountID, salt, password, isAdmin, isVerified FROM accounts WHERE userName = :userName");
 			$query->execute([':userName' => $userName]);
-			if($query->rowCount() == 0){
+			if ($query->rowCount() == 0) {
 				return 0;
 			}
 			$result = $query->fetch();
 			if ($accountVerification != 0 AND $result["isVerified"] == 0) {
 				return -1;
 			}
-			if(password_verify($pass, $result["password"])){
+			if (password_verify($pass, $result["password"])) {
 				$modipCategory = $gs->getMaxValuePermission($result["accountID"], "modipCategory");
-				if($modipCategory > 0){ //modIPs
+				if ($modipCategory > 0) { //modIPs
 					$query4 = $db->prepare("SELECT count(*) FROM modips WHERE accountID = :id");
 					$query4->execute([':id' => $result["accountID"]]);
 					if ($query4->fetchColumn() > 0) {
 						$query6 = $db->prepare("UPDATE modips SET IP = :hostname, modipCategory = :modipCategory WHERE accountID = :id");
-					}else{
+					} else {
 						$query6 = $db->prepare("INSERT INTO modips (IP, accountID, isMod, modipCategory) VALUES (:hostname, :id, 1, :modipCategory)");
 					}
 					$query6->execute([':hostname' => $ip, ':id' => $result["accountID"], ':modipCategory' => $modipCategory]);
@@ -47,7 +47,7 @@ class generatePass {
 					$query->execute([':userName' => $userName, ':password' => $pass]);
 					return 1;
 				} else {
-					if($md5pass == $result['password']){
+					if ($md5pass == $result['password']) {
 						$pass = password_hash($pass, PASSWORD_DEFAULT);
 						//updating hash
 						$query = $db->prepare("UPDATE accounts SET password = :password WHERE userName = :userName");
@@ -63,16 +63,14 @@ class generatePass {
 		}
 	}
 	public function isValid($accid, $pass){
-		include __DIR__."/connection.php";
+		require __DIR__ . "/connection.php";
 		$query = $db->prepare("SELECT userName FROM accounts WHERE accountID = :accid");
 		$query->execute([':accid' => $accid]);
-		if($query->rowCount() == 0){
+		if ($query->rowCount() == 0) {
 			return 0;
 		}
 		$result = $query->fetch();
-		$userName = $result["userName"];
-		$generatePass = new generatePass();
-		return $generatePass->isValidUsrname($userName, $pass);
+		return $this->isValidUsrname($result["userName"], $pass);
 	}
 }
 ?>

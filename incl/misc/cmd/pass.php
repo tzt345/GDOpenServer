@@ -1,6 +1,6 @@
 <?php
-if (isset($commentarray[1]) AND is_numeric($commentarray[1])) {
-	$pass = $commentarray[1];
+if (isset($commentArray[1]) AND is_numeric($commentArray[1])) {
+	$pass = $commentArray[1];
 	$pass = sprintf("%06d", $pass);
 	if ($pass == "disable") {
 		$pass = "0";
@@ -8,7 +8,7 @@ if (isset($commentarray[1]) AND is_numeric($commentarray[1])) {
 		if ($pass == "000000") {
 			$pass = "1";
 		} else {
-			$pass = "1".$pass;
+			$pass = "1" . $pass;
 		}
 	}
 } else {
