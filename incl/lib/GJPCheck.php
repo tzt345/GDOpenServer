@@ -5,7 +5,7 @@ class GJPCheck {
 		require __DIR__ . "/../../config/security.php";
 		require_once __DIR__ . "/mainLib.php";
 		$gs = new mainLib();
-		if (!is_numeric($accountID) AND $accountID != "0") {
+		if (!is_numeric($accountID) OR $accountID <= 0) {
 			return 0;
 		}
 		if ($sessionGrants) {
