@@ -1,19 +1,29 @@
 <?php
 session_start();
-require "incl/dashboardLib.php";
+require_once "incl/dashboardLib.php";
 $dl = new dashboardLib();
 require "../incl/lib/connection.php";
 require "../config/metadata.php";
 require "../config/levels.php";
+require_once "../incl/lib/mainLib.php";
+$gs = new mainLib();
 
 $chartdata = array();
-for($x = 7; $x >= 0;) {
+for ($x = 7; $x >= 0;) {
 	$timeBefore = time() - (86400 * $x);
 	$timeAfter = time() - (86400 * ($x + 1));
 	if ($showCreatorBannedPeoplesLevels == 1) {
 		$query = $db->prepare("SELECT count(*) FROM levels WHERE uploadDate < :timeBefore AND uploadDate > :timeAfter AND userID != $botUID AND extID != $botAID");
 	} else {
-		$query = $db->prepare("SELECT count(*) FROM levels WHERE uploadDate < :timeBefore AND uploadDate > :timeAfter AND isCreatorBanned = 0 AND userID != $botUID AND extID != $botAID");
+		$query2 = $db->prepare("SELECT userID FROM users WHERE isCreatorBanned = 1");
+		$query2->execute();
+		$banResult = $query2->fetch();
+		$bannedPeople = "";
+		foreach ($banResult as &$bannedPerson) {
+			$bannedPeople .= $bannedPerson["roleID"] . ",";
+		}
+		$bannedPeople .= $gs->getBotUserID();
+		$query = $db->prepare("SELECT count(*) FROM levels WHERE uploadDate < :timeBefore AND uploadDate > :timeAfter AND ( userID NOT IN ($bannedPeople) ) AND extID != $botAID");
 	}
 	$query->execute([':timeBefore' => $timeBefore, ':timeAfter' => $timeAfter]);
 	switch ($x) {
@@ -34,7 +44,7 @@ for($x = 7; $x >= 0;) {
 $levelsChart2 = array();
 $months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 $x = 0;
-foreach($months as &$month) {
+foreach ($months as &$month) {
 	$x++;
 	$nextMonthYear = date('Y');
 	if ($x == 12) {
@@ -47,11 +57,19 @@ foreach($months as &$month) {
 	if ($showCreatorBannedPeoplesLevels == 1) {
 		$query = $db->prepare("SELECT count(*) FROM levels WHERE uploadDate > :timeBefore AND uploadDate < :timeAfter AND userID != $botUID AND extID != $botAID");
 	} else {
-		$query = $db->prepare("SELECT count(*) FROM levels WHERE uploadDate > :timeBefore AND uploadDate < :timeAfter AND isCreatorBanned = 0 AND userID != $botUID AND extID != $botAID");
+		$query2 = $db->prepare("SELECT userID FROM users WHERE isCreatorBanned = 1");
+		$query2->execute();
+		$banResult = $query2->fetch();
+		$bannedPeople = "";
+		foreach ($banResult as &$bannedPerson) {
+			$bannedPeople .= $bannedPerson["roleID"] . ",";
+		}
+		$bannedPeople .= $gs->getBotUserID();
+		$query = $db->prepare("SELECT count(*) FROM levels WHERE uploadDate > :timeBefore AND uploadDate < :timeAfter AND ( userID NOT IN ($bannedPeople) ) AND extID != $botAID");
 	}
 	$query->execute([':timeBefore' => $timeBefore, ':timeAfter' => $timeAfter]);
 	$amount = $query->fetchColumn();
-	if($amount != 0){
+	if ($amount != 0) {
 		$levelsChart2[$month] = $amount;
 	}
 }

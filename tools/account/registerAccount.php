@@ -34,7 +34,7 @@ if (isset($_POST["userName"]) AND isset($_POST["email"]) AND isset($_POST["passw
 			} else {
 				// hashing your password and registering your account
 				$hashpass = password_hash($password, PASSWORD_DEFAULT);
-				switch($accountVerification) {
+				switch ($accountVerification) {
 					case 2:
 						if (isset($_POST["captcha"]) AND $_POST["captcha"] != "" AND $_SESSION["code"] == $_POST["captcha"]) {
 							require "../../incl/lib/mainLib.php";
@@ -45,7 +45,7 @@ if (isset($_POST["userName"]) AND isset($_POST["email"]) AND isset($_POST["passw
 							$query->execute([':userName' => $username, ':password' => $hashpass, ':email' => $email, ':time' => time(), ':secret' => $secret]);
 							$accountID = $db->lastInsertId();
 							sendVerificationMail($email, $secret, $accountID);
-							echo "Account registred. Check your E-Mail inbox to verify your account (Remember to check your spam emails too). <a href='..'>Go back to the tools page.</a>";
+							echo "Account registred. Check your E-Mail inbox to verify your account (Remember to check your spam emails too). Go back to <a href='..'>the tools page.</a>";
 						} else {
 							echo "Captcha verification failed. Please try again.";
 						}
@@ -53,14 +53,14 @@ if (isset($_POST["userName"]) AND isset($_POST["email"]) AND isset($_POST["passw
 						if (isset($_POST["captcha"]) AND $_POST["captcha"] != "" AND $_SESSION["code"] == $_POST["captcha"]) {
 							$query = $db->prepare("INSERT INTO accounts (userName, password, email, saveData, registerDate, saveKey, isVerified) VALUES (:userName, :password, :email, '', :time, '', 0)");
 							$query->execute([':userName' => $userName, ':password' => $hashpass, ':email' => $email, ':time' => time()]);
-							echo "Account registred. No E-Mail verification required, you can login. <a href='index.php'>Go back to account management.</a>";
+							echo "Account registred. No E-Mail verification required, you can login. Go back to <a href='index.php'>account management.</a>";
 						} else {
 							echo "Captcha verification failed. Please try again.";
 						}
 					default:
 						$query = $db->prepare("INSERT INTO accounts (userName, password, email, saveData, registerDate, saveKey) VALUES (:userName, :password, :email, '', :time, '')");
 						$query->execute([':userName' => $userName, ':password' => $hashpass, ':email' => $email, ':time' => time()]);
-						echo "Account registred. No E-Mail verification required, you can login. <a href='index.php'>Go back to account management.</a>";
+						echo "Account registred. No E-Mail verification required, you can login. Go back to <a href='index.php'>account management.</a>";
 				}
 			}
 		}

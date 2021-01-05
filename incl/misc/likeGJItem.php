@@ -15,7 +15,7 @@ if ($query6->fetchColumn() > 2) {
 }
 $query6 = $db->prepare("INSERT INTO actions (type, value, timestamp, value2) VALUES (:type, :itemID, :time, :ip)");
 $query6->execute([':type' => $type, ':itemID' => $itemID, ':time' => time(), ':ip' => $ip]);
-switch($_POST["type"]){
+switch ($_POST["type"]) {
 	case 1:
 		$table = "levels";
 		$column = "levelID";

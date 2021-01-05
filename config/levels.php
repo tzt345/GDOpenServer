@@ -7,12 +7,13 @@ $epicCP = 2;
 $magicCP = 2; // Counts if magic section is manual
 
 $epicInHall = 1; // 1 = Epic levels can be seen in Hall of Fame, 0 = Only levels with !hall command applied will go to Hall of Fame
-// !hall command is disabled by default if $epicToHall is set to 1.
+// !hall command is disabled by default if $epicInHall is set to 1.
+// Note: Manually sending levels to Hall of Fame will not grant any extra creator points. 
 
-$isMagicSectionManual = 0; // Enables magic command and gives creator points for levels that go into that section
+$isMagicSectionManual = 0; // Enables magic commands and gives creator points for levels that go into that section
 $CPSharedWhole = 0; // Indicates if shared level creator points are added equally to each creator, or split between the creators; 0 for no and 1 for yes
 $dailyWeeklyCPShared = 1; // Indicates if daily/weekly creator point reward will be shared with people the creator points are shared with; 0 for no and 1 for yes
 
-$uploadRateLimit = 60; // Time in seconds; indicates how much time an account or a user depending on the restrictions should wait until it can upload a level again
+$uploadRateLimit = 60; // Time in seconds; indicates how much time an account or a user depending on the restrictions should wait until they can upload a level again
 $showCreatorBannedPeoplesLevels = 1; // Indicates if level searching shows creator banned people's levels
 ?>
