@@ -11,18 +11,18 @@ $gs = new mainLib();
 $gjp = $ep->remove($_POST["gjp"]);
 $accountID = $ep->remove($_POST["accountID"]);
 $gjpresult = $GJPCheck->check($gjp, $accountID);
-if($gjpresult != 1){
+if ($gjpresult != 1 OR empty($_POST["levelID"])) {
 	exit("-1");
 }
 $levelID = $ep->remove($_POST["levelID"]);
 $percent = $ep->remove($_POST["percent"]);
 $uploadDate = time();
-if (isset($_POST["s1"])) {
+if (!empty($_POST["s1"])) {
 	$attempts = $_POST["s1"] - 8354;
 } else {
 	$attempts = 0;
 }
-if (isset($_POST["s9"])) {
+if (!empty($_POST["s9"])) {
 	$coins = $_POST["s9"] - 5819;
 } else {
 	$coins = 0;
@@ -40,12 +40,8 @@ $query2->execute([':accountID' => $accountID, ':levelID' => $levelID]);
 $oldPercent = $query2->fetchColumn();
 if ($query2->rowCount() == 0) {
 	$query = $db->prepare("INSERT INTO levelscores (accountID, levelID, percent, uploadDate, coins, attempts) VALUES (:accountID, :levelID, :percent, :uploadDate, :coins, :attempts)");
-} else {
-	if ($oldPercent <= $percent) {
-		$query = $db->prepare("UPDATE levelscores SET percent = :percent, uploadDate = :uploadDate, coins = :coins, attempts = :attempts WHERE accountID = :accountID AND levelID = :levelID");
-	} else {
-		$query = $db->prepare("SELECT count(*) FROM levelscores WHERE percent = :percent AND uploadDate = :uploadDate AND accountID = :accountID AND levelID = :levelID AND coins = :coins AND attempts = :attempts");
-	}
+} elseif ($oldPercent <= $percent) {
+	$query = $db->prepare("UPDATE levelscores SET percent = :percent, uploadDate = :uploadDate, coins = :coins, attempts = :attempts WHERE accountID = :accountID AND levelID = :levelID");
 }
 $query->execute([':accountID' => $accountID, ':levelID' => $levelID, ':percent' => $percent, ':uploadDate' => $uploadDate, ':coins' => $coins, ':attempts' => $attempts]);
 
@@ -72,28 +68,19 @@ switch ($type) {
 		$query2args = [':levelID' => $levelID, ':time' => $uploadDate - 604800];
 		break;
 	default:
-		return -1;
-		break;
+		exit("-1");
 }
 $query2->execute($query2args);
 $result = $query2->fetchAll();
-$lvlscorestring = "";
+$place = 1;
 foreach ($result as &$score) {
 	$extID = $score["accountID"];
-	$query2 = $db->prepare("SELECT userName, userID, icon, color1, color2, iconType, special, extID, isBanned FROM users WHERE extID = :extID");
+	$query2 = $db->prepare("SELECT userName, userID, icon, color1, color2, iconType, special, extID, FROM users WHERE extID = :extID AND isLeaderboardBanned = 0 LIMIT 1");
 	$query2->execute([':extID' => $extID]);
-	$user = $query2->fetchAll()[0];
-	$time = date("d/m/Y G.i", $score["uploadDate"]);
-	if($user["isBanned"] == 0){
-		if($score["percent"] == 100){
-			$place = 1;
-		}else if($score["percent"] > 75){
-			$place = 2;
-		}else{
-			$place = 3;
-		}
-		$lvlscorestring .= "1:" . $user["userName"] . ":2:" . $user["userID"] . ":9:" . $user["icon"] . ":10:" . $user["color1"] . ":11:" . $user["color2"] . ":14:" . $user["iconType"] . ":15:" . $user["special"] . ":16:" . $user["extID"] . ":3:" . $score["percent"] . ":6:" . $place . ":13:" . $score["coins"] . ":42:" . $time . "|";
-	}
+	$user = $query2->fetchAll();
+	$time = $gs->makeTime($score["uploadDate"]);
+	$lvlscorestring .= "1:" . $user["userName"] . ":2:" . $user["userID"] . ":9:" . $user["icon"] . ":10:" . $user["color1"] . ":11:" . $user["color2"] . ":14:" . $user["iconType"] . ":15:" . $user["special"] . ":16:" . $user["extID"] . ":3:" . $score["percent"] . ":6:" . $place . ":13:" . $score["coins"] . ":42:" . $time . "|"; */
+	$place++;
 }
 $lvlscorestring = substr($msgstring, 0, -1);
 echo $lvlscorestring;
