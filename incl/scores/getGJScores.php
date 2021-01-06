@@ -62,7 +62,6 @@ if ($type == "top" OR $type == "creators" OR $type == "relative") {
 			(
 				SELECT * FROM users
 				WHERE stars <= :stars
-				AND isBanned = 0
 				AND isLeaderboardBanned = 0
 				AND gameVersion $sign
 				ORDER BY stars DESC
@@ -72,7 +71,6 @@ if ($type == "top" OR $type == "creators" OR $type == "relative") {
 			(
 				SELECT * FROM users
 				WHERE stars >= :stars
-				AND isBanned = 0
 				AND isLeaderboardBanned = 0
 				AND gameVersion $sign
 				ORDER BY stars ASC
@@ -90,8 +88,8 @@ if ($type == "top" OR $type == "creators" OR $type == "relative") {
 		$query = $db->prepare("SET @rownum := 0;");
 		$query->execute();
 		$f = "SELECT rank, stars FROM (
-							SELECT @rownum := @rownum + 1 AS rank, stars, extID, isBanned
-							FROM users WHERE isBanned = 0 AND isLeaderboardBanned = 0 AND gameVersion $sign ORDER BY stars DESC
+							SELECT @rownum := @rownum + 1 AS rank, stars, extID,
+							FROM users WHERE isLeaderboardBanned = 0 AND gameVersion $sign ORDER BY stars DESC
 							) as result WHERE extID = :extid";
 		$query = $db->prepare($f);
 		$query->execute([':extid' => $extid]);
@@ -100,11 +98,7 @@ if ($type == "top" OR $type == "creators" OR $type == "relative") {
 		$xi = $leaderboard["rank"] - 1;
 	}
 	foreach ($result as &$user) {
-		if (is_numeric($user["extID"])) {
-			$extid = $user["extID"];
-		} else {
-			$extid = 0;
-		}
+		$extid = $user["extID"];
 		$xi++;
 		$lbstring .= "1:" . $user["userName"] . ":2:" . $user["userID"] . ":13:" . $user["coins"] . ":17:" . $user["userCoins"] . ":6:" . $xi . ":9:" . $user["icon"] . ":10:" . $user["color1"] . ":11:" . $user["color2"] . ":14:" . $user["iconType"] . ":15:" . $user["special"] . ":16:" . $extid . ":3:" . $user["stars"] . ":8:" . round($user["creatorPoints"], 0, PHP_ROUND_HALF_DOWN) . ":4:" . $user["demons"] . ":7:" . $extid . ":46:" . $user["diamonds"] . "|";
 	}
@@ -125,12 +119,8 @@ if ($type == "friends") {
 	$query = $db->prepare("SELECT * FROM users WHERE extID IN (:accountID $people ) ORDER BY stars DESC");
 	$query->execute([':accountID' => $accountID]);
 	$result = $query->fetchAll();
-	foreach($result as &$user) {
-		if (is_numeric($user["extID"])) {
-			$extid = $user["extID"];
-		} else {
-			$extid = 0;
-		}
+	foreach ($result as &$user) {
+		$extid = $user["extID"];
 		$xi++;
 		$lbstring .= "1:" . $user["userName"] . ":2:" . $user["userID"] . ":13:" . $user["coins"] . ":17:" . $user["userCoins"] . ":6:" . $xi . ":9:" . $user["icon"] . ":10:" . $user["color1"] . ":11:" . $user["color2"] . ":14:" . $user["iconType"] . ":15:" . $user["special"] . ":16:" . $extid . ":3:" . $user["stars"] . ":8:" . round($user["creatorPoints"], 0, PHP_ROUND_HALF_DOWN) . ":4:" . $user["demons"] . ":7:" . $extid . ":46:" . $user["diamonds"] . "|";
 	}

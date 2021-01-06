@@ -1,14 +1,14 @@
 <?php
 chdir(__DIR__);
 require "../lib/connection.php";
+require "../../config/levels.php";
+require "../../config/users.php";
 require_once "../lib/GJPCheck.php";
 $GJPCheck = new GJPCheck();
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $mainLib = new mainLib();
-require "../../config/levels.php";
-require "../../config/users.php";
 //here im getting all the data
 if (isset($_POST["accountID"]) AND $_POST["accountID"] != "0") {
 	$id = $ep->remove($_POST["accountID"]);
@@ -22,14 +22,15 @@ if (isset($_POST["accountID"]) AND $_POST["accountID"] != "0") {
 	exit("-1");
 }
 $gameVersion = $ep->remove($_POST["gameVersion"]);
-if ($gameVersion >= 20 AND $register == 1 AND isset($_POST["gjp"])) {
+if ($gameVersion >= 20 AND $register == 1) {
+	if (empty($_POST["gjp"])) {
+		exit("-1");
+	}
 	$gjp = $ep->remove($_POST["gjp"]);
 	$gjpresult = $GJPCheck->check($gjp, $id);
 	if ($gjpresult != 1) {
 		exit("-1");
 	}
-} else {
-	exit("-1");
 }
 $uploadDate = time();
 $userName = $ep->remove($_POST["userName"]);

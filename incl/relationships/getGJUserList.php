@@ -2,9 +2,9 @@
 chdir(__DIR__);
 require "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
+$GJPCheck = new GJPCheck();
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
-$GJPCheck = new GJPCheck();
 if (empty($_POST["accountID"]) OR empty($_POST["gjp"]) OR (!isset($_POST["type"]) OR !is_numeric($_POST["type"]))) {
 	exit("-1");
 }
