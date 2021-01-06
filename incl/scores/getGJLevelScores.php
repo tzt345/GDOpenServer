@@ -8,10 +8,13 @@ $ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
 //here im getting all the data
+if (empty($_POST["gjp"]) OR empty($_POST["accountID"]) OR empty($_POST["levelID"])) {
+	exit("-1");
+}
 $gjp = $ep->remove($_POST["gjp"]);
 $accountID = $ep->remove($_POST["accountID"]);
 $gjpresult = $GJPCheck->check($gjp, $accountID);
-if ($gjpresult != 1 OR empty($_POST["levelID"])) {
+if ($gjpresult != 1) {
 	exit("-1");
 }
 $levelID = $ep->remove($_POST["levelID"]);

@@ -10,8 +10,8 @@ $stage = array_key_exists("userName", $_POST) AND array_key_exists("password", $
 
 if ($stage == false) {
 	echo '<form action="" method="post">
-		<input class="smain" type="text" placeholder="Username" name="userName"><br>
-		<input class="smain" type="password" placeholder="Password" name="password"><br>
+		<input class="smain" type="text" placeholder="Username" name="userName" minlength=3 maxlength=15><br>
+		<input class="smain" type="password" placeholder="Password" name="password" minlength=6 maxlength=20><br>
 		<input class="smain" type="text" placeholder="Pack Name" name="packName"><br>
 		<input class="smain" type="submit" value="Load">
 	</form>';

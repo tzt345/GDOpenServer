@@ -2,6 +2,7 @@
 chdir(__DIR__);
 require "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
+$GJPCheck = new GJPCheck();
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../lib/mainLib.php";
@@ -11,6 +12,27 @@ if (isset($_POST["gameVersion"])) {
 	$gameVersion = $ep->remove($_POST["gameVersion"]);
 } else {
 	$gameVersion = 21;
+}
+if (isset($_POST["udid"]) AND !is_numeric($_POST["udid"])) {
+	$id = $ep->remove($_POST["udid"]);
+	$userName = $ep->remove($_POST["userName"]);
+	$userName = preg_replace("/[^A-Za-z0-9 ]/", "", $userName);
+} elseif (isset($_POST["accountID"]) AND $_POST["accountID"] != "0") {
+	$id = $ep->remove($_POST["accountID"]);
+	$userName = $gs->getAccountName($id);
+	if ($gameVersion >= 20) {
+		if (isset($_POST["gjp"])) {
+			$gjp = $ep->remove($_POST["gjp"]);
+		} else {
+			exit("-1");
+		}
+		$gjpresult = $GJPCheck->check($gjp, $id); //gjp check
+		if ($gjpresult != 1) {
+			exit("-1");
+		}
+	}
+} else {
+	exit("-1");
 }
 if (isset($_POST["binaryVersion"])) {
 	$binaryVersion = $ep->remove($_POST["binaryVersion"]);
@@ -26,28 +48,6 @@ if (!isset($_POST["userName"]) OR !isset($_POST["stars"]) OR !isset($_POST["demo
 	exit("-1");
 }
 //continuing the accounts system
-if (isset($_POST["udid"]) AND !is_numeric($_POST["udid"])) {
-	$id = $ep->remove($_POST["udid"]);
-	$userName = $ep->remove($_POST["userName"]);
-	$userName = preg_replace("/[^A-Za-z0-9 ]/", "", $userName);
-} elseif (isset($_POST["accountID"]) AND $_POST["accountID"] != "0") {
-	$id = $ep->remove($_POST["accountID"]);
-	$userName = $gs->getAccountName($id);
-	if ($gameVersion >= 20) {
-		if (isset($_POST["gjp"])) {
-			$gjp = $ep->remove($_POST["gjp"]);
-		} else {
-			exit("-1");
-		}
-		$GJPCheck = new GJPCheck(); //gjp check
-		$gjpresult = $GJPCheck->check($gjp, $id);
-		if ($gjpresult != 1) {
-			exit("-1");
-		}
-	}
-} else {
-	exit("-1");
-}
 $stars = $ep->remove($_POST["stars"]);
 $demons = $ep->remove($_POST["demons"]);
 $icon = $ep->remove($_POST["icon"]);

@@ -2,13 +2,13 @@
 chdir(__DIR__);
 require "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
+$GJPCheck = new GJPCheck();
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
 $gjp = $ep->remove($_POST["gjp"]);
 $accountID = $ep->remove($_POST["accountID"]);
-$GJPCheck = new GJPCheck();
 $gjpresult = $GJPCheck->check($gjp, $accountID);
 if ($gjpresult != 1) {
 	exit("-1");
@@ -28,7 +28,7 @@ $query4->execute([':toAccountID' => $toAccountID, ':accountID' => $accountID]);
 $friend = $query4->fetchColumn();
 
 if ($blocked == 1 OR $mSOnly == 2) {
-	exit("-1");
+	echo "-1";
 } elseif (($friend == 1 AND $mSOnly == 1) OR $mSOnly == 0) {
 	$query = $db->prepare("SELECT userName FROM users WHERE extID = :accountID LIMIT 1");
 	$query->execute([':accountID' => $accountID]);

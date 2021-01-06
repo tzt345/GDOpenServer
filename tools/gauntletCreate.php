@@ -11,7 +11,7 @@ if (isset($_POST["userName"]) AND isset($_POST["password"]) AND isset($_POST["ga
 	$password = $_POST["password"];
 	$pass = $generatePass->isValidUsrname($userName, $password);
 	if ($pass != 1) {
-		echo "Invalid password or non-existant account. <a href='gauntletCreate.php'>Try again.</a>";
+		echo "Invalid password or non-existent account. <a href='gauntletCreate.php'>Try again.</a>";
 	}
 	if (!is_numeric($_POST["level1"]) OR !is_numeric($_POST["level2"]) OR !is_numeric($_POST["level3"]) OR !is_numeric($_POST["level4"]) OR !is_numeric($_POST["level5"])) {
 		exit("Invalid level IDs. <a href='gauntletCreate.php'>Try again.</a>");
@@ -37,8 +37,8 @@ if (isset($_POST["userName"]) AND isset($_POST["password"]) AND isset($_POST["ga
 	}
 } else {
 	echo '<form action="gauntletCreate.php" method="post">
-		Username: <input type="text" name="userName"><br>
-		Password: <input type="password" name="password"><br>
+		Username: <input type="text" name="userName" minlength=3 maxlength=15><br>
+		Password: <input type="password" name="password" minlength=6 maxlength=20><br>
 		Gauntlet ID (A list of Gauntlet IDs can be found on the <a href="https://github.com/Jecket22/GDOpenServer/wiki/Mappacks-&--Gauntlets">GDOpenServer Docs</a>.): <input type="text" name="gauntletID"><br>
 		<b>Insert only Level IDs, one for each box in order.</b> If you wish to delete a Gauntlet, leave the Boxes below empty.<br>
 		Level 1: <input type="text" name="level1" size="2"> 

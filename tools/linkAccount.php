@@ -71,10 +71,12 @@ if (!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST[
 } else {
 	echo 'Your password for the target server is NOT saved, it\'s used for one-time verification purposes only.<br>
 	<form action="linkAccount.php" method="post">
-		<h3>This GDPS<h3> Username: <input type="text" name="userName"><br>
-		Password: <input type="password" name="password"><br>
-		<h3>Target server</h3> Username: <input type="text" name="targetUserName"><br>
-		Password: <input type="password" name="targetPassword"><br>
+		<h3>This GDPS<h3>
+		Username: <input type="text" name="userName" minlength=3 maxlength=15><br>
+		Password: <input type="password" name="password" minlength=6 maxlength=20><br>
+		<h3>Target server</h3>
+		Username: <input type="text" name="targetUserName" minlength=3 maxlength=15><br>
+		Password: <input type="password" name="targetPassword" minlength=6 maxlength=20><br>
 		URL (Don\'t change if you don\'t know what you are doing): <input type="text" name="server" value="http://www.boomlings.com/database/accounts/loginGJAccount.php"><br>
 		Debug Mode (0=off, 1=on): <input type="text" name="debug" value="0"><br>
 		<input type="submit" value="Link Accounts">

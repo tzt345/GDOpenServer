@@ -34,8 +34,9 @@ if (!empty($_POST["userName"]) AND !empty($_POST["password"])) {
 	}
 } else {
 	echo '<form action="suggestList.php" method="post">
-	Username: <input type="text" name="userName"><br>
-	Password: <input type="password" name="password"><br>
-	<input type="submit" value="Show suggested levels"></form>';
+		Username: <input type="text" name="userName" minlength=3 maxlength=15><br>
+		Password: <input type="password" name="password" minlength=6 minlength=20><br>
+		<input type="submit" value="Show suggested levels">
+	</form>';
 }
 ?>

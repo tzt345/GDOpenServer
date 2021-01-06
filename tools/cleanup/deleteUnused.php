@@ -1,6 +1,8 @@
 <hr>
 <?php
-require "../../incl/lib/connection.php";
+/* require "../../incl/lib/connection.php";
+require_once "../../incl/lib/mainLib.php";
+$gs = new mainLib();
 $x = 0;
 $query = $db->prepare("SELECT userID, userName, extID, lastPlayed FROM users WHERE NOT extID REGEXP '^[0-9]+$' AND lastPlayed < :time");
 $query->execute([':time' => time() - 604800]);
@@ -15,11 +17,11 @@ foreach ($users as $user) {
 	if ($count == 0) {
 		$query = $db->prepare("DELETE FROM users WHERE userID = :userID");
 		$query->execute([':userID' => $user["userID"]]);
-		echo "Deleted " . htmlspecialchars($user["userName"], ENT_QUOTES) . " - " . $user["userID"] . " - " . $user["extID"] . " - " . date("d-m-Y G-i", $user["lastPlayed"]) . "<br>";
+		echo "Deleted " . htmlspecialchars($user["userName"], ENT_QUOTES) . " - " . $user["userID"] . " - " . $user["extID"] . " - " . $gs->makeTime($user["lastPlayed"]) . "<br>";
 		ob_flush();
 		flush();
 		$x++;
 	}
 }
-echo "<hr>" . $x;
+echo "<hr>" . $x; */
 ?>

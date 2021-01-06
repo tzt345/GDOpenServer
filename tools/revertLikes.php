@@ -44,8 +44,8 @@ if (!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST[
 	}
 } else {
 	echo '<form action="revertLikes.php" method="post">
-		Your Username: <input type="text" name="userName"><br>
-		Your Password: <input type="password" name="password"><br>
+		Your Username: <input type="text" name="userName" minlength=3 maxlength=15><br>
+		Your Password: <input type="password" name="password" minlength=6 maxlength=20><br>
 		Level ID: <input type="text" name="levelID"><br>
 		Timestamp since: <input type="text" name="timestamp"><br>
 		<input type="submit" value="Revert">

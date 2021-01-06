@@ -10,17 +10,29 @@ $ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
 $usedids = array();
+if (empty($_POST["accountID"]) OR empty($_POST["udid"]) OR empty($_POST["chk"])) {
+	exit("-1");
+}
 $accountID = $ep->remove($_POST["accountID"]);
 $udid = $ep->remove($_POST["udid"]);
 if (is_numeric($udid)) {
 	exit("-1");
 }
-$chk = $ep->remove($_POST["chk"]);
-if ($accountID != "0") {
-	$userID = $gs->getUserID($accountID);
+if ($accountID != 0) {
+	if (empty($_POST["gjp"])) {
+		exit("-1");
+	}
+	$gjp = $ep->remove($_POST["gjp"]);
+	$gjpresult = $GJPCheck->check($gjp, $accountID);
+	if ($gjpresult != 1) {
+		exit("-1");
+	}
+	$id = $accountID;
 } else {
-	$userID = $gs->getUserID($udid);
+	$id = $udid;
 }
+$userID = $gs->getUserID($id);
+$chk = $ep->remove($_POST["chk"]);
 $chk = $XORCipher->cipher(base64_decode(substr($chk, 5)), 19847);
 //Generating quest IDs
 $from = strtotime('2000-12-17');

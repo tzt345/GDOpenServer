@@ -1,5 +1,5 @@
 <?php
-include "../incl/lib/connection.php";
+require "../incl/lib/connection.php";
 require_once "../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
 $type = strtolower($ep->remove($_GET["type"]));
@@ -53,7 +53,7 @@ if ($type =="stars" OR $type == "diamonds" OR $type == "usrcoins" OR $type == "c
 	$query = $db->prepare($query);
 	$query->execute([':page' => $page]);
 	$result = $query->fetchAll();
-	echo "`#	|		Username | ".str_pad($typename, 16, " ", STR_PAD_LEFT)." | Linked? |`\r\n";
+	echo "`#	|		Username | " . str_pad($typename, 16, " ", STR_PAD_LEFT) . " | Linked? |`\r\n";
 	echo "`-----|-----------------|------------------|---------|`\r\n";
 	$xi = $page;
 	foreach ($result as &$user) {

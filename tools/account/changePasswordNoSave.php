@@ -30,9 +30,9 @@ if (!empty($_POST["userName"]) AND !empty($_POST["oldPassword"]) AND !empty($_PO
 	}
 } else {
 	echo '<form action="changePasswordNoSave.php" method="post">
-		Username: <input type="text" name="userName"><br>
+		Username: <input type="text" name="userName" minlength=3 maxlength=15><br>
 		Old password: <input type="password" name="oldPassword"><br>
-		New password: <input type="password" name="newPassword"><br>
+		New password: <input type="password" name="newPassword" minlength=6 maxlength=20><br>
 		<input type="submit" value="Change">
 	</form>';
 }

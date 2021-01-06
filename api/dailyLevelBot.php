@@ -42,8 +42,8 @@ if ($levelInfo["starEpic"] != 0) {
 //getting length
 $length = $gs->getLength($levelInfo["levelLength"]);
 //times
-$uploadDate = date("d-m-Y G-i", $levelInfo["uploadDate"]);
-$updateDate = date("d-m-Y G-i", $levelInfo["updateDate"]);
+$uploadDate = $gs->makeTime($levelInfo["uploadDate"]);
+$updateDate = $gs->makeTime($levelInfo["updateDate"]);
 //getting original level
 if ($levelInfo["original"] != 0) {
 	$original = "\r\n**Original:** " . $levelInfo["original"];
@@ -81,13 +81,13 @@ if ($levelInfo["starCoins"] != 0) {
 }
 //gameVersion
 $gameVersion = $gs->getGameVersion($levelInfo["gameVersion"]);
-$dailytime = date("d-m-Y G-i", $dailyinfo["timestamp"]);
+$dailyTime = $gs->makeTime($dailyinfo["timestamp"]);
 //outputting everything
 echo "**NAME:** " . $levelInfo["levelName"] . "
 **ID:** " . $levelInfo["levelID"] . "
 **Author:** " . $creator . "
 **Song:** " . $song . "
 **Difficulty:** " . $difficulty . "
-**Daily Since:** " . $dailytime . "
+**Daily Since:** " . $dailyTime . "
 ***DO ***`!level " . $levelInfo["levelID"] . "`*** FOR MORE INFO***";
 ?>

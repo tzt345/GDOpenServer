@@ -96,8 +96,8 @@ if (!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST[
 } else {
 	echo '<script src="incl/jscolor/jscolor.min.js"></script>
 	<form action="newMappack.php" method="post">
-		Username: <input type="text" name="userName"><br>
-		Password: <input type="password" name="password"><br>
+		Username: <input type="text" name="userName" minlength=3 maxlength=15><br>
+		Password: <input type="password" name="password" minlength=6 maxlength=20><br>
 		Pack Name: <input type="text" name="packName"><br>
 		Level IDs (Separate by commas): <input type="text" name="levels"><br>
 		Stars (Max. 10): <input type="text" name="stars"><br>

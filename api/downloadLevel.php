@@ -2,8 +2,6 @@
 class levelAPI {
     function Select() {
         require "../incl/lib/connection.php";
-        require_once "../incl/lib/mainLib.php";
-        $mainLib = new mainLib();
         require_once "../incl/lib/exploitPatch.php";
         $ep = new exploitPatch();
         if (!empty($_GET["levelID"])) {

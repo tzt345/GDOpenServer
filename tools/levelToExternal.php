@@ -22,13 +22,13 @@ $ep = new exploitPatch();
 require_once "../incl/lib/generateHash.php";
 $gh = new generateHash();
 if (!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST["targetUserName"]) AND !empty($_POST["targtePassword"]) AND !empty($_POST["levelID"])) {
-	$userhere = $ep->remove($_POST["userhere"]);
-	$passhere = $ep->remove($_POST["passhere"]);
-	$usertarg = $ep->remove($_POST["usertarg"]);
-	$passtarg = $ep->remove($_POST["passtarg"]);
+	$userName = $ep->remove($_POST["userName"]);
+	$password = $ep->remove($_POST["password"]);
+	$targetUserName = $ep->remove($_POST["targetUserName"]);
+	$targetPassword = $ep->remove($_POST["targetPassword"]);
 	$levelID = $ep->remove($_POST["levelID"]);
 	$server = trim($_POST["server"]);
-	$pass = $generatePass->isValidUsrname($userhere, $passhere);
+	$pass = $generatePass->isValidUsrname($userName, $password);
 	if ($pass != 1) { //verifying if valid local usr
 		exit("Wrong local username/password combination. <a href='levelToGD.php'>Try again.</a>");
 	}
@@ -37,7 +37,7 @@ if (!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST[
 	$levelInfo = $query->fetch();
 	$userID = $levelInfo["userID"];
 	$query = $db->prepare("SELECT accountID FROM accounts WHERE userName = :user");
-	$query->execute([':user' => $userhere]);
+	$query->execute([':user' => $userName]);
 	$accountID = $query->fetchColumn();
 	$query = $db->prepare("SELECT userID FROM users WHERE extID = :ext");
 	$query->execute([':ext' => $accountID]);
@@ -46,7 +46,7 @@ if (!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST[
 	}
 	$udid = "S" . mt_rand(111111111, 999999999) . mt_rand(111111111, 999999999) . mt_rand(111111111, 999999999) . mt_rand(111111111, 999999999) . mt_rand(1, 9); //getting accountid
 	$sid = mt_rand(111111111, 999999999) . mt_rand(11111111, 99999999);
-	$post = ['userName' => $usertarg, 'udid' => $udid, 'password' => $passtarg, 'sID' => $sid, 'secret' => 'Wmfv3899gc9'];
+	$post = ['userName' => $targetUserName, 'udid' => $udid, 'password' => $targetPassword, 'sID' => $sid, 'secret' => 'Wmfd2893gb7'];
 	$ch = curl_init($server . "/accounts/loginGJAccount.php");
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
@@ -68,13 +68,13 @@ if (!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST[
 	$levelString = file_get_contents("../data/levels/$levelID");
 	$seed2 = base64_encode($xc->cipher($gh->genSeed2noXor($levelString), 41274)); //generating seed2
 	$accountID = explode(",", $result)[0]; //and finally reuploading
-	$gjp = base64_encode($xc->cipher($passtarg, 37526));
+	$gjp = base64_encode($xc->cipher($targetPassword, 37526));
 	$post = ['gameVersion' => $levelInfo["gameVersion"], 
 	'binaryVersion' => $levelInfo["binaryVersion"], 
 	'gdw' => "0", 
 	'accountID' => $accountID, 
 	'gjp' => $gjp,
-	'userName' => $usertarg,
+	'userName' => $targetUserName,
 	'levelID' => "0",
 	'levelName' => $levelInfo["levelName"],
 	'levelDesc' => $levelInfo["levelDesc"],
@@ -118,17 +118,18 @@ if (!empty($_POST["userName"]) AND !empty($_POST["password"]) AND !empty($_POST[
 	}
 	echo "Level reuploaded - $result";
 } else {
-	echo '<form action="levelToGD.php" method="post">Your password for the target server is NOT saved, it\'s used for one-time verification purposes only.
-	<h2>This server<h2><br>
-	Username: <input type="text" name="userName"><br>
-	Password: <input type="password" name="password"><br>
-	Level ID: <input type="text" name="levelID"><br>
-	<h2>Target server</h2><br>
-	Username: <input type="text" name="targetUserName"><br>
-	Password: <input type="password" name="targetPassword"><br>
-	URL (Don\'t change if you don\'t know what you are doing): <input type="text" name="server" value="http://www.boomlings.com/database/"><br>
-	Debug Mode (0=off, 1=on): <input type="text" name="debug" value="0"><br>
-	<input type="submit" value="Reupload">
+	echo 'Your password for the target server is NOT saved, it\'s used for one-time verification purposes only.
+	<form action="levelToGD.php" method="post">
+		<h2>This server<h2><br>
+		Username: <input type="text" name="userName" minlength=3 maxlength=15><br>
+		Password: <input type="password" name="password" minlength=6 maxlength=20><br>
+		Level ID: <input type="text" name="levelID"><br>
+		<h2>Target server</h2><br>
+		Username: <input type="text" name="targetUserName" minlength=3 maxlength=15><br>
+		Password: <input type="password" name="targetPassword" minlength=6 maxlength=20><br>
+		URL (Don\'t change if you don\'t know what you are doing): <input type="text" name="server" value="http://www.boomlings.com/database/"><br>
+		Debug Mode (0=off, 1=on): <input type="text" name="debug" value="0"><br>
+		<input type="submit" value="Reupload">
 	</form><br>
 	Alternative servers to reupload to:<br>
 	http://www.boomlings.com/database/ - Robtop\'s server<br>

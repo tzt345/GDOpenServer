@@ -2,17 +2,17 @@
 chdir(__DIR__);
 require "../lib/connection.php";
 require_once "../lib/exploitPatch.php";
-require_once "../lib/GJPCheck.php";
 $ep = new exploitPatch();
+require_once "../lib/GJPCheck.php";
+$GJPCheck = new GJPCheck();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
 $appendix = "";
-$gjp = $ep->remove($_POST["gjp"]);
 $extid = $ep->number($_POST["targetAccountID"]);
-if (isset($_POST["accountID"])) {
+if (!empty($_POST["accountID"]) AND !empty($_POST["gjp"])) {
+	$gjp = $ep->remove($_POST["gjp"]);
 	$me = $ep->number($_POST["accountID"]);
-	$GJPCheck = new GJPCheck(); //gjp check
-	$gjpresult = $GJPCheck->check($gjp, $me);
+	$gjpresult = $GJPCheck->check($gjp, $me); //gjp check
 	if ($gjpresult != 1) {
 		exit("-1");
 	}
@@ -33,9 +33,9 @@ if ($query->rowCount() == 0) {
 $user = $query->fetch();
 //placeholders
 if ($user["isCreatorBanned"] == 1) {
-	$creatorpoints = 0;
+	$creatorPoints = 0;
 } else {
-	$creatorpoints = round($user["creatorPoints"], PHP_ROUND_HALF_DOWN);
+	$creatorPoints = round($user["creatorPoints"], PHP_ROUND_HALF_DOWN);
 }
 // GET POSITION
 $e = "SET @rownum := 0;";
@@ -45,7 +45,7 @@ $query->execute();
 				  SELECT @rownum := @rownum + 1 AS rank, extID
 				  FROM users WHERE isBanned = 0 AND gameVersion > 19 AND stars > 25 ORDER BY stars DESC
 				  ) as result WHERE extID = :extid";*/
-$query = $db->prepare("SELECT count(*) FROM users WHERE stars > :stars AND isLeaderboardBanned = 0 AND isBanned = 0"); //I can do this, since I already know the stars amount beforehand
+$query = $db->prepare("SELECT count(*) FROM users WHERE stars > :stars AND isLeaderboardBanned = 0"); //I can do this, since I already know the stars amount beforehand
 $query->execute([':stars' => $user["stars"]]);
 if ($query->rowCount() > 0) {
 	$rank = $query->fetchColumn() + 1;
@@ -75,13 +75,12 @@ if ($me == $extid) {
 	$query->execute([':me' => $me]);
 	$friends = $query->fetchColumn();
 	/* sending the data */
-		//38,39,40 are notification counters
-		//18 = enabled (0) or disabled (1) messaging
-		//19 = enabled (0) disabled (1) friend requests
-		//31 = isnt (0) or is (1) friend or (3) incoming request or (4) outgoing request
-		//:32:9558256:35:XiB0cnU=:37:3 months
-		$friendstate = 0;
-		$appendix = ":38:" . $pms . ":39:" . $requests . ":40:" . $friends;
+	//38,39,40 are notification counters
+	//18 = enabled (0) or disabled (1) messaging
+	//19 = enabled (0) disabled (1) friend requests
+	//31 = isnt (0) or is (1) friend or (3) incoming request or (4) outgoing request
+	$friendstate = 0;
+	$appendix = ":38:" . $pms . ":39:" . $requests . ":40:" . $friends;
 } else {
 	/* friend state */
 	$friendstate = 0;
@@ -115,5 +114,5 @@ if ($me == $extid) {
 		$appendix = ":32:" . $INCrequestinfo["ID"] . ":35:" . $INCrequestinfo["comment"] . ":37:" . $uploadDate;
 	}
 }
-echo "1:" . $user["userName"] . ":2:" . $user["userID"] . ":13:" . $user["coins"] . ":17:" . $user["userCoins"] . ":10:" . $user["color1"] . ":11:" . $user["color2"] . ":3:" . $user["stars"] . ":46:" . $user["diamonds"] . ":4:" . $user["demons"] . ":8:" . $creatorpoints . ":18:" . $msgstate . ":19:" . $reqsstate . ":50:" . $commentstate . ":20:" . $accinfo["youtubeurl"] . ":21:" . $user["accIcon"] . ":22:" . $user["accShip"] . ":23:" . $user["accBall"] . ":24:" . $user["accBird"] . ":25:" . $user["accDart"] . ":26:" . $user["accRobot"] . ":28:" . $user["accGlow"] . ":43:" . $user["accSpider"] . ":47:" . $user["accExplosion"] . ":30:" . $rank . ":16:" . $user["extID"] . ":31:" . $friendstate . ":44:" . $accinfo["twitter"] . ":45:" . $accinfo["twitch"] . ":29:1:49:" . $badge . $appendix;
+echo "1:" . $user["userName"] . ":2:" . $user["userID"] . ":13:" . $user["coins"] . ":17:" . $user["userCoins"] . ":10:" . $user["color1"] . ":11:" . $user["color2"] . ":3:" . $user["stars"] . ":46:" . $user["diamonds"] . ":4:" . $user["demons"] . ":8:" . $creatorPoints . ":18:" . $msgstate . ":19:" . $reqsstate . ":50:" . $commentstate . ":20:" . $accinfo["youtubeurl"] . ":21:" . $user["accIcon"] . ":22:" . $user["accShip"] . ":23:" . $user["accBall"] . ":24:" . $user["accBird"] . ":25:" . $user["accDart"] . ":26:" . $user["accRobot"] . ":28:" . $user["accGlow"] . ":43:" . $user["accSpider"] . ":47:" . $user["accExplosion"] . ":30:" . $rank . ":16:" . $user["extID"] . ":31:" . $friendstate . ":44:" . $accinfo["twitter"] . ":45:" . $accinfo["twitch"] . ":29:1:49:" . $badge . $appendix;
 ?>

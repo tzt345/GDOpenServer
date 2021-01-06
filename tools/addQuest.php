@@ -39,8 +39,8 @@ if (isset($_POST["userName"]) AND isset($_POST["password"]) AND isset($_POST["ty
 	}
 } else {
 	echo '<form action="addQuest.php" method="post">
-		Username: <input type="text" name="userName"><br>
-		Password: <input type="password" name="password"><br>
+		Username: <input type="text" name="userName" minlength=3 maxlength=15><br>
+		Password: <input type="password" name="password" minlength=6 maxlength=20><br>
 		Quest Type: <select name="type">
 			<option value="1">Orbs</option>
 			<option value="2">Coins</option>

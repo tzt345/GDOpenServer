@@ -1,16 +1,15 @@
 <?php
-$date = date("d-m");
 chdir(__DIR__);
 echo "Please wait...<br>";
 ob_flush();
 flush();
 set_time_limit(0);
-include "../../incl/lib/connection.php";
+require "../../incl/lib/connection.php";
 $query = $db->prepare("SELECT userName, accountID FROM accounts");
 $query->execute();
 $result = $query->fetchAll();
 //getting users
-foreach($result as $account){
+foreach ($result as $account) {
 	$accountID = $account["accountID"];
 	$userName = $account["userName"];
 	$query4 = $db->prepare("UPDATE users SET userName = :userName WHERE extID = :accountID");

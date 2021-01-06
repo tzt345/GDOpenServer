@@ -1,5 +1,6 @@
 <?php
-require "../lib/connection.php";
+echo "1";
+/* require "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 $GJPCheck = new GJPCheck();
 require_once "../lib/exploitPatch.php";
@@ -16,7 +17,7 @@ if (isset($_POST["userID"]) AND isset($_POST["accountID"]) AND isset($_POST["gjp
 		$accountID = $query->fetchColumn();
 		if ($gs->checkPermission($accountID, "toolLeaderboardsban")) {
 			exit("1");
-			/*if(!is_numeric($userID)){
+			if(!is_numeric($userID)){
 				exit("Invalid userID");
 			}
 			$query = $db->prepare("UPDATE users SET isBanned = 1 WHERE userID = :id");
@@ -27,7 +28,7 @@ if (isset($_POST["userID"]) AND isset($_POST["accountID"]) AND isset($_POST["gjp
 				echo "Ban failed.";
 			}
 			$query = $db->prepare("INSERT INTO modactions (type, value, value2, timestamp, account) VALUES (15, :userID, 1, :timestamp, :account)");
-			$query->execute([':userID' => $userID, ':timestamp' => time(), ':account' => $accountID]);*/
+			$query->execute([':userID' => $userID, ':timestamp' => time(), ':account' => $accountID]);
 		} else {
 			echo "-1";
 		}
@@ -36,5 +37,5 @@ if (isset($_POST["userID"]) AND isset($_POST["accountID"]) AND isset($_POST["gjp
 	}
 } else {
 	echo "-1";
-}
+} */
 ?>

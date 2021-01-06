@@ -43,8 +43,8 @@ if ($levelInfo["starEpic"] != 0) {
 //getting length
 $length = $gs->getLength($levelInfo["levelLength"]);
 //times
-$uploadDate = date("d-m-Y G-i", $levelInfo["uploadDate"]);
-$updateDate = date("d-m-Y G-i", $levelInfo["updateDate"]);
+$uploadDate = $gs->makeTime($levelInfo["uploadDate"]);
+$updateDate = $gs->makeTime($levelInfo["updateDate"]);
 //getting original level
 if ($levelInfo["original"] != 0) {
 	$original .= "\r\n**Original:** " . $levelInfo["original"];

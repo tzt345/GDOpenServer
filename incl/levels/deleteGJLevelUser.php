@@ -6,14 +6,17 @@ $GJPCheck = new GJPCheck();
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../lib/mainLib.php";
-$mainLib = new mainLib();
-$levelID = $ep->remove($_POST["levelID"]);
+$gs = new mainLib();
 $accountID = $ep->remove($_POST["accountID"]);
 $gjp = $ep->remove($_POST["gjp"]);
 $gjpresult = $GJPCheck->check($gjp, $accountID);
-if ($gjpresult == 1 AND file_exists("../../data/levels/$levelID") AND is_numeric($levelID)) {
+if ($gjpresult != 1) {
+	exit("-1");
+}
+$levelID = $ep->remove($_POST["levelID"]);
+if (file_exists("../../data/levels/$levelID") AND is_numeric($levelID)) {
 	rename("../../data/levels/$levelID", "../../data/levels/deleted/$levelID");
-	$userID = $mainLib->getUserID($accountID);
+	$userID = $gs->getUserID($accountID);
 	$query = $db->prepare("DELETE from levels WHERE levelID = :levelID AND userID = :userID AND starStars = 0 LIMIT 1");
 	$query->execute([':levelID' => $levelID, ':userID' => $userID]);
 	$query6 = $db->prepare("INSERT INTO actions (type, value, timestamp, value2) VALUES (8, :itemID, :time, :ip)");

@@ -1,10 +1,10 @@
 <?php
 require "../incl/lib/connection.php";
+require "../config/security.php";
 require_once "../incl/lib/generatePass.php";
 $gp = new generatePass();
 require_once "../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
-require "../config/security.php";
 require_once "../incl/lib/defuse-crypto.phar";
 use Defuse\Crypto\KeyProtectedByPassword;
 use Defuse\Crypto\Crypto;

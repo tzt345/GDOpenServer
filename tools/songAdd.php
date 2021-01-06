@@ -85,8 +85,9 @@ if (!empty($_POST["songLink"])) {
 			if ($songReupload != 0) {
 				//checking the amount of reuploads
 				if ($isSongReuploadLimitDaily == 1) {
+					$dailyTime = strtotime("-1 days", strtotime("12:00:00"))
 					$query = $db->prepare("SELECT value2 FROM actions WHERE type = 18 AND value = :accountID AND timestamp > :timestamp");
-					$query->execute([':accountID' => $accountID, ':timestamp' => $timestamp - 86400]);
+					$query->execute([':accountID' => $accountID, ':timestamp' => $dailyTime]);
 				} else {
 					$query = $db->prepare("SELECT value2 FROM actions WHERE type = 18 AND value = :accountID");
 					$query->execute([':accountID' => $accountID]);
@@ -98,9 +99,9 @@ if (!empty($_POST["songLink"])) {
 					$reuploads = 1;
 				} else {
 					$reuploads = $query->fetchColumn();
-					if($isSongReuploadLimitDaily == 1) {
+					if ($isSongReuploadLimitDaily == 1) {
 						$query = $db->prepare("UPDATE actions SET value2 = " . ($reuploads + 1) . " WHERE type = 18 AND value = :accountID AND timestamp > :timestamp");
-						$query->execute([':accountID' => $accountID, ':timestamp' => $timestamp - 86400]);
+						$query->execute([':accountID' => $accountID, ':timestamp' => $dailyTime]);
 					} else {
 						$query = $db->prepare("UPDATE actions SET value2 = " . ($reuploads + 1) . " WHERE type = 18 AND value = :accountID");
 						$query->execute([':accountID' => $accountID]);
@@ -113,7 +114,7 @@ if (!empty($_POST["songLink"])) {
 			if ($reuploads < $songReupload) {
 				$query = $db->prepare("INSERT INTO songs (name, authorID, authorName, size, download) VALUES (:name, 9, :author, :size, :download)");
 				$query->execute([':name' => $name, ':download' => $song, ':author' => $author, ':size' => $size]);
-				echo "Song reuploaded: <b>" . $db->lastInsertId() . "</b><hr><br>If the ID isn't correct, try adding one to the ID ";
+				echo "Song reuploaded: <b>" . $db->lastInsertId() . "</b><hr>";
 				if ($db->lastInsertId() > 999999) {
 					$queryd = $db->prepare("INSERT INTO levels (levelName, gameVersion, binaryVersion, userName, levelDesc, levelVersion, levelLength, audioTrack, auto, password, original, twoPlayer, songID, objects, coins, requestedStars, extraString, levelString, levelInfo, uploadDate, userID, extID, updateDate, unlisted, hostname, isLDM) VALUES (:levelName, 19, 19, :userName, 'QXV0by1HZW5lcmF0ZWQgU29uZyBMZXZlbA==', 1, 0, 0, 0, 0, 0, 0, :songID, 1, 0, 0, '29_29_29_40_29_29_29_29_29_29_29_29_29_29_29_29', '', 0, :uploadDate, :userID, :id, :uploadDate, 1, '127.0.0.1', 0)");
 					$queryd->execute([':levelName' => "Song ID " . $db->lastInsertId(), ':userName' => $gs->getAccountName($botAID), ':songID' => $db->lastInsertId(), ':uploadDate' => $timestamp, ':userID' => $botUID, ':id' => $botAID]);

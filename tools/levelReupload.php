@@ -13,12 +13,12 @@ function chkarray($source) {
 	return $target;
 }
 require "../incl/lib/connection.php";
+require "../config/users.php";
+require "../config/reupload.php";
 require_once "../incl/lib/XORCipher.php";
 $xc = new XORCipher();
-require "../config/users.php";
 require_once "../incl/lib/mainLib.php";
 $gs = new mainLib();
-require "../config/reupload.php";
 if ($levelReupload <= -1) {
 	exit("Level reuploading to this GDPS is disabled.");
 }
@@ -115,7 +115,7 @@ if (!empty($_POST["levelID"])) {
 					$userID = $botUID;
 					$extID = $botAID;
 				} else {
-					exit("Please link your account at <a href='linkAcc.php'>here</a> and to the same server you gave(if you didn\'t change the URL box just link your account) before reuploading.");
+					exit("Please link your account at <a href='linkAccount.php'>here</a> and to the same server you gave(if you didn\'t change the URL box just link your account) before reuploading.");
 				}
 			} else {
 				$userInfo = $query->fetchAll()[0];
@@ -125,8 +125,9 @@ if (!empty($_POST["levelID"])) {
 			if ($levelReupload > 0) {
 				//checking the amount of reuploads
 				if ($isLevelReuploadLimitDaily == 1) {
+					$dailyTime = strtotime("-1 days", strtotime("12:00:00"))
 					$query = $db->prepare("SELECT value2 FROM actions WHERE type = 17 AND value = :accountID AND timestamp > :timestamp");
-					$query->execute([':accountID' => $extID, ':timestamp' => $uploadDate - 86400]);
+					$query->execute([':accountID' => $extID, ':timestamp' => $dailyTime]);
 				} else {
 					$query = $db->prepare("SELECT value2 FROM actions WHERE type = 17 AND value = :accountID");
 					$query->execute([':accountID' => $extID]);
@@ -140,7 +141,7 @@ if (!empty($_POST["levelID"])) {
 					$reuploads = $query->fetchColumn();
 					if ($isLevelReuploadLimitDaily == 1) {
 						$query = $db->prepare("UPDATE actions SET value2 = " . ($reuploads + 1) . " WHERE type = 17 AND value = :accountID AND timestamp > :timestamp");
-						$query->execute([':accountID' => $extID, ':timestamp' => $uploadDate - 86400]);
+						$query->execute([':accountID' => $extID, ':timestamp' => $dailyTime]);
 					} else {
 						$query = $db->prepare("UPDATE actions SET value2 = " . ($reuploads + 1) . " WHERE type = 17 AND value = :accountID");
 						$query->execute([':accountID' => $extID]);
@@ -157,6 +158,8 @@ if (!empty($_POST["levelID"])) {
 				$levelID = $db->lastInsertId();
 				file_put_contents("../data/levels/$levelID", $levelString);
 				echo "Level reuploaded, ID: $levelID<br><hr><br>";
+			} elseif ($isLevelReuploadLimitDaily == 1) {
+				echo "You have reached the maximum daily amount of reuploading levels to this GDPS.";
 			} else {
 				echo "You have reached the maximum amount of reuploading levels to this GDPS.";
 			}

@@ -59,7 +59,7 @@ foreach($result as $daily){
 //counting stars
 $quarter = floor($stars / 4);
 $stars = $stars + 200 + $quarter;
-$query = $db->prepare("SELECT userID, userName FROM users WHERE stars > :stars");
+$query = $db->prepare("SELECT userID, userName FROM users WHERE stars > :stars AND isLeaderboardBanned = 0");
 $query->execute([':stars' => $stars]);
 $result = $query->fetchAll();
 echo "<h3>Stars based bans</h3>";
@@ -75,7 +75,7 @@ foreach ($result as $user) {
 echo "<h3>User coins based bans</h3>";
 $quarter = floor($coins / 4);
 $coins = $coins + 10 + $quarter;
-$query = $db->prepare("SELECT userID, userName FROM users WHERE userCoins > :coins");
+$query = $db->prepare("SELECT userID, userName FROM users WHERE userCoins > :coins AND isLeaderboardBanned = 0");
 $query->execute([':coins' => $coins]);
 $result = $query->fetchAll();
 //counting coins
@@ -90,7 +90,7 @@ foreach ($result as $user) {
 }
 $quarter = floor($demons / 16);
 $demons = $demons + 3 + $quarter;
-$query = $db->prepare("SELECT userID, userName FROM users WHERE demons > :demons");
+$query = $db->prepare("SELECT userID, userName FROM users WHERE demons > :demons AND isLeaderboardBanned = 0");
 $query->execute([':demons' => $demons]);
 $result = $query->fetchAll();
 //counting demons
@@ -107,12 +107,12 @@ foreach ($result as $user) {
 $query = $db->prepare("SELECT IP FROM bannedips");
 $query->execute();
 $result = $query->fetchAll();
-foreach ($result as &$ip) {
+/* foreach ($result as &$ip) {
 	if ($ip != "127.0.0.1") {
 		$query = $db->prepare("UPDATE users SET isBanned = 1 WHERE IP LIKE CONCAT(:ip, '%')");
 		$query->execute([':ip' => $ip["IP"]]);
 	}
-}
+} */
 echo "<hr>Auto-ban finished";
 ob_flush();
 flush();

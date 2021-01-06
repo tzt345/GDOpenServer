@@ -13,17 +13,12 @@ if (!isset($_POST["gjp"]) OR !isset($_POST["rating"]) OR !isset($_POST["levelID"
 $gjp = $ep->remove($_POST["gjp"]);
 $accountID = $ep->remove($_POST["accountID"]);
 $gjpresult = $GJPCheck->check($gjp, $accountID);
-if ($gjpresult == 1) {
-	$permState = $gs->checkPermission($accountID, "actionRateStars");
-	if ($permState) {
-		$stars = $ep->remove($_POST["stars"]);
-		$levelID = $ep->remove($_POST["levelID"]);
-		$difficulty = $gs->getDiffFromStars($stars);
-		$gs->rateLevel($accountID, $levelID, 0, $difficulty["diff"], $difficulty["auto"], $difficulty["demon"]);
-		echo "1";
-	} else {
-		echo "-1";
-	}
-} else {
-	echo "-1";
+if ($gjpresult != 1 OR $gs->checkPermission($accountID, "actionRateStars") != 1) {
+	exit("-1");
 }
+$stars = $ep->remove($_POST["stars"]);
+$levelID = $ep->remove($_POST["levelID"]);
+$difficulty = $gs->getDiffFromStars($stars);
+$gs->rateLevel($accountID, $levelID, 0, $difficulty["diff"], $difficulty["auto"], $difficulty["demon"]);
+echo "1";
+?>

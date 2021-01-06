@@ -2,7 +2,7 @@
 chdir(__DIR__);
 require "../lib/connection.php";
 require "../../config/misc.php";
-require "../lib/exploitPatch.php";
+require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 if (isset($_POST["page"]) AND is_numeric($_POST["page"])) {
 	$offset = $ep->number($_POST["page"]) . "0";

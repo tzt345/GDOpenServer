@@ -8,7 +8,7 @@ $gs = new mainLib();
 $commentstring = "";
 $accountid = $ep->remove($_POST["accountID"]);
 $page = $ep->remove($_POST["page"]);
-$commentpage = $page*10;
+$commentpage = $page * 10;
 $userID = $gs->getUserID($accountid);
 $query = "SELECT comment, userID, likes, isSpam, commentID, timestamp FROM acccomments WHERE userID = :userID ORDER BY timeStamp DESC LIMIT 10 OFFSET $commentpage";
 $query = $db->prepare($query);
@@ -27,6 +27,5 @@ foreach ($result as &$comment1) {
 	}
 }
 $commentstring = substr($commentstring, 0, -1);
-echo $commentstring;
-echo "#" . $commentcount . ":" . $commentpage . ":10";
+echo $commentstring . "#" . $commentcount . ":" . $commentpage . ":10";
 ?>

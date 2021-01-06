@@ -7,13 +7,13 @@ set_time_limit(0);
 $cplog = "";
 $people = array();
 $nocpppl = "";
-include "../../incl/lib/connection.php";
-include "../../config/levels.php";
+require "../../incl/lib/connection.php";
+require "../../config/levels.php";
 $query = $db->prepare("SELECT userID, userName FROM users");
 $query->execute();
 $result = $query->fetchAll();
 //getting users
-foreach($result as $user){
+foreach ($result as $user) {
 	$userID = $user["userID"];
 	//getting starred lvls count
 	$query2 = $db->prepare("SELECT count(*) FROM levels WHERE userID = :userID AND starStars != 0 AND isCPShared = 0");
@@ -45,10 +45,10 @@ foreach($result as $user){
 		$cplog .= $user["userName"] . " - " . $creatorpoints . "\r\n";
 	}
 	//inserting cp value
-	if($creatorpoints != 0){
+	if ($creatorpoints != 0) {
 		$people[$userID] = $creatorpoints;
-	}else{
-		$nocpppl .= $userID.",";
+	} else {
+		$nocpppl .= $userID . ",";
 	}
 }
 /*
@@ -57,18 +57,18 @@ foreach($result as $user){
 $query = $db->prepare("SELECT levelID, userID, starStars, starFeatured, starEpic, starMagic FROM levels WHERE isCPShared = 1");
 $query->execute();
 $result = $query->fetchAll();
-foreach($result as $level){
+foreach ($result as $level) {
 	$deservedcp = 0;
-	if($level["starStars"] != 0){
+	if ($level["starStars"] != 0) {
 		$deservedcp += $rateCP;
 	}
-	if($level["starFeatured"] != 0){
+	if ($level["starFeatured"] != 0) {
 		$deservedcp += $featureCP;
 	}
-	if($level["starEpic"] != 0){
+	if ($level["starEpic"] != 0) {
 		$deservedcp += $epicCP;
 	}
-	if($isMagicSectionManual == 1 AND $level["starMagic"] != 0){
+	if ($isMagicSectionManual == 1 AND $level["starMagic"] != 0) {
 		$deservedcp += $magicCP;
 	}
 	$query = $db->prepare("SELECT userID FROM cpshares WHERE levelID = :levelID");
@@ -80,7 +80,7 @@ foreach($result as $level){
 		$addcp = $deservedcp / $sharecount;
 	}
 	$shares = $query->fetchAll();
-	foreach($shares as &$share){
+	foreach ($shares as &$share) {
 		$people[$share["userID"]] += $addcp;
 	}
 	$people[$level["userID"]] += $addcp;
@@ -92,14 +92,14 @@ $query = $db->prepare("SELECT level1, level2, level3, level4, level5 FROM gauntl
 $query->execute();
 $result = $query->fetchAll();
 //getting gauntlets
-foreach($result as $gauntlet){
+foreach ($result as $gauntlet) {
 	//getting lvls
-	for($x = 1; $x < 6; $x++){
+	for ($x = 1; $x < 6; $x++) {
 		$query = $db->prepare("SELECT userID, levelID FROM levels WHERE levelID = :levelID");
 		$query->execute([':levelID' => $gauntlet["level".$x]]);
 		$result = $query->fetch();
 		//getting users
-		if($result["userID"] != ""){
+		if ($result["userID"] != "") {
 			$cplog .= $result["userID"] . " - +1\r\n";
 			$people[$result["userID"]] += 1;
 		}
@@ -111,13 +111,13 @@ foreach($result as $gauntlet){
 $query = $db->prepare("SELECT levelID FROM dailyfeatures WHERE timestamp < :time");
 $query->execute([':time' => time()]);
 $result = $query->fetchAll();
-foreach($result as $daily){
+foreach ($result as $daily) {
 	//getting lvls
 	$query = $db->prepare("SELECT userID, levelID FROM levels WHERE levelID = :levelID");
 	$query->execute([':levelID' => $daily["levelID"]]);
 	$result = $query->fetch();
 	//getting users
-	if($result["userID"] != ""){
+	if ($result["userID"] != "") {
 		$people[$result["userID"]] += 1;
 		$cplog .= $result["userID"] . " - +1\r\n";
 	}
@@ -131,9 +131,9 @@ if ($nocpppl != "") {
 	$query4->execute();
 	echo "Reset CP of $nocpppl <br>";
 }
-foreach($people as $user => $cp){
+foreach ($people as $user => $cp) {
 	$newcp = round($cp);
-	$query4 = $db->prepare("UPDATE users SET creatorPoints = :creatorpoints WHERE userID=:userID");
+	$query4 = $db->prepare("UPDATE users SET creatorPoints = :creatorpoints WHERE userID = :userID");
 	$query4->execute([':userID' => $user, ':creatorpoints' => $newcp]);
 	echo "$user now has $newcp creator points... <br>";
 	ob_flush();
@@ -141,5 +141,5 @@ foreach($people as $user => $cp){
 }
 echo "<hr>done";
 touch("../logs/cplog.txt");
-file_put_contents("../logs/cplog.txt",$cplog);
+file_put_contents("../logs/cplog.txt", $cplog);
 ?>

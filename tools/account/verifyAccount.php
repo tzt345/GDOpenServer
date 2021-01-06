@@ -50,8 +50,8 @@ if ($accountVerification == 2) {
 }
 if ($accountVerification <= 1) { ?>
 <form action="verifyAccount.php" method="post">
-	Username: <input type="text" name="userName" maxlength=15><br>
-	Password: <input type="password" name="password" maxlength=20><br>
+	Username: <input type="text" name="userName" minlength=3 maxlength=15><br>
+	Password: <input type="password" name="password" minlength=6 maxlength=20><br>
 	Verify Captcha: <input name="captcha" type="text"><br>
 	<img src="../../incl/misc/captchaGen.php" /><br><br>
 	<input type="submit" value="Verify">

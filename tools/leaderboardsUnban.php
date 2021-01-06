@@ -36,8 +36,8 @@ if (isset($_POST["userName"]) AND isset($_POST["password"]) AND isset($_POST["us
 	}
 } else {
 	echo '<form action="leaderboardsUnban.php" method="post">
-		Your Username: <input type="text" name="userName"><br>
-		Your Password: <input type="password" name="password"><br>
+		Your Username: <input type="text" name="userName" minlength=3 maxlength=15><br>
+		Your Password: <input type="password" name="password" minlength=6 maxlength=20><br>
 		Target UserID: <input type="text" name="userID"><br>
 		<input type="submit" value="Unban">
 	</form>';

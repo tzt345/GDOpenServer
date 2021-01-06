@@ -7,37 +7,35 @@ require_once "../lib/GJPCheck.php";
 $GJPCheck = new GJPCheck();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
-$gameVersion = $ep->number($_POST["gameVersion"]);
-if (empty($gameVersion)) {
+if (empty($_POST["gameVersion"])) {
 	$sign = "< 20 AND gameVersion <> 0";
+	$gameVersion = 4;
 } else {
 	$sign = "> 19";
+	$gameVersion = $ep->number($_POST["gameVersion"]);
 }
-if ($gameVersion >= 20) {
-	if (isset($_POST["accountID"])) {
-		$accountID = $ep->remove($_POST["accountID"]);
+if (!empty($_POST["accountID"]) AND $_POST["accountID"] != "0") {
+	$id = $ep->remove($_POST["accountID"]);
+	if ($gameVersion >= 20) {
 		$gjp = $ep->remove($_POST["gjp"]);
-		$gjpresult = $GJPCheck->check($gjp, $accountID);
+		$gjpresult = $GJPCheck->check($gjp, $id);
 		if ($gjpresult != 1) {
 			exit("-1");
 		}
-	} else {
-		$accountID = $ep->remove($_POST["udid"]);
-		if (!is_numeric($accountID)) {
-			exit("-1");
-		}
+	}
+} elseif (!empty($_POST["udid"]) AND !is_numeric($_POST["udid"])) {
+	$id = $ep->remove($_POST["udid"]);
+	if (is_numeric($id)) {
+		exit("-1");
 	}
 } else {
-	if (isset($_POST["accountID"]) AND $_POST["accountID"] != "0") {
-		$id = $ep->remove($_POST["accountID"]);
-	}
+	exit("-1");
 }
 
 $stars = 0;
 $count = 0;
 $xi = 0;
 $lbstring = "";
-$date = date("d-m");
 $type = $ep->remove($_POST["type"]);
 if ($type == "top" OR $type == "creators" OR $type == "relative") {
 	if ($type == "top") {
@@ -48,11 +46,11 @@ if ($type == "top" OR $type == "creators" OR $type == "relative") {
 	}
 	if ($type == "relative") {
 		$query = $db->prepare("SELECT * FROM users WHERE extID = :accountID");
-		$query->execute([':accountID' => $accountID]);
+		$query->execute([':accountID' => $id]);
 		$result = $query->fetchAll();
 		$user = $result[0];
 		$stars = $user["stars"];
-		if ($_POST["count"]) {
+		if (!empty($_POST["count"])) {
 			$count = $ep->remove($_POST["count"]);
 		} else {
 			$count = 50;
@@ -88,7 +86,7 @@ if ($type == "top" OR $type == "creators" OR $type == "relative") {
 		$query = $db->prepare("SET @rownum := 0;");
 		$query->execute();
 		$f = "SELECT rank, stars FROM (
-							SELECT @rownum := @rownum + 1 AS rank, stars, extID,
+							SELECT @rownum := @rownum + 1 AS rank, stars, extID
 							FROM users WHERE isLeaderboardBanned = 0 AND gameVersion $sign ORDER BY stars DESC
 							) as result WHERE extID = :extid";
 		$query = $db->prepare($f);
@@ -125,12 +123,11 @@ if ($type == "friends") {
 		$lbstring .= "1:" . $user["userName"] . ":2:" . $user["userID"] . ":13:" . $user["coins"] . ":17:" . $user["userCoins"] . ":6:" . $xi . ":9:" . $user["icon"] . ":10:" . $user["color1"] . ":11:" . $user["color2"] . ":14:" . $user["iconType"] . ":15:" . $user["special"] . ":16:" . $extid . ":3:" . $user["stars"] . ":8:" . round($user["creatorPoints"], 0, PHP_ROUND_HALF_DOWN) . ":4:" . $user["demons"] . ":7:" . $extid . ":46:" . $user["diamonds"] . "|";
 	}
 }
-if ($type == "week") {
+if ($type == "week") { // By Absolute, did some edits
 	$starsgain = array();
-	$time = time() - 604800;
 	$xi = 0;
 	$query = $db->prepare("SELECT * FROM actions WHERE type = 9 AND timestamp > :time");
-	$query->execute([':time' => $time]);
+	$query->execute([':time' => strtotime("last monday")]);
 	$result = $query->fetchAll();
 	foreach ($result as &$gain) {
 		if (!empty($starsgain[$gain["account"]])) {
@@ -138,18 +135,28 @@ if ($type == "week") {
 		} else {
 			$starsgain[$gain["account"]] = $gain["value"];
 		}
+		if (!empty($coinsgain[$gain["account"]])) {
+			$coinsgain[$gain["account"]] += $gain["value2"];
+		} else {
+			$coinsgain[$gain["account"]] = $gain["value2"];
+		}
+		if (!empty($demonsgain[$gain["account"]])) {
+			$demonsgain[$gain["account"]] += $gain["value3"];
+		} else {
+			$demonsgain[$gain["account"]] = $gain["value3"];
+		}
 	}
 	arsort($starsgain);
 	foreach ($starsgain as $userID => $stars) {
-		if ($stars == 0 or $xi >= 100) {
+		if ($stars == 0 OR $xi >= 100) {
 			break;
 		}
-		$query = $db->prepare("SELECT * FROM users WHERE userID = :userID");
+		$query = $db->prepare("SELECT userName, icon, color1, color2, iconType, special, extID FROM users WHERE userID = :userID");
 		$query->execute([':userID' => $userID]);
 		$user = $query->fetchAll()[0];
 		$xi++;
-		$lbstring .= "1:" . $user["userName"] . ":2:" . $user["userID"] . ":4:-1:13:-1:17:" . $user["userCoins"] . ":6:" . $xi . ":9:" . $user["icon"] . ":10:" . $user["color1"] . ":11:" . $user["color2"] . ":14:" . $user["iconType"] . ":15:" . $user["special"] . ":16:" . $extid . ":3:" . $stars . ":7:" . $user["extID"] . "|";
-	}  
+		$lbstring .= "1:" . $user["userName"] . ":2:" . $userID . ":4:" . $coinsgain[$userID] . ":13:" . $demonsgain[$userID] . ":6:" . $xi . ":9:" . $user["icon"] . ":10:" . $user["color1"] . ":11:" . $user["color2"] . ":14:" . $user["iconType"] . ":15:" . $user["special"] . ":16:" . $user["extID"] . ":3:" . $stars . ":7:" . $user["extID"] . "|";
+	}
 }
 if ($lbstring == "") {
 	exit("-1");

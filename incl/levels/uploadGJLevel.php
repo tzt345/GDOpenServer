@@ -8,7 +8,7 @@ $GJPCheck = new GJPCheck();
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../lib/mainLib.php";
-$mainLib = new mainLib();
+$gs = new mainLib();
 //here im getting all the data
 if (isset($_POST["accountID"]) AND $_POST["accountID"] != "0") {
 	$id = $ep->remove($_POST["accountID"]);
@@ -21,7 +21,10 @@ if (isset($_POST["accountID"]) AND $_POST["accountID"] != "0") {
 } else {
 	exit("-1");
 }
-$gameVersion = $ep->remove($_POST["gameVersion"]);
+$gameVersion = 1;
+if (!empty($_POST["gameVersion"])) {
+	$gameVersion = $ep->remove($_POST["gameVersion"]);
+}
 if ($gameVersion >= 20 AND $register == 1) {
 	if (empty($_POST["gjp"])) {
 		exit("-1");
@@ -35,7 +38,7 @@ if ($gameVersion >= 20 AND $register == 1) {
 $uploadDate = time();
 $userName = $ep->remove($_POST["userName"]);
 $userName = $ep->charclean($userName);
-$hostname = $mainLib->getIP();
+$hostname = $gs->getIP();
 $query2 = $db->prepare("SELECT userID, isBanned, isCreatorBanned FROM users WHERE extID = :id");
 $query2->execute([':id' => $id]);
 if ($query2->rowCount() > 0) {

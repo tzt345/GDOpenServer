@@ -1,7 +1,7 @@
 <title>Change chest rewards</title>
 <?php
 // THIS IS A SUPER LAZY TOOL AND MIGHT NEED TO BE RE-WORKED ON, BUT FOR NOW IT **JUST WORKS**
-if(!empty($_POST["pwcheck"])) {
+if (!empty($_POST["pwcheck"])) {
 	require "../config/connection.php";
 	if ($_POST["pwcheck"] != $password) {
 		exit("Wrong password!<br><br>");
@@ -28,31 +28,31 @@ if(!empty($_POST["pwcheck"])) {
 	$smolWait = $_POST["smolWait"] || 3600;
 	$bigWait = $_POST["bigWait"] || 14400;
 	// ono
-	$string = "<?php".PHP_EOL;
-	$string .= '$chest1minOrbs = '.$smolMinOrbs.';'.PHP_EOL;
-	$string .= '$chest1maxOrbs = '.$smolMaxOrbs.';'.PHP_EOL;
-	$string .= '$chest1minDiamonds = '.$smolMinDiamonds.';'.PHP_EOL;
-	$string .= '$chest1maxDiamonds = '.$smolMaxDiamonds.';'.PHP_EOL;
-	$string .= '$chest1minShards = '.$smolMinShards.';'.PHP_EOL;
-	$string .= '$chest1maxShards = '.$smolMaxShards.';'.PHP_EOL;
-	$string .= '$chest1minKeys = '.$smolMinKeys.';'.PHP_EOL;
-	$string .= '$chest1maxKeys = '.$smolMaxKeys.';'.PHP_EOL;
-	$string .= '$chest2minOrbs = '.$bigMinOrbs.';'.PHP_EOL;
-	$string .= '$chest2maxOrbs = '.$bigMaxOrbs.';'.PHP_EOL;
-	$string .= '$chest2minDiamonds = '.$bigMinDiamonds.';'.PHP_EOL;
-	$string .= '$chest2maxDiamonds = '.$bigMaxDiamonds.';'.PHP_EOL;
-	$string .= '$chest2minShards = '.$bigMinShards.';'.PHP_EOL;
-	$string .= '$chest2maxShards = '.$bigMaxShards.';'.PHP_EOL;
-	$string .= '$chest2minKeys = '.$bigMinKeys.';'.PHP_EOL;
-	$string .= '$chest2maxKeys = '.$bigMaxKeys.';'.PHP_EOL;
-	$string .= '$chest1wait = '.$smolWait.';'.PHP_EOL;
-	$string .= '$chest2wait = '.$bigWait.';'.PHP_EOL;
-	$string .= "?>".PHP_EOL;
+	$string = "<?php" . PHP_EOL;
+	$string .= '$chest1minOrbs = ' . $smolMinOrbs . ';' . PHP_EOL;
+	$string .= '$chest1maxOrbs = ' . $smolMaxOrbs . ';' . PHP_EOL;
+	$string .= '$chest1minDiamonds = ' . $smolMinDiamonds . ';' . PHP_EOL;
+	$string .= '$chest1maxDiamonds = ' . $smolMaxDiamonds . ';' . PHP_EOL;
+	$string .= '$chest1minShards = ' . $smolMinShards . ';' . PHP_EOL;
+	$string .= '$chest1maxShards = ' . $smolMaxShards . ';' . PHP_EOL;
+	$string .= '$chest1minKeys = ' . $smolMinKeys . ';' . PHP_EOL;
+	$string .= '$chest1maxKeys = ' . $smolMaxKeys . ';' . PHP_EOL;
+	$string .= '$chest2minOrbs = ' . $bigMinOrbs . ';' . PHP_EOL;
+	$string .= '$chest2maxOrbs = ' . $bigMaxOrbs . ';' . PHP_EOL;
+	$string .= '$chest2minDiamonds = ' . $bigMinDiamonds . ';' . PHP_EOL;
+	$string .= '$chest2maxDiamonds = ' . $bigMaxDiamonds . ';' . PHP_EOL;
+	$string .= '$chest2minShards = ' . $bigMinShards . ';' . PHP_EOL;
+	$string .= '$chest2maxShards = ' . $bigMaxShards . ';' . PHP_EOL;
+	$string .= '$chest2minKeys = ' . $bigMinKeys . ';' . PHP_EOL;
+	$string .= '$chest2maxKeys = ' . $bigMaxKeys . ';' . PHP_EOL;
+	$string .= '$chest1wait = ' . $smolWait . ';' . PHP_EOL;
+	$string .= '$chest2wait = ' . $bigWait . ';' . PHP_EOL;
+	$string .= "?>" . PHP_EOL;
 	try {
 		file_put_contents("../config/dailyChests.php", $string);
-		exit ("Success!");
+		exit("Success!");
 	} catch (Exception $e) {
-		exit ("Couldn't change rewards...");
+		exit("Couldn't change rewards...");
 	}
 	
 }

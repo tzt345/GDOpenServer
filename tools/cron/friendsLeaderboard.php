@@ -2,12 +2,12 @@
 chdir(__DIR__);
 set_time_limit(0);
 $frndlog = "";
-include "../../incl/lib/connection.php";
+require "../../incl/lib/connection.php";
 $query = $db->prepare("SELECT accountID, userName FROM accounts");
 $query->execute();
 $result = $query->fetchAll();
 //getting accounts
-foreach($result as $account){
+foreach ($result as $account) {
 	//getting friends count
 	$me = $account["accountID"];
 	$query2 = $db->prepare("SELECT count(*) FROM friendships WHERE person1 = :me OR person2 = :me");
@@ -15,7 +15,7 @@ foreach($result as $account){
 	$friendscount = $query2->fetchColumn();
 	$frndlog .= $account["userName"] . " - " . $friendscount . "\r\n";
 	//inserting friends count value
-	if($friendscount != 0){
+	if ($friendscount != 0) {
 		echo htmlspecialchars($account["userName"], ENT_QUOTES) . " now has $friendscount friends... <br>";
 		ob_flush();
 		flush();

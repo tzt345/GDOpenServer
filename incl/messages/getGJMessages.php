@@ -11,12 +11,12 @@ $msgstring = "";
 //code begins
 $toAccountID = $ep->remove($_POST["accountID"]);
 $gjp = $ep->remove($_POST["gjp"]);
-$page = $ep->remove($_POST["page"]);
-$offset = $page * 10;
 $gjpresult = $GJPCheck->check($gjp, $toAccountID);
 if ($gjpresult != 1) {
 	exit("-1");
 }
+$page = $ep->remove($_POST["page"]);
+$offset = $page * 10;
 if (!isset($_POST["getSent"]) OR $_POST["getSent"] != 1) {
 	$query = "SELECT * FROM messages WHERE toAccountID = :toAccountID ORDER BY messageID DESC LIMIT 10 OFFSET $offset";
 	$countquery = "SELECT count(*) FROM messages WHERE toAccountID = :toAccountID";

@@ -6,11 +6,11 @@ $GJPCheck = new GJPCheck();
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 //here im getting all the data
-if (empty($_POST["accountID"]) OR empty($_POST["toAccountID"]) OR empty($_POST["gjp"])) {
+if (empty($_POST["gjp"]) OR empty($_POST["accountID"]) OR empty($_POST["toAccountID"])) {
 	exit("-1");
 }
-$accountID = $ep->number($_POST["accountID"]);
 $gjp = $ep->remove($_POST["gjp"]);
+$accountID = $ep->number($_POST["accountID"]);
 $gjpresult = $GJPCheck->check($gjp, $accountID);
 if ($gjpresult != 1) {
 	exit("-1");

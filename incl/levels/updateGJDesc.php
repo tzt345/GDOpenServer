@@ -6,28 +6,30 @@ $GJPCheck = new GJPCheck();
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../lib/mainLib.php";
-$mainLib = new mainLib();
+$gs = new mainLib();
 //here im getting all the data
-$levelDesc = $ep->remove($_POST["levelDesc"]);
-if (isset($_POST["levelID"]) AND is_numeric($_POST["levelID"])) {
-	$levelID = $ep->remove($_POST["levelID"]);
-} else {
-	exit("-1");
-}
-if (isset($_POST["udid"])) {
-	$id = $ep->remove($_POST["udid"]);
-	if (is_numeric($id)) {
-		exit("-1");
-	}
-} else {
+if (!empty($_POST["accountID"]) AND !empty($_POST["gjp"])) {
 	$id = $ep->remove($_POST["accountID"]);
 	$gjp = $ep->remove($_POST["gjp"]);
 	$gjpresult = $GJPCheck->check($gjp, $id);
 	if ($gjpresult != 1) {
 		exit("-1");
 	}
+} elseif (isset($_POST["udid"])) {
+	$id = $ep->remove($_POST["udid"]);
+	if (is_numeric($id)) {
+		exit("-1");
+	}
+} else {
+	exit("-1");
 }
-$userID = $mainLib->getUserID($id, $userName);
+$levelDesc = $ep->remove($_POST["levelDesc"]);
+if (!empty($_POST["levelID"]) AND is_numeric($_POST["levelID"])) {
+	$levelID = $ep->remove($_POST["levelID"]);
+} else {
+	exit("-1");
+}
+$userID = $gs->getUserID($id, $userName);
 //query
 $query = $db->prepare("UPDATE levels SET levelDesc = :levelDesc WHERE levelID = :levelID AND userID = :userID");
 $query->execute([':levelID' => $levelID, ':userID' => $userID, ':levelDesc' => $levelDesc]);
