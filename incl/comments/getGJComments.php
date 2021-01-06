@@ -5,7 +5,10 @@ require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
-$gameVersion = $ep->remove($_POST["gameVersion"]);
+$gameVersion = 2;
+if (!empty($_POST["gameVersion"])) {
+	$gameVersion = $ep->remove($_POST["gameVersion"]);
+}
 if ($gameVersion <= 19) {
 	$binaryVersion = 31;
 } else {
@@ -14,12 +17,12 @@ if ($gameVersion <= 19) {
 $commentstring = "";
 $userstring = "";
 $users = array();
-if (isset($_POST["mode"])) {
+if (!empty($_POST["mode"])) {
 	$mode = $ep->remove($_POST["mode"]);
 } else {
 	$mode = 0;
 }
-if (isset($_POST["count"]) AND is_numeric($_POST["count"])) {
+if (!empty($_POST["count"]) AND is_numeric($_POST["count"])) {
 	$count = $ep->remove($_POST["count"]);
 } else {
 	$count = 10;

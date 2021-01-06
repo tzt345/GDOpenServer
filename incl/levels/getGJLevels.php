@@ -22,13 +22,9 @@ $order = "uploadDate";
 $orderenabled = true;
 $params = array("NOT unlisted = 1");
 
-if (isset($_POST["gameVersion"])) {
+$gameVersion = 1;
+if (!empty($_POST["gameVersion"])) {
 	$gameVersion = $ep->number($_POST["gameVersion"]);
-} else {
-	$gameVersion = 1;
-}
-if (!is_numeric($gameVersion)) {
-	exit("-1");
 }
 if ($gameVersion >= 20) {
 	$binaryVersion = $ep->number($_POST["binaryVersion"]);
@@ -51,6 +47,7 @@ if (isset($_POST["diff"])) {
 //ADDITIONAL PARAMETERS
 if ($gameVersion == 0) {
 	$params[] = "gameVersion <= 18";
+	$gameVersion = 18;
 } else {
 	$params[] = "gameVersion <= '$gameVersion'";
 }
@@ -108,7 +105,7 @@ if (isset($_POST["len"])) {
 } else {
 	$len = "-";
 }
-if ($len != "-") {
+if ($len != "-" AND !empty($len)) {
 	$params[] = "levelLength IN ($len)";
 }
 
@@ -121,7 +118,7 @@ switch ($diff) {
 		$params[] = "starAuto = 1";
 		break;
 	case -2:
-		if (isset($_POST["demonFilter"])) {
+		if (!empty($_POST["demonFilter"])) {
 			$demonFilter = $ep->number($_POST["demonFilter"]);
 		} else {
 			$demonFilter = 0;
@@ -157,22 +154,20 @@ switch ($diff) {
 		break;
 }
 //TYPE DETECTION
-if (isset($_POST["str"])) {
+if (!empty($_POST["str"])) {
 	$str = $ep->remove($_POST["str"]);
 }
-if (isset($_POST["page"]) AND is_numeric($_POST["page"])) {
+if (!empty($_POST["page"]) AND is_numeric($_POST["page"])) {
 	$offset = $ep->number($_POST["page"]) . "0";
 } else {
 	$offset = 0;
 }
 if ($type == 0 OR $type == 15) { //most liked, changed to 15 in GDW for whatever reason
 	$order = "likes";
-	if (isset($str)) {
-		if (is_numeric($str)) {
-			$params = array("levelID = '$str'");
-		} else {
-			$params[] = "levelName LIKE '%$str%'";
-		}
+	if (!empty($str) AND is_numeric($str)) {
+		$params = array("levelID = '$str'");
+	} else {
+		$params[] = "levelName LIKE '%$str%'";
 	}
 }
 if ($type == 1) {
@@ -189,11 +184,11 @@ if ($type == 3) { //TRENDING
 if ($type == 5) {
 	$params[] = "userID = '$str'";
 }
-if ($type == 6 OR $type == 17) { //featured
+if ($type == 6 OR $type == 17) { // Featured
 	$params[] = "NOT starFeatured = 0";
 	$order = "rateDate DESC, uploadDate";
 }
-if ($type == 16) { //HALL OF FAME
+if ($type == 16) { // Hall of Fame
 	if ($epicInHall == 1) {
 		$params[] = "NOT starEpic = 0";
 	} else {
@@ -201,26 +196,26 @@ if ($type == 16) { //HALL OF FAME
 	}
 	$order = "rateDate DESC, uploadDate";
 }
-if ($type == 7) { //MAGIC
+if ($type == 7) { // Magic
 	if ($isMagicSectionManual == 1) {
 		$params[] = "NOT starMagic = 0";
 	} else {
 		$params[] = "objects > 4999";
 	}
 }
-if ($type == 10) { //MAP PACKS
+if ($type == 10) { // Map Packs
 	$order = false;
 	$params[] = "levelID IN ($str)";
 }
-if ($type == 11) { //AWARDED
+if ($type == 11) { // Awarded
 	$params[] = "NOT starStars = 0";
 	$order = "rateDate DESC, uploadDate";
 }
-if ($type == 12) { //FOLLOWED
+if ($type == 12) { // Followed
 	$followed = $ep->numbercolon($_POST["followed"]);
 	$params[] = "extID IN ($followed)";
 }
-if ($type == 13) { //FRIENDS
+if ($type == 13) { // Friends
 	$accountID = $ep->remove($_POST["accountID"]);
 	$gjp = $ep->remove($_POST["gjp"]);
 	$gjpresult = $GJPCheck->check($gjp, $accountID);
@@ -264,10 +259,10 @@ $result = $query->fetchAll();
 foreach ($result as &$level1) {
 	if ($level1["levelID"] != "") {
 		$lvlsmultistring .= $level1["levelID"] . ",";
-		if (isset($gauntlet)) {
+		if (!empty($gauntlet)) {
 			$lvlstring .= "44:$gauntlet:";
 		}
-		$lvlstring .= "1:" . $level1["levelID"] . ":2:" . $level1["levelName"] . ":5:" . $level1["levelVersion"] . ":6:" . $level1["userID"] . ":8:10:9:" . $level1["starDifficulty"] . ":10:" . $level1["downloads"] . ":12:" . $level1["audioTrack"] . ":13:" . $level1["gameVersion"] . ":14:" . $level1["likes"] . ":17:" . $level1["starDemon"] . ":43:" . $level1["starDemonDiff"] . ":25:" . $level1["starAuto"] . ":18:" . $level1["starStars"] . ":19:" . $level1["starFeatured"] . ":42:" . $level1["starEpic"] . ":45:" . $level1["objects"] . ":3:" . $level1["levelDesc"] . ":15:" . $level1["levelLength"] . ":30:" . $level1["original"] . ":31:0:37:" . $level1["coins"] . ":38:" . $level1["starCoins"].":39:" . $level1["requestedStars"] . ":46:1:47:2:40:" . $level1["isLDM"] . ":35:" . $level1["songID"] . "|";
+		$lvlstring .= "1:" . $level1["levelID"] . ":2:" . $level1["levelName"] . ":5:" . $level1["levelVersion"] . ":6:" . $level1["userID"] . ":8:10:9:" . $level1["starDifficulty"] . ":10:" . $level1["downloads"] . ":12:" . $level1["audioTrack"] . ":13:" . $level1["gameVersion"] . ":14:" . $level1["likes"] . ":17:" . $level1["starDemon"] . ":43:" . $level1["starDemonDiff"] . ":25:" . $level1["starAuto"] . ":18:" . $level1["starStars"] . ":19:" . $level1["starFeatured"] . ":42:" . $level1["starEpic"] . ":45:" . $level1["objects"] . ":3:" . $level1["levelDesc"] . ":15:" . $level1["levelLength"] . ":30:" . $level1["original"] . ":31:0:37:" . $level1["coins"] . ":38:" . $level1["starCoins"] . ":39:" . $level1["requestedStars"] . ":46:1:47:2:40:" . $level1["isLDM"] . ":35:" . $level1["songID"] . "|";
 		if ($level1["songID"] != 0 AND $gameVersion > 18) {
 			$song = $gs->getSongString($level1["songID"]);
 			if ($song) {
@@ -282,7 +277,7 @@ $lvlsmultistring = substr($lvlsmultistring, 0, -1);
 $userstring = substr($userstring, 0, -1);
 $songsstring = substr($songsstring, 0, -3);
 echo $lvlstring . "#" . $userstring;
-if($gameVersion > 18){
+if ($gameVersion > 18) {
 	echo "#" . $songsstring;
 }
 echo "#" . $totallvlcount . ":" . $offset . ":10#";

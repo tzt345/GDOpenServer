@@ -7,9 +7,8 @@ require_once "../lib/mainLib.php";
 $gs = new mainLib();
 require_once "../lib/generateHash.php";
 $hash = new generateHash();
-if (empty($_POST["gameVersion"])) {
-	$gameVersion = 1;
-} else {
+$gameVersion = 1;
+if (!empty($_POST["gameVersion"])) {
 	$gameVersion = $ep->remove($_POST["gameVersion"]);
 }
 if (empty($_POST["levelID"]) AND !is_numeric($_POST["levelID"])) {
@@ -57,7 +56,7 @@ if ($lvls != 0) {
 		$query6->execute([':itemID' => $levelID, ':time' => $now, ':ip' => $ip]);
 	}
 	$uploadDate = $gs->makeTime($result["uploadDate"]);
-	$updateDate = $uploadDate;
+	$updateDate = $gs->makeTime($result["updateDate"]);
 	//password xor
 	$xorPass = $result["password"];
 	$desc = $result["levelDesc"];
@@ -96,7 +95,7 @@ if ($lvls != 0) {
 	//2.02 stuff
 	$response .= "#" . $hash->genSolo($levelstring) . "#";
 	//2.1 stuff
-	$somestring = $result["userID"] . "," . $result["starStars"] . "," . $result["starDemon"] . "," . $result["levelID"] . "," . $result["starCoins"] . "," . $result["starFeatured"] . "," . $pass . "," . $feaID;
+	$somestring = $result["userID"] . "," . $result["starStars"] . "," . $result["starDemon"] . "," . $result["levelID"] . "," . $result["starCoins"] . "," . $result["starFeatured"] . "," . $xorPass . "," . $feaID;
 	$response .= $hash->genSolo2($somestring) . "#";
 	if ($daily == 1) {
 		$extID = $gs->getExtID($result["userID"]);
