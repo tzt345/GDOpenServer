@@ -22,6 +22,7 @@ Most said code changes are already credited in https://github.com/Cvolton/GMDpri
 Big thanks to Intelligent-Cat and Wyliemaster for helping me working on this project.  
 Additional credits to Alex1304 and DonAlex0 for some code they made that's included in here,  
 also thanks to erfg12 for the Newgrounds-Scraper code, spyc for their yaml parser and PHPMailer org for the PHPMailer binaries.
+Thanks to Absolute for letting us use codes and ideas included in his 1.9 GDPS source.
 
 ### Discord
 If you need support, want to be updated or just want to chat, then you might want to join our Discord. https://discord.gg/PjFXRf5
