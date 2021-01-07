@@ -90,7 +90,7 @@ class Commands {
 			return false;
 		}
 	}
-	public function doProfileCommands($accountID, $command){
+	public function doProfileCommands($accountID, $command) {
 		require __DIR__ . "/../lib/connection.php";
 		require "../../config/commands.php";
 		require "../../config/discord.php";

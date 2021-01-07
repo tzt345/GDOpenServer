@@ -85,7 +85,7 @@ if (!empty($_POST["songLink"])) {
 			if ($songReupload != 0) {
 				//checking the amount of reuploads
 				if ($isSongReuploadLimitDaily == 1) {
-					$dailyTime = strtotime("-1 days", strtotime("12:00:00"))
+					$dailyTime = strtotime("-1 days", strtotime("12:00:00"));
 					$query = $db->prepare("SELECT value2 FROM actions WHERE type = 18 AND value = :accountID AND timestamp > :timestamp");
 					$query->execute([':accountID' => $accountID, ':timestamp' => $dailyTime]);
 				} else {

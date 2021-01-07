@@ -82,7 +82,7 @@ foreach ($result as &$score) {
 	$query2->execute([':extID' => $extID]);
 	$user = $query2->fetchAll();
 	$time = $gs->makeTime($score["uploadDate"]);
-	$lvlscorestring .= "1:" . $user["userName"] . ":2:" . $user["userID"] . ":9:" . $user["icon"] . ":10:" . $user["color1"] . ":11:" . $user["color2"] . ":14:" . $user["iconType"] . ":15:" . $user["special"] . ":16:" . $user["extID"] . ":3:" . $score["percent"] . ":6:" . $place . ":13:" . $score["coins"] . ":42:" . $time . "|"; */
+	$lvlscorestring .= "1:" . $user["userName"] . ":2:" . $user["userID"] . ":9:" . $user["icon"] . ":10:" . $user["color1"] . ":11:" . $user["color2"] . ":14:" . $user["iconType"] . ":15:" . $user["special"] . ":16:" . $user["extID"] . ":3:" . $score["percent"] . ":6:" . $place . ":13:" . $score["coins"] . ":42:" . $time . "|";
 	$place++;
 }
 $lvlscorestring = substr($msgstring, 0, -1);

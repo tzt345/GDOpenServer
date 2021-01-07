@@ -8,14 +8,14 @@ $gs = new mainLib();
 if (empty($_POST["songID"])) {
 	exit("-1");
 }
-$songid = $ep->remove($_POST["songID"]);
+$songID = $ep->remove($_POST["songID"]);
 $query3 = $db->prepare("SELECT ID, name, authorID, authorName, size, isDisabled, download FROM songs WHERE ID = :songid LIMIT 1");
-$query3->execute([':songid' => $songid]);
+$query3->execute([':songid' => $songID]);
 if ($query3->rowCount() == 0) {
-	if ($songid > 9000000) exit("-1"); // Generally speaking, you don't wanna check for non-existing songs or else it will load indefinitely
+	if ($songID > 9000000) exit("-1"); // Generally speaking, you don't wanna check for non-existing songs or else it will load indefinitely
 	// Fixed by WOSHIZHAZHA120
 	$url = 'http://www.boomlings.com/database/getGJSongInfo.php';
-	$data = array('songID' => $songid, 'secret' => 'Wmfd2893gb7');
+	$data = array('songID' => $songID, 'secret' => 'Wmfd2893gb7');
 	$options = array(
 		'http' => array(
 			'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
@@ -44,7 +44,7 @@ if ($query3->rowCount() == 0) {
 			'twoPlayer' => '0',
 			'coins' => '0',
 			'epic' => '0',
-			'song' => $songid,
+			'song' => $songID,
 			'customSong' => '1',
 			'secret' => 'Wmfd2893gb7'
 		);
@@ -54,11 +54,11 @@ if ($query3->rowCount() == 0) {
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 		$result = curl_exec($ch);
 		curl_close($ch);
-		if (substr_count($result, "1~|~" . $songid . "~|~2") != 0) {
+		if (substr_count($result, "1~|~" . $songID . "~|~2") != 0) {
 			$result = explode('#', $result)[2];
 		} else {
 			$ch = curl_init(); 
-			curl_setopt($ch, CURLOPT_URL, "https://www.newgrounds.com/audio/listen/" . $songid); 
+			curl_setopt($ch, CURLOPT_URL, "https://www.newgrounds.com/audio/listen/" . $songID); 
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
 			$songinfo = curl_exec($ch);
 			curl_close($ch);
@@ -73,7 +73,7 @@ if ($query3->rowCount() == 0) {
 				exit("-1");
 			}
 			$size = $gs->getFileSize($songurl);
-			$result = "1~|~" . $songid . "~|~2~|~" . $songname . "~|~3~|~1234~|~4~|~" . $songauthor . "~|~5~|~" . $size . "~|~6~|~~|~10~|~" . $songurl . "~|~7~|~~|~8~|~1";
+			$result = "1~|~" . $songID . "~|~2~|~" . $songname . "~|~3~|~1234~|~4~|~" . $songauthor . "~|~5~|~" . $size . "~|~6~|~~|~10~|~" . $songurl . "~|~7~|~~|~8~|~1";
 		}
 	}
 	$resultfixed = str_replace("~", "", $result);

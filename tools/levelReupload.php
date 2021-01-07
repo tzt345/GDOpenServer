@@ -125,7 +125,7 @@ if (!empty($_POST["levelID"])) {
 			if ($levelReupload > 0) {
 				//checking the amount of reuploads
 				if ($isLevelReuploadLimitDaily == 1) {
-					$dailyTime = strtotime("-1 days", strtotime("12:00:00"))
+					$dailyTime = strtotime("-1 days", strtotime("12:00:00"));
 					$query = $db->prepare("SELECT value2 FROM actions WHERE type = 17 AND value = :accountID AND timestamp > :timestamp");
 					$query->execute([':accountID' => $extID, ':timestamp' => $dailyTime]);
 				} else {

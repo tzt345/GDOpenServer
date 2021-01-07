@@ -19,7 +19,7 @@ if (isset($_POST['messages'])) {
 	$query = $db->prepare("DELETE FROM messages WHERE messageID IN (" . $messages . ") AND toAccountID = :accountID LIMIT 10");
 	$query->execute([':accountID' => $accountID]);
 	echo "1";
-} elseif (isset($_POST["messageID")) {
+} elseif (isset($_POST["messageID"])) {
 	$messageID = $ep->remove($_POST["messageID"]);
 	$query = $db->prepare("DELETE FROM messages WHERE messageID = :messageID AND accID = :accountID LIMIT 1");
 	$query->execute([':messageID' => $messageID, ':accountID' => $accountID]);
