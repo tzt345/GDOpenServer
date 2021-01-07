@@ -43,7 +43,6 @@ if (isset($_POST["diff"])) {
 	$diff = "-";
 }
 
-
 //ADDITIONAL PARAMETERS
 if ($gameVersion == 0) {
 	$params[] = "gameVersion <= 18";
@@ -71,7 +70,7 @@ if (isset($_POST["onlyCompleted"]) AND $_POST["onlyCompleted"] == 1) {
 	$completedLevels = $ep->numbercolon($_POST["completedLevels"]);
 	$params[] = "levelID IN ($completedLevels)";
 }
-if (isset($_POST["song"])) {
+if (isset($_POST["song"]) AND $_POST["song"] > 0) {
 	if (empty($_POST["customSong"])) {
 		$song = $ep->number($_POST["song"]);
 		$song = $song - 1;
@@ -84,7 +83,7 @@ if (isset($_POST["song"])) {
 if (isset($_POST["twoPlayer"]) AND $_POST["twoPlayer"] == 1) {
 	$params[] = "twoPlayer = 1";
 }
-if (isset($_POST["star"])) {
+if (isset($_POST["star"]) AND $_POST["star"] > 0) {
 	$params[] = "NOT starStars = 0";
 }
 if (isset($_POST["noStar"])) {

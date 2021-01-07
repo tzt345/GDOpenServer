@@ -103,11 +103,11 @@ if ($type == "top" OR $type == "creators" OR $type == "relative") {
 }
 if ($type == "friends") {
 	$query = $db->prepare("SELECT * FROM friendships WHERE person1 = :accountID OR person2 = :accountID");
-	$query->execute([':accountID' => $accountID]);
+	$query->execute([':accountID' => $id]);
 	$result = $query->fetchAll();
 	$people = "";
 	foreach ($result as &$friendship) {
-		if ($friendship["person1"] == $accountID) {
+		if ($friendship["person1"] == $id) {
 			$person = $friendship["person2"];
 		} else {
 			$person = $friendship["person1"];
@@ -115,7 +115,7 @@ if ($type == "friends") {
 		$people .= "," . $person;
 	}
 	$query = $db->prepare("SELECT * FROM users WHERE extID IN (:accountID $people ) ORDER BY stars DESC");
-	$query->execute([':accountID' => $accountID]);
+	$query->execute([':accountID' => $id]);
 	$result = $query->fetchAll();
 	foreach ($result as &$user) {
 		$extid = $user["extID"];
@@ -155,7 +155,7 @@ if ($type == "week") { // By Absolute, did some edits
 		$query->execute([':userID' => $userID]);
 		$user = $query->fetchAll()[0];
 		$xi++;
-		$lbstring .= "1:" . $user["userName"] . ":2:" . $userID . ":4:" . $coinsgain[$userID] . ":13:" . $demonsgain[$userID] . ":6:" . $xi . ":9:" . $user["icon"] . ":10:" . $user["color1"] . ":11:" . $user["color2"] . ":14:" . $user["iconType"] . ":15:" . $user["special"] . ":16:" . $user["extID"] . ":3:" . $stars . ":7:" . $user["extID"] . "|";
+		$lbstring .= "1:" . $user["userName"] . ":2:" . $userID . ":4:" . $demonsgain[$userID] . ":13:" . $coinsgain[$userID] . ":6:" . $xi . ":9:" . $user["icon"] . ":10:" . $user["color1"] . ":11:" . $user["color2"] . ":14:" . $user["iconType"] . ":15:" . $user["special"] . ":16:" . $user["extID"] . ":3:" . $stars . ":7:" . $user["extID"] . "|";
 	}
 }
 if ($lbstring == "") {

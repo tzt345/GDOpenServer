@@ -29,7 +29,7 @@ class GJPCheck {
 		$gjpdecode = str_replace("-", "+", $gjpdecode);
 		$gjpdecode = base64_decode($gjpdecode);
 		$gjpdecode = $xor->cipher($gjpdecode, 37526);
-		$pass = $generatePass->isValid($accountID, $gjpdecode);
+		$pass = $gp->isValid($accountID, $gjpdecode);
 		if ($pass == 1 AND $sessionGrants) {
 			$ip = $gs->getIP();
 			$query = $db->prepare("INSERT INTO actions (type, value, value2, timestamp) VALUES (16, :accountID, :ip, :timestamp)");
