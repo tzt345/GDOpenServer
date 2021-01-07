@@ -15,17 +15,17 @@ if (empty($_POST["gameVersion"])) {
 	$gameVersion = $ep->number($_POST["gameVersion"]);
 }
 if (!empty($_POST["accountID"]) AND $_POST["accountID"] != "0") {
-	$id = $ep->remove($_POST["accountID"]);
+	$extID = $ep->remove($_POST["accountID"]);
 	if ($gameVersion >= 20) {
 		$gjp = $ep->remove($_POST["gjp"]);
-		$gjpresult = $GJPCheck->check($gjp, $id);
+		$gjpresult = $GJPCheck->check($gjp, $extID);
 		if ($gjpresult != 1) {
 			exit("-1");
 		}
 	}
 } elseif (!empty($_POST["udid"]) AND !is_numeric($_POST["udid"])) {
-	$id = $ep->remove($_POST["udid"]);
-	if (is_numeric($id)) {
+	$extID = $ep->remove($_POST["udid"]);
+	if (is_numeric($extID)) {
 		exit("-1");
 	}
 } else {
@@ -45,8 +45,8 @@ if ($type == "top" OR $type == "creators" OR $type == "relative") {
 		$query = "SELECT * FROM users WHERE isBanned = 0 AND isLeaderboardBanned = 0 AND isCreatorBanned = 0 ORDER BY creatorPoints DESC LIMIT 100";
 	}
 	if ($type == "relative") {
-		$query = $db->prepare("SELECT * FROM users WHERE extID = :accountID");
-		$query->execute([':accountID' => $id]);
+		$query = $db->prepare("SELECT * FROM users WHERE extID = :extID");
+		$query->execute([':extID' => $extID]);
 		$result = $query->fetchAll();
 		$user = $result[0];
 		$stars = $user["stars"];
@@ -102,20 +102,20 @@ if ($type == "top" OR $type == "creators" OR $type == "relative") {
 	}
 }
 if ($type == "friends") {
-	$query = $db->prepare("SELECT * FROM friendships WHERE person1 = :accountID OR person2 = :accountID");
-	$query->execute([':accountID' => $id]);
+	$query = $db->prepare("SELECT * FROM friendships WHERE person1 = :extID OR person2 = :extID");
+	$query->execute([':extID' => $extID]);
 	$result = $query->fetchAll();
 	$people = "";
 	foreach ($result as &$friendship) {
-		if ($friendship["person1"] == $id) {
+		if ($friendship["person1"] == $extID) {
 			$person = $friendship["person2"];
 		} else {
 			$person = $friendship["person1"];
 		}
 		$people .= "," . $person;
 	}
-	$query = $db->prepare("SELECT * FROM users WHERE extID IN (:accountID $people ) ORDER BY stars DESC");
-	$query->execute([':accountID' => $id]);
+	$query = $db->prepare("SELECT * FROM users WHERE extID IN (:extID $people ) ORDER BY stars DESC");
+	$query->execute([':accountID' => $extID]);
 	$result = $query->fetchAll();
 	foreach ($result as &$user) {
 		$extid = $user["extID"];

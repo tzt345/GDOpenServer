@@ -11,7 +11,7 @@ $gs = new mainLib();
 if (isset($_POST["gameVersion"])) {
 	$gameVersion = $ep->remove($_POST["gameVersion"]);
 } else {
-	$gameVersion = 21;
+	$gameVersion = 4;
 }
 if (isset($_POST["udid"]) AND !is_numeric($_POST["udid"])) {
 	$id = $ep->remove($_POST["udid"]);
@@ -20,7 +20,7 @@ if (isset($_POST["udid"]) AND !is_numeric($_POST["udid"])) {
 } elseif (isset($_POST["accountID"]) AND $_POST["accountID"] != "0") {
 	$id = $ep->remove($_POST["accountID"]);
 	$userName = $gs->getAccountName($id);
-	if ($gameVersion >= 20) {
+	if ($gameVersion > 19) {
 		if (isset($_POST["gjp"])) {
 			$gjp = $ep->remove($_POST["gjp"]);
 		} else {
