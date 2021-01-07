@@ -76,15 +76,17 @@ switch ($type) {
 $query2->execute($query2args);
 $result = $query2->fetchAll();
 $place = 1;
+$lvlscorestring = "";
 foreach ($result as &$score) {
 	$extID = $score["accountID"];
-	$query2 = $db->prepare("SELECT userName, userID, icon, color1, color2, iconType, special, extID, FROM users WHERE extID = :extID AND isLeaderboardBanned = 0 LIMIT 1");
+	$query2 = $db->prepare("SELECT userName, userID, icon, color1, color2, iconType, special, extID FROM users WHERE extID = :extID AND isLeaderboardBanned = 0 LIMIT 1");
 	$query2->execute([':extID' => $extID]);
 	$user = $query2->fetchAll();
+	$user = $user[0];
 	$time = $gs->makeTime($score["uploadDate"]);
 	$lvlscorestring .= "1:" . $user["userName"] . ":2:" . $user["userID"] . ":9:" . $user["icon"] . ":10:" . $user["color1"] . ":11:" . $user["color2"] . ":14:" . $user["iconType"] . ":15:" . $user["special"] . ":16:" . $user["extID"] . ":3:" . $score["percent"] . ":6:" . $place . ":13:" . $score["coins"] . ":42:" . $time . "|";
 	$place++;
 }
-$lvlscorestring = substr($msgstring, 0, -1);
+$lvlscorestring = substr($lvlscorestring, 0, -1);
 echo $lvlscorestring;
 ?>
