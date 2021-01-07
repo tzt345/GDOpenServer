@@ -13,11 +13,12 @@ $current = time();
 $query = $db->prepare("SELECT feaID FROM dailyfeatures WHERE timestamp < :current AND type = :type ORDER BY timestamp DESC LIMIT 1");
 $query->execute([':current' => $current, ':type' => $weekly]);
 $dailyID = $query->fetchColumn();
+//Time left
+$timeleft = $midnight - $current;
+if ($query->rowCount() == 0) exit("0|" . $timeleft); // too lazy to check which daily id was previously used
 if ($weekly == 1) {
 	$dailyID = $dailyID + 100001; //the fuck went through robtops head when he was implementing this
 }
-//Time left
-$timeleft = $midnight - $current;
 //output
 echo $dailyID . "|" . $timeleft;
 ?>

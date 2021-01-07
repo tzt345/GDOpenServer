@@ -24,6 +24,8 @@ switch ($levelID) {
 		$query = $db->prepare("SELECT feaID, levelID FROM dailyfeatures WHERE timestamp < :time AND type = 0 ORDER BY timestamp DESC LIMIT 1");
 		$query->execute([':time' => $now]);
 		$result = $query->fetch();
+		// todo: find proper endpoint result for non-ready daily/weekly
+		if ($query->rowCount() == 0) exit(-1);
 		$levelID = $result["levelID"];
 		$feaID = $result["feaID"];
 		$daily = 1;
@@ -32,6 +34,7 @@ switch ($levelID) {
 		$query = $db->prepare("SELECT feaID, levelID FROM dailyfeatures WHERE timestamp < :time AND type = 1 ORDER BY timestamp DESC LIMIT 1");
 		$query->execute([':time' => $now]);
 		$result = $query->fetch();
+		if ($query->rowCount() == 0) exit(-1);
 		$levelID = $result["levelID"];
 		$feaID = $result["feaID"];
 		$feaID = $feaID + 100001;
