@@ -67,10 +67,12 @@ if ($lvls != 0) {
 		$pass = "1";
 	}
 	if ($gameVersion > 19) {
+		require "../lib/XORCipher.php";
+		$xor = new XORCipher();
 		if ($pass != 0) {
-			require "../lib/XORCipher.php";
-			$xor = new XORCipher();
 			$xorPass = base64_encode($xor->cipher($pass, 26364));
+		} else {
+			$xorPass = base64_encode($xor->cipher(0, 26364));
 		}
 	} else {
 		$desc = $ep->remove(base64_decode($desc));
