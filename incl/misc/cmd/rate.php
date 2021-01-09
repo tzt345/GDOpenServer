@@ -1,4 +1,5 @@
 <?php
+$response = "";
 if (isset($commentArray[1])) {
     $diffArray = $gs->getDiffFromName($commentArray[1]);
 } else {
