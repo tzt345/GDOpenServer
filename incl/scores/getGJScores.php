@@ -115,7 +115,7 @@ if ($type == "friends") {
 		$people .= "," . $person;
 	}
 	$query = $db->prepare("SELECT * FROM users WHERE extID IN (:extID $people ) ORDER BY stars DESC");
-	$query->execute([':accountID' => $extID]);
+	$query->execute([':extID' => $extID]);
 	$result = $query->fetchAll();
 	foreach ($result as &$user) {
 		$extid = $user["extID"];

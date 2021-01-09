@@ -15,7 +15,7 @@ if (!empty($_POST["accountID"]) AND $_POST["accountID"] != "0") {
 	$gjp = $ep->remove($_POST["gjp"]);
 	$register = 1;
 	$gjpresult = $GJPCheck->check($gjp, $id);
-	if ($gjpresult == 0) {
+	if ($gjpresult != 1) {
 		exit("-1");
 	}
 } elseif (!empty($_POST["udid"])) {
