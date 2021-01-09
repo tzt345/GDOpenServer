@@ -6,9 +6,7 @@ I advise you to not use this for a public server until a release will be pushed.
 Currently, tests are done on a Linux server, with MariaDB and PHP 7.4 installed.
 
 ## GDOpenServer
-Basically a "server emulator" for Geometry Dash, except it's rewritten soon.  
-Coming with new features, tools, configurations and literally no need of knowledge on how to use PHPMyAdmin, all documentated and easy to use!  
-[![CodeFactor](https://www.codefactor.io/repository/github/jecket22/gdopenserver/badge/master)](https://www.codefactor.io/repository/github/jecket22/gdopenserver/overview/master)
+Basically a soon-to-be-rewritten version of Cvolton's GMDPrivateServer, made to be compatible with many (if even bad) webhosts and be packed with a lot of features, especially made easy to understand (with documentation in mind) and less of a hassle to manage.
 
 ### Setup (extremely simplified)
 1. Upload all files to your webserver
@@ -20,9 +18,8 @@ Coming with new features, tools, configurations and literally no need of knowled
 ### Credits
 Most said code changes are already credited in https://github.com/Cvolton/GMDprivateServer.  
 Big thanks to Intelligent-Cat and Wyliemaster for helping me working on this project.  
-Additional credits to Alex1304 and DonAlex0 for some code they made that's included in here,  
+Additional credits to Alex1304, Absolute and DonAlex0 for letting us use their code/ideas for this project,  
 also thanks to erfg12 for the Newgrounds-Scraper code, spyc for their yaml parser and PHPMailer org for the PHPMailer binaries.
-Thanks to Absolute for letting us use codes and ideas included in his 1.9 GDPS source.
 
 ### Discord
 If you need support, want to be updated or just want to chat, then you might want to join our Discord. https://discord.gg/PjFXRf5
