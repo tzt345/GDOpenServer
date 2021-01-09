@@ -10,7 +10,7 @@ require_once "../lib/generateHash.php";
 $generateHash = new generateHash();
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
-if (empty($_POST["accountID"]) OR empty($_POST["udid"]) OR empty($_POST["chk"]) OR empty($_POST["rewardType"])) {
+if (empty($_POST["accountID"]) OR empty($_POST["udid"]) OR empty($_POST["chk"]) OR !isset($_POST["rewardType"])) {
 	exit("-1");
 }
 $accountID = $ep->remove($_POST["accountID"]);
