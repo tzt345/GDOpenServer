@@ -61,16 +61,16 @@ if ($lvls != 0) {
 	$uploadDate = $gs->makeTime($result["uploadDate"]);
 	$updateDate = $gs->makeTime($result["updateDate"]);
 	//password xor
-	$xorPass = $result["password"];
+	$pass = $result["password"];
 	$desc = $result["levelDesc"];
 	if ($gs->checkModIPPermission("actionFreeCopy") == 1) {
-		$xorPass = "1";
+		$pass = "1";
 	}
 	if ($gameVersion > 19) {
-		if ($xorPass != 0) {
+		if ($pass != 0) {
 			require "../lib/XORCipher.php";
 			$xor = new XORCipher();
-			$xorPass = base64_encode($xor->cipher($xorPass, 26364));
+			$xorPass = base64_encode($xor->cipher($pass, 26364));
 		}
 	} else {
 		$desc = $ep->remove(base64_decode($desc));
@@ -98,7 +98,7 @@ if ($lvls != 0) {
 	//2.02 stuff
 	$response .= "#" . $hash->genSolo($levelstring) . "#";
 	//2.1 stuff
-	$somestring = $result["userID"] . "," . $result["starStars"] . "," . $result["starDemon"] . "," . $result["levelID"] . "," . $result["starCoins"] . "," . $result["starFeatured"] . "," . $xorPass . "," . $feaID;
+	$somestring = $result["userID"] . "," . $result["starStars"] . "," . $result["starDemon"] . "," . $result["levelID"] . "," . $result["starCoins"] . "," . $result["starFeatured"] . "," . $pass . "," . $feaID; // keep it as $pass
 	$response .= $hash->genSolo2($somestring) . "#";
 	if ($daily == 1) {
 		$extID = $gs->getExtID($result["userID"]);
