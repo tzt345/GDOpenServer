@@ -688,6 +688,7 @@ class mainLib {
 		$query = $db->prepare("SELECT commentColor FROM roles WHERE isDefault = 1");
 		$query->execute();
 		$role = $query->fetch();
+		if ($query->rowCount() == 0) return "255,255,255";
 		return $role["commentColor"];
 	}
 	public function rateLevel($accountID, $levelID, $stars, $difficulty, $auto, $demon){
