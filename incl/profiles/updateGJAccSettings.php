@@ -8,8 +8,7 @@ $ep = new exploitPatch();
 //here im getting all the data
 $gjp = $ep->remove($_POST["gjp"]);
 $accountID = $ep->remove($_POST["accountID"]);
-$_POST["gameVersion"] = 19; // gameVersion isn't fetched for some reason, since profiles were introduced in update 1.9, I'll use that as the gameVersion
-$gjpresult = $GJPCheck->check($gjp, $accountID);
+$gjpresult = $GJPCheck->check($gjp, $accountID, 20);
 if ($gjpresult != 1) {
 	exit("-1");
 }

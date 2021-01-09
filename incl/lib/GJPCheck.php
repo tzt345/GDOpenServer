@@ -1,6 +1,6 @@
 <?php
 class GJPCheck {
-	public function check($gjp, $accountID) {
+	public function check($gjp, $accountID, $gameVersion = 19) {
 		require __DIR__ . "/connection.php";
 		require __DIR__ . "/../../config/security.php";
 		require_once __DIR__ . "/mainLib.php";
@@ -8,9 +8,10 @@ class GJPCheck {
 		if (!is_numeric($accountID) OR $accountID <= 0) {
 			return 0;
 		}
+		if (!empty($_POST["gameVersion"])) $gameVersion = $_POST["gameVersion"];
 		if ($sessionGrants) {
 			$ip = $gs->getIP();
-			if ($sessionGrantsTime <= 0 OR ($_POST["gameVersion"]) < 19) {
+			if ($sessionGrantsTime <= 0 OR $gameVersion < 19) {
 				$query = $db->prepare("SELECT count(*) FROM actions WHERE type = 16 AND value = :accountID AND value2 = :ip");
 				$query->execute([':accountID' => $accountID, ':ip' => $ip]);
 			} else {
