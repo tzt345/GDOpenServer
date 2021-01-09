@@ -7,22 +7,8 @@ require_once "../lib/GJPCheck.php";
 $GJPCheck = new GJPCheck();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
-if (empty($_POST["gameVersion"])) {
-	$sign = "< 20 AND gameVersion <> 0";
-	$gameVersion = 4;
-} else {
-	$sign = "> 19";
-	$gameVersion = $ep->number($_POST["gameVersion"]);
-}
 if (!empty($_POST["accountID"]) AND $_POST["accountID"] != "0") {
 	$extID = $ep->remove($_POST["accountID"]);
-	if ($gameVersion >= 20) {
-		$gjp = $ep->remove($_POST["gjp"]);
-		$gjpresult = $GJPCheck->check($gjp, $extID);
-		if ($gjpresult != 1) {
-			exit("-1");
-		}
-	}
 } elseif (!empty($_POST["udid"]) AND !is_numeric($_POST["udid"])) {
 	$extID = $ep->remove($_POST["udid"]);
 	if (is_numeric($extID)) {
@@ -39,10 +25,10 @@ $lbstring = "";
 $type = $ep->remove($_POST["type"]);
 if ($type == "top" OR $type == "creators" OR $type == "relative") {
 	if ($type == "top") {
-		$query = "SELECT * FROM users WHERE isBanned = 0 AND isLeaderboardBanned = 0 AND gameVersion $sign AND stars > 0 ORDER BY stars DESC LIMIT 100";
+		$query = "SELECT * FROM users WHERE isBanned = 0 AND isLeaderboardBanned = 0 AND isRegistered = 1 AND stars > 0 ORDER BY stars DESC LIMIT 100";
 	}
 	if ($type == "creators") {
-		$query = "SELECT * FROM users WHERE isBanned = 0 AND isLeaderboardBanned = 0 AND isCreatorBanned = 0 ORDER BY creatorPoints DESC LIMIT 100";
+		$query = "SELECT * FROM users WHERE isBanned = 0 AND isLeaderboardBanned = 0 AND isCreatorBanned = 0 AND isRegistered = 1 ORDER BY creatorPoints DESC LIMIT 100";
 	}
 	if ($type == "relative") {
 		$query = $db->prepare("SELECT * FROM users WHERE extID = :extID");
@@ -51,7 +37,7 @@ if ($type == "top" OR $type == "creators" OR $type == "relative") {
 		$user = $result[0];
 		$stars = $user["stars"];
 		if (!empty($_POST["count"])) {
-			$count = $ep->remove($_POST["count"]);
+			$count = $ep->number($_POST["count"]);
 		} else {
 			$count = 50;
 		}
@@ -61,7 +47,7 @@ if ($type == "top" OR $type == "creators" OR $type == "relative") {
 				SELECT * FROM users
 				WHERE stars <= :stars
 				AND isLeaderboardBanned = 0
-				AND gameVersion $sign
+				AND isRegistered = 1
 				ORDER BY stars DESC
 				LIMIT $count
 			)
@@ -70,7 +56,7 @@ if ($type == "top" OR $type == "creators" OR $type == "relative") {
 				SELECT * FROM users
 				WHERE stars >= :stars
 				AND isLeaderboardBanned = 0
-				AND gameVersion $sign
+				AND isRegistered = 1
 				ORDER BY stars ASC
 				LIMIT $count
 			)
@@ -86,9 +72,9 @@ if ($type == "top" OR $type == "creators" OR $type == "relative") {
 		$query = $db->prepare("SET @rownum := 0;");
 		$query->execute();
 		$f = "SELECT rank, stars FROM (
-							SELECT @rownum := @rownum + 1 AS rank, stars, extID
-							FROM users WHERE isLeaderboardBanned = 0 AND gameVersion $sign ORDER BY stars DESC
-							) as result WHERE extID = :extid";
+		SELECT @rownum := @rownum + 1 AS rank, stars, extID
+		FROM users WHERE isLeaderboardBanned = 0 AND isRegistered = 1 ORDER BY stars DESC
+		) as result";
 		$query = $db->prepare($f);
 		$query->execute([':extid' => $extid]);
 		$leaderboard = $query->fetchAll();
