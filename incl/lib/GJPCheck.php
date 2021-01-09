@@ -10,7 +10,7 @@ class GJPCheck {
 		}
 		if ($sessionGrants) {
 			$ip = $gs->getIP();
-			if ($sessionGrantsTime <= 0 OR ($_POST["gameVersion"]) <= 19) {
+			if ($sessionGrantsTime <= 0 OR ($_POST["gameVersion"]) < 19) {
 				$query = $db->prepare("SELECT count(*) FROM actions WHERE type = 16 AND value = :accountID AND value2 = :ip");
 				$query->execute([':accountID' => $accountID, ':ip' => $ip]);
 			} else {
