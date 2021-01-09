@@ -410,6 +410,7 @@ class mainLib {
 	}
 	public function getUserString($userID) {
 		require __DIR__ . "/connection.php";
+		if ($userID == 0) return "0:Unknown:0";
 		$query = $db->prepare("SELECT userName, extID FROM users WHERE userID = :id");
 		$query->execute([':id' => $userID]);
 		$userdata = $query->fetch();
