@@ -7,26 +7,26 @@ if (!empty($_POST["pwcheck"])) {
 		exit("Wrong password!<br><br>");
 	}
 	// small chest
-	$smolMinOrbs = $_POST["smolMiO"] || 200;
-	$smolMaxOrbs = $_POST["smolMaO"] || 400;
-	$smolMinDiamonds = $_POST["smolMiD"] || 2;
-	$smolMaxDiamonds = $_POST["smolMaD"] || 10;
-	$smolMinShards = $_POST["smolMiS"] || 1;
-	$smolMaxShards = $_POST["smolMaS"] || 6;
-	$smolMinKeys = $_POST["smolMiK"] || 1;
-	$smolMaxKeys = $_POST["smolMaK"] || 6;
+	$smolMinOrbs = $_POST["smolMiO"];
+	$smolMaxOrbs = $_POST["smolMaO"];
+	$smolMinDiamonds = $_POST["smolMiD"];
+	$smolMaxDiamonds = $_POST["smolMaD"];
+	$smolMinShards = $_POST["smolMiS"];
+	$smolMaxShards = $_POST["smolMaS"];
+	$smolMinKeys = $_POST["smolMiK"];
+	$smolMaxKeys = $_POST["smolMaK"];
 	// big chest
-	$bigMinOrbs = $_POST["bigMiO"] || 200;
-	$bigMaxOrbs = $_POST["bigMaO"] || 400;
-	$bigMinDiamonds = $_POST["bigMiD"] || 2;
-	$bigMaxDiamonds = $_POST["bigMaD"] || 10;
-	$bigMinShards = $_POST["bigMiS"] || 1;
-	$bigMaxShards = $_POST["bigMaS"] || 6;
-	$bigMinKeys = $_POST["bigMiK"] || 1;
-	$bigMaxKeys = $_POST["bigMaK"] || 6;
+	$bigMinOrbs = $_POST["bigMiO"];
+	$bigMaxOrbs = $_POST["bigMaO"];
+	$bigMinDiamonds = $_POST["bigMiD"];
+	$bigMaxDiamonds = $_POST["bigMaD"];
+	$bigMinShards = $_POST["bigMiS"];
+	$bigMaxShards = $_POST["bigMaS"];
+	$bigMinKeys = $_POST["bigMiK"];
+	$bigMaxKeys = $_POST["bigMaK"];
 	// timings
-	$smolWait = $_POST["smolWait"] || 3600;
-	$bigWait = $_POST["bigWait"] || 14400;
+	$smolWait = $_POST["smolWait"];
+	$bigWait = $_POST["bigWait"];
 	// ono
 	$string = "<?php" . PHP_EOL;
 	$string .= '$chest1minOrbs = ' . $smolMinOrbs . ';' . PHP_EOL;
@@ -59,9 +59,8 @@ if (!empty($_POST["pwcheck"])) {
 require "../config/dailyChests.php";
 ?>
 <form action="" method="POST">
-	<!-- Don't even try to SQL-Inject, there's no SQL query involved in here! ;) -->
-	<span style="opacity:25%">Tool made by Rya#8632 - please <b>tag</b> him before making a ticket if you have issues.</span>
-	Database Password <input name="pwcheck" type="password" placeholder="Check GDPS Bot DM"/><br>
+	<!-- perfect security lmao -->
+	Database Password <input name="pwcheck" type="password"/><br>
 	<b>Small Chest rewards</b><br>
 	Min. Orbs <input name="smolMiO" type="number" value="<?php echo ($chest1minOrbs); ?>" min=0 /><br>
 	Max. Orbs <input name="smolMaO" type="number" value="<?php echo ($chest1maxOrbs); ?>" min=0 /><br>
