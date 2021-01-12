@@ -20,10 +20,10 @@ if ($result["isCPShared"] == 1 AND $dailyWeeklyCPShared == 1) {
 	$query3 = $db->prepare("SELECT userID FROM cpshares WHERE levelID = :levelID");
 	$query3->execute([':levelID' => $levelID]);
 	if ($CPSharedWhole == 1) {
-		$addCP = $rateCP;
+		$addCP = $starCP;
 	} else {
 		$sharecount = $query3->rowCount() + 1;
-		$addCP = round($rateCP / $sharecount);
+		$addCP = round($starCP / $sharecount);
 	}
 	$shares = $query->fetchAll();
 	foreach ($shares as &$share) {
@@ -33,7 +33,7 @@ if ($result["isCPShared"] == 1 AND $dailyWeeklyCPShared == 1) {
 	}
 } else {
 	$query4 = $db->prepare("UPDATE users SET creatorPoints = creatorPoints + :creatorpoints WHERE extID = :extID");
-	$query4->execute([':extID' => $targetExtID, ':creatorpoints' => $rateCP]);
+	$query4->execute([':extID' => $targetExtID, ':creatorpoints' => $starCP]);
 }
 $query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account, value2, value4) VALUES (5, 1, :levelID, :timestamp, :id, :dailytime, 0)");
 $query->execute([':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID, ':dailytime' => $timestamp]);

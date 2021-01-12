@@ -39,7 +39,7 @@ if ($result["starStars"] == 1) {
     if ($result["isCPShared"] == 1) {
         $query3 = $db->prepare("SELECT userID FROM cpshares WHERE levelID = :levelID");
         $query3->execute([':levelID' => $levelID]);
-        $deservedcp = $rateCP;
+        $deservedcp = $starCP;
         if ($gs->checkPermission($accountID, "commandFeature") AND $result["starFeatured"] == 0 AND $unfeature == 1) {
             $deservedcp += $featureCP;
             $featureLevel = 1;
@@ -58,7 +58,7 @@ if ($result["starStars"] == 1) {
         }
     } else {
         $query4 = $db->prepare("UPDATE users SET creatorPoints = creatorPoints + :addCP WHERE extID = :extID");
-        $query4->execute([':extID' => $targetExtID, ':addCP' => $rateCP]);
+        $query4->execute([':extID' => $targetExtID, ':addCP' => $starCP]);
     }
 }
 if ($keepDiff == 1) {

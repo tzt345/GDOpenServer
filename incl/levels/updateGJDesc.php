@@ -15,11 +15,8 @@ if (!empty($_POST["accountID"]) AND !empty($_POST["gjp"])) {
 	if ($gjpresult != 1) {
 		exit("-1");
 	}
-} elseif (isset($_POST["udid"])) {
+} elseif (isset($_POST["udid"]) AND !is_numeric($_POST["udid"])) {
 	$id = $ep->remove($_POST["udid"]);
-	if (is_numeric($id)) {
-		exit("-1");
-	}
 } else {
 	exit("-1");
 }

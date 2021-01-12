@@ -11,7 +11,7 @@ if ($result["starFeatured"] == 0) {
 }
 $deservedCP += $epicCP;
 if ($result["starStars"] != 0) {
-    $deservedCP += $rateCP;
+    $deservedCP += $starCP;
 }
 if ($result["starEpic"] != 0) {
     $deservedCP += $epicCP;

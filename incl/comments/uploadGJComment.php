@@ -10,7 +10,7 @@ require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../misc/commands.php";
 $cmds = new Commands();
-if (!empty($_POST["accountID"]) AND $_POST["accountID"] != "0") {
+if (!empty($_POST["accountID"])) {
 	$id = $ep->remove($_POST["accountID"]);
 	$gjp = $ep->remove($_POST["gjp"]);
 	$register = 1;
@@ -18,12 +18,9 @@ if (!empty($_POST["accountID"]) AND $_POST["accountID"] != "0") {
 	if ($gjpresult != 1) {
 		exit("-1");
 	}
-} elseif (!empty($_POST["udid"])) {
+} elseif (!empty($_POST["udid"]) AND !is_numeric($_POST["udid"])) {
 	$id = $ep->remove($_POST["udid"]);
 	$register = 0;
-	if (is_numeric($id)) {
-		exit("-1");
-	}
 } else {
 	exit("-1");
 }

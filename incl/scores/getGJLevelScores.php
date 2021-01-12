@@ -74,6 +74,9 @@ switch ($type) {
 		exit("-1");
 }
 $query2->execute($query2args);
+if ($query2->rowCount() == 0) {
+	exit("-1");
+}
 $result = $query2->fetchAll();
 $place = 1;
 $lvlscorestring = "";

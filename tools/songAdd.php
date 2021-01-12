@@ -24,11 +24,11 @@ if (!empty($_POST["songLink"])) {
 			$pass = $gp->isValidUsrname($userName, $password);
 		} else {
 			exit('<form action="songAdd.php" method="post">
-					Username: <input type="text" name="userName"><br>
-					Password: <input type="password" name="password"><br>
-					Link: <input type="text" name="songLink"><br>
-					<input type="submit" value="Add Song">
-				</form>');
+				Username: <input type="text" name="userName"><br>
+				Password: <input type="password" name="password"><br>
+				Link: <input type="text" name="songLink"><br>
+				<input type="submit" value="Add Song">
+			</form>');
 		}
 	} else {
 		$pass = 1;
@@ -81,11 +81,10 @@ if (!empty($_POST["songLink"])) {
 			if ($count != 0) {
 				exit("This song already exists in our database.");
 			}
-			$timestamp = time();
 			if ($songReupload != 0) {
 				//checking the amount of reuploads
 				if ($isSongReuploadLimitDaily == 1) {
-					$dailyTime = strtotime("-1 days", strtotime("12:00:00"));
+					$dailyTime = strtotime("-1 days", strtotime("00:00:00"));
 					$query = $db->prepare("SELECT value2 FROM actions WHERE type = 18 AND value = :accountID AND timestamp > :timestamp");
 					$query->execute([':accountID' => $accountID, ':timestamp' => $dailyTime]);
 				} else {
@@ -95,7 +94,7 @@ if (!empty($_POST["songLink"])) {
 					
 				if ($query->rowCount() == 0) {
 					$query = $db->prepare("INSERT INTO actions (type, value, value2, timestamp) VALUES (18, :accountID, 1, :timestamp)");
-					$query->execute([':accountID' => $accountID, ':timestamp' => $timestamp]);
+					$query->execute([':accountID' => $accountID, ':timestamp' => time()]);
 					$reuploads = 1;
 				} else {
 					$reuploads = $query->fetchColumn();

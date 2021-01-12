@@ -48,8 +48,8 @@ if ($pass == 1) { //success
 			if (($result["banTime"] - $time) <= 0 AND $result["banTime"] != 0) {
 				$banExpired = $db->prepare("UPDATE users SET isBanned = 0, banTime = '', banReason = '', lastPlayed = :time WHERE userID = :userID");
 				$banExpired->execute([':userID' => $userID]);
-				$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, value4, timestamp, account) VALUES (15, :type, :value, 0, 'Auto-unban: Ban expired', :timestamp, :id)");
-				$query->execute([':type' => $type, ':value' => $userName, ':timestamp' => $time, ':id' => $gs->getBotAccountID()]);
+				$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, value4, timestamp, account) VALUES (15, 1, :value, 0, 'Auto-unban: Ban expired', :timestamp, :id)");
+				$query->execute([':value' => $userName, ':timestamp' => $time, ':id' => $gs->getBotAccountID()]);
 			} else {
 				exit("-12");
 			}

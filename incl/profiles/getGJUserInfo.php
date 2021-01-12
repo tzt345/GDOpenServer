@@ -9,7 +9,7 @@ require_once "../lib/mainLib.php";
 $gs = new mainLib();
 $appendix = "";
 $extid = $ep->number($_POST["targetAccountID"]);
-if (!empty($_POST["accountID"]) AND !empty($_POST["gjp"])) {
+if (!empty($_POST["gjp"]) AND !empty($_POST["accountID"])) {
 	$gjp = $ep->remove($_POST["gjp"]);
 	$me = $ep->number($_POST["accountID"]);
 	$gjpresult = $GJPCheck->check($gjp, $me); //gjp check
@@ -41,11 +41,11 @@ if ($user["isCreatorBanned"] == 1) {
 $e = "SET @rownum := 0;";
 $query = $db->prepare($e);
 $query->execute();
-/*$f = "SELECT rank FROM (
-				  SELECT @rownum := @rownum + 1 AS rank, extID
-				  FROM users WHERE isBanned = 0 AND gameVersion > 19 AND stars > 25 ORDER BY stars DESC
-				  ) as result WHERE extID = :extid";*/
-$query = $db->prepare("SELECT count(*) FROM users WHERE stars > :stars AND isLeaderboardBanned = 0"); //I can do this, since I already know the stars amount beforehand
+/* $f = "SELECT rank FROM (
+SELECT @rownum := @rownum + 1 AS rank, extID
+FROM users WHERE isBanned = 0 AND gameVersion > 19 AND stars > 25 ORDER BY stars DESC
+) as result WHERE extID = :extid"; */
+$query = $db->prepare("SELECT count(*) FROM users WHERE stars > :stars AND isLeaderboardBanned = 0"); // I can do this, since I already know the stars amount beforehand
 $query->execute([':stars' => $user["stars"]]);
 if ($query->rowCount() > 0) {
 	$rank = $query->fetchColumn() + 1;
@@ -61,16 +61,16 @@ $msgstate = $accinfo["mS"];
 $commentstate = $accinfo["cS"];
 $badge = $gs->getMaxValuePermission($extid, "modBadgeLevel");
 if ($me == $extid) {
-	/* notifications */
-	//friendreqs
+	/* Notifications */
+	// Friend Requests
 	$query = $db->prepare("SELECT count(*) FROM friendreqs WHERE toAccountID = :me");
 	$query->execute([':me' => $me]);
 	$requests = $query->fetchColumn();
-	//messages
+	// Messages
 	$query = $db->prepare("SELECT count(*) FROM messages WHERE toAccountID = :me AND isNew = 0");
 	$query->execute([':me' => $me]);
 	$pms = $query->fetchColumn();
-	//friends
+	// Friends
 	$query = $db->prepare("SELECT count(*) FROM friendships WHERE (person1 = :me AND isNew2 = 1) OR (person2 = :me AND isNew1 = 1)");
 	$query->execute([':me' => $me]);
 	$friends = $query->fetchColumn();

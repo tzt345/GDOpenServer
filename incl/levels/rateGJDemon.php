@@ -7,13 +7,13 @@ require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
-if (!isset($_POST["gjp"]) OR !isset($_POST["rating"]) OR !isset($_POST["levelID"]) OR !isset($_POST["accountID"])) {
+if (!isset($_POST["gjp"]) OR !isset($_POST["accountID"]) OR !isset($_POST["rating"]) OR !isset($_POST["levelID"])) {
 	exit("-1");
 }
 $gjp = $ep->remove($_POST["gjp"]);
 $id = $ep->remove($_POST["accountID"]);
 $gjpresult = $GJPCheck->check($gjp, $id);
-if ($gs->checkPermission($id, "actionRateDemon") == false OR $gjpresult != 1) {
+if ($gjpresult != 1 OR $gs->checkPermission($id, "actionRateDemon") == false) {
 	exit("-1");
 }
 $rating = $ep->remove($_POST["rating"]);

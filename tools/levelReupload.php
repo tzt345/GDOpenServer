@@ -184,7 +184,7 @@ if (!empty($_POST["levelID"])) {
 		<input type="submit" value="Reupload">
 	</form><br>
 	Alternative servers to reupload from:<br>
-	http://www.boomlings.com/database/downloadGJLevel22.php - Robtops server<br>
+	http://www.boomlings.com/database/downloadGJLevel22.php - Robtop\'s server<br>
 	http://pi.michaelbrabec.cz:9010/a/downloadGJLevel22.php - CvoltonGDPS<br>
 	http://teamhax.altervista.org/dbh/downloadGJLevel22.php - TeamHax GDPS';
 }

@@ -54,6 +54,8 @@ setacc:
   - makecreator
   - makeowner
   - makelevelowner
+  - transferlevelownership
+  - transferownership
 sharecp:
   - sharecp
   - sharecps
@@ -87,6 +89,9 @@ unrate:
   - unstarrate
 unsharecp:
   - unsharecp
+  - unsharecps
+  - unsharecreatorpoint
+  - unsharecreatorpoints
 unverifycoins:
   - unverifycoins
 verifycoins:

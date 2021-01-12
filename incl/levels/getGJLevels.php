@@ -161,7 +161,7 @@ if (!empty($_POST["page"]) AND is_numeric($_POST["page"])) {
 } else {
 	$offset = 0;
 }
-if ($type == 0 OR $type == 15) { //most liked, changed to 15 in GDW for whatever reason
+if ($type == 0 OR $type == 15) { // Most liked, changed to 15 in GDW for whatever reason
 	$order = "likes";
 	if (!empty($str) AND is_numeric($str)) {
 		$params = array("levelID = '$str'");
@@ -175,7 +175,7 @@ if ($type == 1) {
 if ($type == 2) {
 	$order = "likes";
 }
-if ($type == 3) { //TRENDING
+if ($type == 3) { // Trending
 	$uploadDate = time() - 604800;
 	$params[] = "uploadDate > $uploadDate ";
 	$order = "likes";

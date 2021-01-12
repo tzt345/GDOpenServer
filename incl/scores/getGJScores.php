@@ -25,10 +25,10 @@ $lbstring = "";
 $type = $ep->remove($_POST["type"]);
 if ($type == "top" OR $type == "creators" OR $type == "relative") {
 	if ($type == "top") {
-		$query = "SELECT * FROM users WHERE isBanned = 0 AND isLeaderboardBanned = 0 AND isRegistered = 1 AND stars > 0 ORDER BY stars DESC LIMIT 100";
+		$query = "SELECT * FROM users WHERE isBanned = 0 AND isLeaderboardBanned = 0 AND stars > 0 ORDER BY stars DESC LIMIT 100";
 	}
 	if ($type == "creators") {
-		$query = "SELECT * FROM users WHERE isBanned = 0 AND isLeaderboardBanned = 0 AND isCreatorBanned = 0 AND isRegistered = 1 ORDER BY creatorPoints DESC LIMIT 100";
+		$query = "SELECT * FROM users WHERE isBanned = 0 AND isLeaderboardBanned = 0 AND isCreatorBanned = 0 AND creatorPoints > 0 ORDER BY creatorPoints DESC LIMIT 100";
 	}
 	if ($type == "relative") {
 		$query = $db->prepare("SELECT * FROM users WHERE extID = :extID");
@@ -47,7 +47,6 @@ if ($type == "top" OR $type == "creators" OR $type == "relative") {
 				SELECT * FROM users
 				WHERE stars <= :stars
 				AND isLeaderboardBanned = 0
-				AND isRegistered = 1
 				ORDER BY stars DESC
 				LIMIT $count
 			)
@@ -56,7 +55,6 @@ if ($type == "top" OR $type == "creators" OR $type == "relative") {
 				SELECT * FROM users
 				WHERE stars >= :stars
 				AND isLeaderboardBanned = 0
-				AND isRegistered = 1
 				ORDER BY stars ASC
 				LIMIT $count
 			)
@@ -65,31 +63,36 @@ if ($type == "top" OR $type == "creators" OR $type == "relative") {
 	}
 	$query = $db->prepare($query);
 	$query->execute([':stars' => $stars, ':count' => $count]);
+	if ($query->rowCount() == 0) {
+		exit("-1");
+	}
 	$result = $query->fetchAll();
 	if ($type == "relative") {
 		$user = $result[0];
-		$extid = $user["extID"];
+		$extID = $user["extID"];
 		$query = $db->prepare("SET @rownum := 0;");
 		$query->execute();
 		$f = "SELECT rank, stars FROM (
 		SELECT @rownum := @rownum + 1 AS rank, stars, extID
-		FROM users WHERE isLeaderboardBanned = 0 AND isRegistered = 1 ORDER BY stars DESC
-		) as result";
+		FROM users WHERE isLeaderboardBanned = 0 ORDER BY stars DESC
+		) as result WHERE extID = :extID";
 		$query = $db->prepare($f);
-		$query->execute([':extid' => $extid]);
+		$query->execute([':extID' => $extID]);
 		$leaderboard = $query->fetchAll();
 		$leaderboard = $leaderboard[0];
 		$xi = $leaderboard["rank"] - 1;
 	}
 	foreach ($result as &$user) {
-		$extid = $user["extID"];
 		$xi++;
-		$lbstring .= "1:" . $user["userName"] . ":2:" . $user["userID"] . ":13:" . $user["coins"] . ":17:" . $user["userCoins"] . ":6:" . $xi . ":9:" . $user["icon"] . ":10:" . $user["color1"] . ":11:" . $user["color2"] . ":14:" . $user["iconType"] . ":15:" . $user["special"] . ":16:" . $extid . ":3:" . $user["stars"] . ":8:" . round($user["creatorPoints"], 0, PHP_ROUND_HALF_DOWN) . ":4:" . $user["demons"] . ":7:" . $extid . ":46:" . $user["diamonds"] . "|";
+		$lbstring .= "1:" . $user["userName"] . ":2:" . $user["userID"] . ":13:" . $user["coins"] . ":17:" . $user["userCoins"] . ":6:" . $xi . ":9:" . $user["icon"] . ":10:" . $user["color1"] . ":11:" . $user["color2"] . ":14:" . $user["iconType"] . ":15:" . $user["special"] . ":16:" . $user["extID"] . ":3:" . $user["stars"] . ":8:" . round($user["creatorPoints"], 0, PHP_ROUND_HALF_DOWN) . ":4:" . $user["demons"] . ":7:" . $user["extID"] . ":46:" . $user["diamonds"] . "|";
 	}
 }
 if ($type == "friends") {
 	$query = $db->prepare("SELECT * FROM friendships WHERE person1 = :extID OR person2 = :extID");
 	$query->execute([':extID' => $extID]);
+	if ($query->rowCount() == 0) {
+		exit("-1");
+	}
 	$result = $query->fetchAll();
 	$people = "";
 	foreach ($result as &$friendship) {
@@ -104,16 +107,18 @@ if ($type == "friends") {
 	$query->execute([':extID' => $extID]);
 	$result = $query->fetchAll();
 	foreach ($result as &$user) {
-		$extid = $user["extID"];
 		$xi++;
-		$lbstring .= "1:" . $user["userName"] . ":2:" . $user["userID"] . ":13:" . $user["coins"] . ":17:" . $user["userCoins"] . ":6:" . $xi . ":9:" . $user["icon"] . ":10:" . $user["color1"] . ":11:" . $user["color2"] . ":14:" . $user["iconType"] . ":15:" . $user["special"] . ":16:" . $extid . ":3:" . $user["stars"] . ":8:" . round($user["creatorPoints"], 0, PHP_ROUND_HALF_DOWN) . ":4:" . $user["demons"] . ":7:" . $extid . ":46:" . $user["diamonds"] . "|";
+		$lbstring .= "1:" . $user["userName"] . ":2:" . $user["userID"] . ":13:" . $user["coins"] . ":17:" . $user["userCoins"] . ":6:" . $xi . ":9:" . $user["icon"] . ":10:" . $user["color1"] . ":11:" . $user["color2"] . ":14:" . $user["iconType"] . ":15:" . $user["special"] . ":16:" . $user["extID"] . ":3:" . $user["stars"] . ":8:" . round($user["creatorPoints"], 0, PHP_ROUND_HALF_DOWN) . ":4:" . $user["demons"] . ":7:" . $user["extID"] . ":46:" . $user["diamonds"] . "|";
 	}
 }
 if ($type == "week") { // By Absolute, did some edits
 	$starsgain = array();
 	$xi = 0;
 	$query = $db->prepare("SELECT * FROM actions WHERE type = 9 AND timestamp > :time");
-	$query->execute([':time' => strtotime("last monday")]);
+	$query->execute([':time' => strtotime("last " . $gs->getWeekStartingDay(), strtotime("00:00:00"))]);
+	if ($query->rowCount() == 0) {
+		exit("-1");
+	}
 	$result = $query->fetchAll();
 	foreach ($result as &$gain) {
 		if (!empty($starsgain[$gain["account"]])) {

@@ -15,10 +15,13 @@ if ($gjpresult != 1) {
 }
 $levelID = $ep->remove($_POST["levelID"]);
 if (file_exists("../../data/levels/$levelID") AND is_numeric($levelID)) {
-	rename("../../data/levels/$levelID", "../../data/levels/deleted/$levelID");
 	$userID = $gs->getUserID($accountID);
 	$query = $db->prepare("DELETE from levels WHERE levelID = :levelID AND userID = :userID AND starStars = 0 LIMIT 1");
 	$query->execute([':levelID' => $levelID, ':userID' => $userID]);
+	if ($query->rowCount() == 0) {
+		exit("-1");
+	}
+	rename("../../data/levels/$levelID", "../../data/levels/deleted/$levelID");
 	$query6 = $db->prepare("INSERT INTO actions (type, value, timestamp, value2) VALUES (8, :itemID, :time, :ip)");
 	$query6->execute([':itemID' => $levelID, ':time' => time(), ':ip' => $userID]);
 	echo "1";

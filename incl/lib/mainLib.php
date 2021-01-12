@@ -683,16 +683,20 @@ class mainLib {
 			foreach ($roles as &$role) {
 				if ($role["commentColor"] != "000,000,000") {
 					return $role["commentColor"];
+				} else {
+					return "255,255,255";
 				}
 			}
 		}
 		$query = $db->prepare("SELECT commentColor FROM roles WHERE isDefault = 1");
 		$query->execute();
+		if ($query->rowCount() == 0) {
+			return "255,255,255";
+		}
 		$role = $query->fetch();
-		if ($query->rowCount() == 0) return "255,255,255";
 		return $role["commentColor"];
 	}
-	public function rateLevel($accountID, $levelID, $stars, $difficulty, $auto, $demon){
+	public function rateLevel($accountID, $levelID, $stars, $difficulty, $auto, $demon) {
 		require __DIR__ . "/connection.php";
 		//lets assume the perms check is done properly before
 		$query = $db->prepare("UPDATE levels SET starDemon = :demon, starAuto = :auto, starDifficulty = :diff, starStars = :stars, rateDate = :now WHERE levelID = :levelID");	
@@ -700,25 +704,25 @@ class mainLib {
 		$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES (1, :value, :value2, :levelID, :timestamp, :id)");
 		$query->execute([':value' => $this->getDiffFromStars($stars)["name"], ':timestamp' => time(), ':id' => $accountID, ':value2' => $stars, ':levelID' => $levelID]);
 	}
-	public function featureLevel($accountID, $levelID, $feature){
+	public function featureLevel($accountID, $levelID, $feature) {
 		require __DIR__ . "/connection.php";
 		$query = $db->prepare("UPDATE levels SET starFeatured = :feature, rateDate = :now WHERE levelID = :levelID");	
 		$query->execute([':feature' => $feature, ':levelID' => $levelID, ':now' => time()]);
 		$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES (2, :value, :levelID, :timestamp, :id)");
 		$query->execute([':value' => $feature, ':timestamp' => time(), ':id' => $accountID, ':levelID' => $levelID]);
 	}
-	public function verifyCoinsLevel($accountID, $levelID, $coins){
+	public function verifyCoinsLevel($accountID, $levelID, $coins) {
 		require __DIR__ . "/connection.php";
 		$query = $db->prepare("UPDATE levels SET starCoins = :coins WHERE levelID = :levelID");	
 		$query->execute([':coins' => $coins, ':levelID' => $levelID]);
 		$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES (3, :value, :levelID, :timestamp, :id)");
 		$query->execute([':value' => $coins, ':timestamp' => time(), ':id' => $accountID, ':levelID' => $levelID]);
 	}
-	public function songReupload($accountID, $url){
+	public function songReupload($accountID, $url) {
 		require __DIR__ . "/connection.php";
+		require __DIR__ . "/../../config/reupload.php";
 		require_once __DIR__ . "/exploitPatch.php";
 		$ep = new exploitPatch();
-		require __DIR__ . "/../../config/reupload.php";
 		if ($songReupload == -1) {
 			exit("-3");
 		}
@@ -756,11 +760,11 @@ class mainLib {
 				return "-3";
 			}
 			if ($songReupload != 0) {
-				$timestamp = time();
 				//checking the amount of reuploads
 				if ($isSongReuploadLimitDaily == 1) {
+					$dailyTime = strtotime("-1 days", strtotime("00:00:00"));
 					$query = $db->prepare("SELECT value2 FROM actions WHERE type = 18 AND value = :accountID AND timestamp > :timestamp");
-					$query->execute([':accountID' => $accountID, ':timestamp' => $timestamp - 86400]);
+					$query->execute([':accountID' => $accountID, ':timestamp' => $dailyTime]);
 				} else {
 					$query = $db->prepare("SELECT value2 FROM actions WHERE type = 18 AND value = :accountID");
 					$query->execute([':accountID' => $accountID]);
@@ -768,20 +772,20 @@ class mainLib {
 				
 				if ($query->rowCount() == 0) {
 					$query = $db->prepare("INSERT INTO actions (type, value, value2, timestamp) VALUES (18, :accountID, 1, :timestamp)");
-					$query->execute([':accountID' => $accountID, ':timestamp' => $timestamp]);
+					$query->execute([':accountID' => $accountID, ':timestamp' => time()]);
 					$reuploads = 1;
 				} else {
 					$reuploads = $query->fetchColumn();
 					if ($isSongReuploadLimitDaily == 1) {
 						$query = $db->prepare("UPDATE actions SET value2 = " . ($reuploads + 1) . " WHERE type = 18 AND value = :accountID AND timestamp > :timestamp");
-						$query->execute([':accountID' => $accountID, ':timestamp' => $timestamp - 86400]);
+						$query->execute([':accountID' => $accountID, ':timestamp' => $dailyTime]);
 					} else {
 						$query = $db->prepare("UPDATE actions SET value2 = " . ($reuploads + 1) . " WHERE type = 18 AND value = :accountID");
 						$query->execute([':accountID' => $accountID]);
 					}
 				}
 			} else {
-				$reuploads = -1;
+				$reuploads = -2;
 			}
 				
 			if ($reuploads < $songReupload) {
@@ -852,7 +856,7 @@ class mainLib {
 				$banExpired = $db->prepare("UPDATE users SET $banType = 0, $banTime = '', $banReason = '' WHERE userID = :userID");
 				$banExpired->execute([':userID' => $ID]);
 				$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, value4, timestamp, account) VALUES (15, :type, :value, 0, 'Auto-unban: Ban expired', :timestamp, :id)");
-				$query->execute([':type' => $type, ':value' => $userName, ':timestamp' => $uploadDate, ':id' => $botAID]);
+				$query->execute([':type' => $type, ':value' => $userName, ':timestamp' => $uploadDate, ':id' => $this->getBotAccountID]);
 				return -1;
 			} else {
 				return 1;
@@ -906,5 +910,35 @@ class mainLib {
 	}
 	public function checkAccountVerification($ID, $isAccountID = 0) {
 		
+	}
+	public function getWeekStartingDay() {
+		require "../../config/server.php";
+		switch ($weekStartingDay) {
+			case 1:
+				$day = "monday";
+				break;
+			case 2:
+				$day = "tuesday";
+				break;
+			case 3:
+				$day = "wednesday";
+				break;
+			case 4:
+				$day = "thursday";
+				break;
+			case 5:
+				$day = "friday";
+				break;
+			case 6:
+				$day = "saturday";
+				break;
+			case 7:
+				$day = "sunday";
+				break;
+			default:
+				$day = "monday"
+				break;
+		}
+		return $day;
 	}
 }

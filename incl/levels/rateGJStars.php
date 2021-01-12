@@ -7,7 +7,7 @@ require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
-if (!isset($_POST["gjp"]) OR !isset($_POST["rating"]) OR !isset($_POST["levelID"]) OR !isset($_POST["accountID"])) {
+if (!isset($_POST["gjp"]) OR !isset($_POST["accountID"]) OR !isset($_POST["stars"]) OR !isset($_POST["levelID"])) {
 	exit("-1");
 }
 $gjp = $ep->remove($_POST["gjp"]);

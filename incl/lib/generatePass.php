@@ -2,9 +2,9 @@
 class generatePass {
 	public function isValidUsrname($userName, $pass) {
 		require __DIR__ . "/connection.php";
+		require __DIR__ . "/../../config/security.php";
 		require_once __DIR__ . "/mainLib.php";
 		$gs = new mainLib();
-		require __DIR__ . "/../../config/security.php";
 		$ip = $gs->getIP();
 		$newtime = time() - 3600;
 		$query6 = $db->prepare("SELECT count(*) FROM actions WHERE type = 6 AND timestamp > :time AND value2 = :ip");

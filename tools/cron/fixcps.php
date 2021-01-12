@@ -19,7 +19,7 @@ foreach ($result as $user) {
 	$query2 = $db->prepare("SELECT count(*) FROM levels WHERE userID = :userID AND starStars != 0 AND isCPShared = 0");
 	$query2->execute([':userID' => $userID]);
 	$creatorpoints = $query2->fetchColumn();
-	$creatorpoints = $creatorpoints * $rateCP;
+	$creatorpoints = $creatorpoints * $starCP;
 	$cplog .= $user["userName"] . " - " . $creatorpoints . "\r\n";
 	//getting featured lvls count
 	$query3 = $db->prepare("SELECT count(*) FROM levels WHERE userID = :userID AND starFeatured != 0 AND isCPShared = 0");
@@ -60,7 +60,7 @@ $result = $query->fetchAll();
 foreach ($result as $level) {
 	$deservedcp = 0;
 	if ($level["starStars"] != 0) {
-		$deservedcp += $rateCP;
+		$deservedcp += $starCP;
 	}
 	if ($level["starFeatured"] != 0) {
 		$deservedcp += $featureCP;

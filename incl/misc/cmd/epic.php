@@ -11,7 +11,7 @@ if ($result["starEpic"] == 0) {
 }
 $deservedCP += $epicCP;
 if ($result["starStars"] != 0) {
-    $deservedCP += $rateCP;
+    $deservedCP += $starCP;
 }
 if ($result["starFeatured"] != 0) {
     $deservedCP += $featureCP;
@@ -69,5 +69,5 @@ if ($result["starEpic"] == 0) {
 } */
 $query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES (4, 1, :levelID, :timestamp, :id)");
 $query->execute([':timestamp' => $uploadDate, ':id' => $accountID, ':levelID' => $levelID]);
-exit("temp_0_The level is now Epic.");
+exit("temp_0_The level is now Epic."); // epic moment
 ?>

@@ -33,7 +33,7 @@ if (isset($commentArray[4]) AND is_numeric($commentArray[4])) {
 } else {
     $starCoins = 0;
 }
-
+$response = "";
 $featureLevel = 0;
 if ($starStars != 0) {
     $response .= ucfirst($commentArray[1]) . " with $starStars stars";
@@ -44,7 +44,7 @@ if ($starStars != 0) {
         if ($result["isCPShared"] == 1) {
             $query3 = $db->prepare("SELECT userID FROM cpshares WHERE levelID = :levelID");
             $query3->execute([':levelID' => $levelID]);
-            $deservedcp = $rateCP;
+            $deservedcp = $starCP;
             if ($gs->checkPermission($accountID, "Feature") AND $result["starFeatured"] != 0) {
                 $deservedcp += $featureCP;
                 $featureLevel = 1;
@@ -63,7 +63,7 @@ if ($starStars != 0) {
             }
         } else {
             $query4 = $db->prepare("UPDATE users SET creatorPoints = creatorPoints + :addCP WHERE extID = :extID");
-            $query4->execute([':extID' => $targetExtID, ':addCP' => $rateCP]);
+            $query4->execute([':extID' => $targetExtID, ':addCP' => $starCP]);
         }
     }
 } else {

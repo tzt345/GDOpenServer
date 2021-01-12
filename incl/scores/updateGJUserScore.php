@@ -83,12 +83,12 @@ if (isset($_POST["accBall"])) {
 } else {
 	$accBall = 0;
 }
-if (isset($_POST["accBird"])) {
+if (isset($_POST["accBird"])) { // UFO
 	$accBird = $ep->remove($_POST["accBird"]);
 } else {
 	$accBird = 0;
 }
-if (isset($_POST["accDart"])) {
+if (isset($_POST["accDart"])) { // Wave
 	$accDart = $ep->remove($_POST["accDart"]);
 } else {
 	$accDart = 0;

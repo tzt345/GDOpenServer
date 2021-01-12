@@ -25,7 +25,7 @@ $query->execute([':levelID' => $levelID]);
 $result = $query->fetch();
 $deservedcp = 0;
 if ($result["starStars"] != 0) {
-    $deservedcp += $rateCP;
+    $deservedcp += $starCP;
 }
 if ($result["starFeatured"] != 0) {
     $deservedcp += $featureCP;
