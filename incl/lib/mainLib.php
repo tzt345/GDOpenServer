@@ -529,7 +529,7 @@ class mainLib {
 		$query = $db->prepare("SELECT isAdmin FROM accounts WHERE accountID = :accountID");
 		$query->execute([':accountID' => $accountID]);
 		$isAdmin = $query->fetchColumn();
-		if($isAdmin == 1){
+		if ($isAdmin == 1) {
 			return true;
 		}
 		
@@ -545,7 +545,7 @@ class mainLib {
 			$query = $db->prepare("SELECT $permission FROM roles WHERE roleID IN ($roleIDlist) ORDER BY priority DESC");
 			$query->execute();
 			$roles = $query->fetchAll();
-			foreach($roles as &$role) {
+			foreach ($roles as &$role) {
 				if ($role[$permission] == 1) {
 					return true;
 				} else {
@@ -936,7 +936,7 @@ class mainLib {
 				$day = "sunday";
 				break;
 			default:
-				$day = "monday"
+				$day = "monday";
 				break;
 		}
 		return $day;

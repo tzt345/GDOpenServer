@@ -66,9 +66,11 @@ if (isset($_POST["userName"]) AND isset($_POST["email"]) AND isset($_POST["passw
 	Username: <input type="text" name="userName" minlength=3 maxlength=15><br>
 	Password: <input type="password" name="password" minlength=6 maxlength=20><br>
 	Repeat Password: <input type="password" name="repeatPassword" minlength=6 maxlength=20><br>
-	Email: <input type="email" name="email" maxlength=50>
-<?php if ($accountVerification == 2) { ?> (Make sure to enter your real E-Mail!)
-<?php } if ($accountVerification >= 1) { /* practically useless, but since I haven't worked on an auto-expiry system for unverified accounts, this will stay to prevent bots */ ?> 
+	Email
+<?php if ($accountVerification == 2) { ?>  (Make sure to enter your real E-Mail!)
+<?php } ?>
+: <input type="email" name="email" maxlength=50>
+<?php if ($accountVerification >= 1) { /* practically useless, but since I haven't worked on an auto-expiry system for unverified accounts, this will stay to prevent bots */ ?> 
 <br>Verify Captcha: <input name="captcha" type="text"><br>
 <img src="../../incl/misc/captchaGen.php" /><br><br>
 <?php } ?>
