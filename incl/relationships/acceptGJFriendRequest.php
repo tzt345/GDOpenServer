@@ -5,7 +5,7 @@ require_once "../lib/GJPCheck.php";
 $GJPCheck = new GJPCheck();
 require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
-if (empty($_POST["gjp"]) OR empty($_POST["requestID"]) OR empty($_POST["accountID"])) {
+if (empty($_POST["gjp"]) OR empty($_POST["accountID"]) OR empty($_POST["requestID"])) {
 	exit("-1");
 }
 $gjp = $ep->remove($_POST["gjp"]);
@@ -21,14 +21,14 @@ $query->execute([':requestID' => $requestID]);
 $request = $query->fetch();
 $reqAccountID = $request["accountID"];
 $toAccountID = $request["toAccountID"];
-if ($toAccountID != $accountID) {
+if ($reqAccountID == $accountID OR $toAccountID != $accountID) {
 	exit("-1");
 }
 $query = $db->prepare("INSERT INTO friendships (person1, person2, isNew1, isNew2) VALUES (:accountID, :targetAccountID, 1, 1)");
 $query->execute([':accountID' => $reqAccountID, ':targetAccountID' => $toAccountID]);
-//REMOVING THE REQUEST
+// REMOVING THE REQUEST
 $query = $db->prepare("DELETE from friendreqs WHERE ID = :requestID LIMIT 1");
 $query->execute([':requestID' => $requestID]);
-//Success response
+// Success response
 echo "1";
 ?>

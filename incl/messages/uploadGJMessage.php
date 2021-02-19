@@ -7,14 +7,20 @@ require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
+if (empty($_POST["gjp"]) OR empty($_POST["accountID"]) OR empty($_POST["toAccountID"]) OR empty($_POST["subject"])) OR empty($_POST["body"]))) {
+	exit("-1");
+}
 $gjp = $ep->remove($_POST["gjp"]);
 $accountID = $ep->remove($_POST["accountID"]);
 $gjpresult = $GJPCheck->check($gjp, $accountID);
 if ($gjpresult != 1) {
 	exit("-1");
 }
-$subject = $ep->remove($_POST["subject"]);
 $toAccountID = $ep->number($_POST["toAccountID"]);
+if ($accountID == $toAccountID) {
+	exit("-1");
+}
+$subject = $ep->remove($_POST["subject"]);
 $body = $ep->remove($_POST["body"]);
 
 $query2 = $db->prepare("SELECT count(*) FROM blocks WHERE person1 = :toAccountID AND person2 = :accountID LIMIT 1");
