@@ -1,6 +1,7 @@
 <!-- this should be edited with php later on, I only made this so I don't have to worry about making a navbar in the future -->
 <style>
-body {margin:0;font-family:Verdana;}
+body {margin:0;font-family:Verdana;color:white;background:url("https://media.discordapp.net/attachments/756123944502820894/816289742408253460/gitmesh.png")}
+.content {margin:1% 10%;word-wrap: break-word}
 
 ul {
   list-style-type: none;
@@ -44,6 +45,7 @@ li.dropdown {
   text-decoration: none;
   display: block;
   text-align: left;
+  background-color: white;
 }
 
 .dropdown-content a:hover {background-color: #f1f1f1;}
@@ -85,3 +87,6 @@ li.dropdown {
   <li style="float:right"><a href="#accman">Welcome you dumb idiot~</a></li>
 </ul>
 </body>
+<div class="content">
+haha xml ordering go brrr
+</div>
