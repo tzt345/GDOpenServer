@@ -7,6 +7,7 @@ require_once "../lib/GJPCheck.php";
 $GJPCheck = new GJPCheck();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
+require "../../config/misc.php";
 $reqstring = "";
 if (empty($_POST["accountID"]) OR (!isset($_POST["page"]) OR !is_numeric($_POST["page"])) OR empty($_POST["gjp"])) {
 	exit("-1");
@@ -51,7 +52,11 @@ foreach ($result as &$request) {
 	$query->execute([':requester' => $requester]);
 	$result2 = $query->fetchAll();
 	$user = $result2[0];
-	$uploadTime = $gs->makeTime($request["uploadDate"]);
+	if ($timestampType == 0) {
+		$uploadTime = $gs->makeTime($request["uploadDate"]);
+	} else {
+		$uploadTime = date("d/m/Y G.i", $request["uploadDate"]);
+	}
 	if (is_numeric($user["extID"])) {
 		$extid = $user["extID"];
 	} else {

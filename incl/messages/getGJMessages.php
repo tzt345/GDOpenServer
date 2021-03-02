@@ -7,6 +7,7 @@ require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
+require "../../config/misc.php";
 $msgstring = "";
 //code begins
 $toAccountID = $ep->remove($_POST["accountID"]);
@@ -37,7 +38,11 @@ if ($msgcount == 0) {
 }
 foreach ($result as &$message1) {
 	if ($message1["messageID"] != "") {
-		$uploadDate = $gs->makeTime($message1["timestamp"]);
+		if ($timestampType == 0) {
+			$uploadDate = $gs->makeTime($message1["timestamp"]);
+		} else {
+			$uploadDate = date("d/m/Y G.i", $message1["timestamp"]);
+		}
 		if ($getSent == 1) {
 			$accountID = $message1["toAccountID"];
 		} else {

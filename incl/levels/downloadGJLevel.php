@@ -7,6 +7,7 @@ require_once "../lib/mainLib.php";
 $gs = new mainLib();
 require_once "../lib/generateHash.php";
 $hash = new generateHash();
+require "../../config/misc.php";
 $gameVersion = 1;
 if (!empty($_POST["gameVersion"])) {
 	$gameVersion = $ep->remove($_POST["gameVersion"]);
@@ -63,8 +64,13 @@ if ($maximumAccountDownloads != 0 AND $query6->fetchColumn() < $maximumAccountDo
 	$query6 = $db->prepare("INSERT INTO actions (type, value, timestamp, value2) VALUES (7, :itemID, :time, :ip)");
 	$query6->execute([':itemID' => $levelID, ':time' => $now, ':ip' => $ip]);
 }
-$uploadDate = $gs->makeTime($result["uploadDate"]);
-$updateDate = $gs->makeTime($result["updateDate"]);
+if ($timestampType == 0) {
+	$uploadDate = $gs->makeTime($result["uploadDate"]);
+	$updateDate = $gs->makeTime($result["updateDate"]);
+} else {
+	$uploadDate = date("d-m-Y G-i", $result["uploadDate"]);
+	$updateDate = date("d-m-Y G-i", $result["updateDate"]);
+}
 //password xor
 $desc = $result["levelDesc"];
 if ($gs->checkModIPPermission("actionFreeCopy") == 1) {

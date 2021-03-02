@@ -25,9 +25,9 @@ $query = $db->prepare($e);
 $query->execute();
 $extid = $user["extID"];
 $f = "SELECT rank, stars FROM (
-				SELECT @rownum := @rownum + 1 AS rank, stars, extID, isBanned
-				FROM users WHERE isBanned = 0 AND gameVersion > 19 ORDER BY stars DESC
-				) as result WHERE extID = :extid";
+SELECT @rownum := @rownum + 1 AS rank, stars, extID, isBanned
+FROM users WHERE isBanned = 0 AND gameVersion > 19 ORDER BY stars DESC
+) as result WHERE extID = :extid";
 $query = $db->prepare($f);
 $query->execute([':extid' => $extid]);
 $rank = $query->fetchColumn();
@@ -35,9 +35,9 @@ $e = "SET @rownum := 0;";
 $query = $db->prepare($e);
 $query->execute();
 $f = "SELECT rank, creatorPoints FROM (
-				SELECT @rownum := @rownum + 1 AS rank, creatorPoints, extID, isCreatorBanned
-				FROM users WHERE isCreatorBanned = 0 ORDER BY creatorPoints DESC
-				) as result WHERE extID = :extid";
+SELECT @rownum := @rownum + 1 AS rank, creatorPoints, extID, isCreatorBanned
+FROM users WHERE isCreatorBanned = 0 ORDER BY creatorPoints DESC
+) as result WHERE extID = :extid";
 $query = $db->prepare($f);
 $query->execute([':extid' => $extid]);
 $crearank = $query->fetchColumn();

@@ -13,11 +13,11 @@ $cmds = new Commands();
 if (!empty($_POST["accountID"])) {
 	$id = $ep->remove($_POST["accountID"]);
 	$gjp = $ep->remove($_POST["gjp"]);
-	$register = 1;
 	$gjpresult = $GJPCheck->check($gjp, $id);
 	if ($gjpresult != 1) {
 		exit("-1");
 	}
+	$register = 1;
 } elseif (!empty($_POST["udid"]) AND !is_numeric($_POST["udid"])) {
 	$id = $ep->remove($_POST["udid"]);
 	$register = 0;
@@ -51,7 +51,7 @@ if ($result["isCommentBanned"] == 1) {
 	if (($result["commentBanTime"] - $uploadDate) <= 0 AND $result["commentBanTime"] != 0) {
 		$banExpired = $db->prepare("UPDATE users SET isCommentBanned = 0, commentBanTime = '', commentBanReason = '' WHERE userID = :userID");
 		$banExpired->execute([':userID' => $userID]);
-		$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES (15, 4, :value, 0, :timestamp, :id)");
+		$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, value4, timestamp, account) VALUES (15, 4, :value, 0, 'Auto-unban: Ban expired', :timestamp, :id)");
 		$query->execute([':value' => $userName, ':timestamp' => $uploadDate, ':id' => $gs->getBotAccountID()]);
 	} else {
 		if ($gameVersion >= 21) {
@@ -69,17 +69,6 @@ if ($result["isCommentBanned"] == 1) {
 		} else {
 			exit("-1");
 		}
-	}
-} elseif ($result["isCommentBanned"] == 2) {
-	if ($gameVersion >= 21) {
-		if (isset($result["commentBanReason"])) {
-			$reason = $result["commentBanReason"];
-		} else {
-			$reason = "No reason specified";
-		}
-		exit("temp_0_" . $reason);
-	} else {
-		exit("-1");
 	}
 }
 if ($gameVersion < 20) {
@@ -100,16 +89,16 @@ if ($register == 1) {
 		} else {
 			$result = $query2->fetchColumn();
 			if ($result > 100) {
-				$query = $db->prepare("UPDATE users SET isLeaderboardBanned = 1 WHERE extID = :accountID");
-				$query->execute([':accountID' => $id]);
+				$query = $db->prepare("UPDATE users SET isLeaderboardBanned = 1, leaderboardBanTime = 0, leaderboardBanReason = 'Auto-Ban: Invalid percentage in level :levelID' WHERE extID = :accountID");
+				$query->execute([':accountID' => $id, ':levelID' => $levelID]);
 			} elseif ($result < $percent) {
 				$query = $db->prepare("UPDATE levelscores SET percent = :percent, uploadDate = :uploadDate WHERE accountID = :accountID AND levelID = :levelID");
 				$query->execute([':accountID' => $id, ':levelID' => $levelID, ':percent' => $percent, ':uploadDate' => $uploadDate]);
 			}
 		}
 	} else {
-		$query = $db->prepare("UPDATE users SET isLeaderboardBanned = 1 WHERE extID = :accountID");
-		$query->execute([':accountID' => $id]);
+		$query = $db->prepare("UPDATE users SET isLeaderboardBanned = 1, leaderboardBanTime = 0, leaderboardBanReason = 'Auto-Ban: Invalid percentage in level :levelID' WHERE extID = :accountID");
+		$query->execute([':accountID' => $id, ':levelID' => $levelID]);
 	}
 }
 echo "1";

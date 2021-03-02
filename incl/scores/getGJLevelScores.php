@@ -7,6 +7,7 @@ require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
+require "../../config/misc.php";
 //here im getting all the data
 if (empty($_POST["gjp"]) OR empty($_POST["accountID"]) OR empty($_POST["levelID"])) {
 	exit("-1");
@@ -87,7 +88,11 @@ foreach ($result as &$score) {
 	$user = $query2->fetchAll();
 	if ($query2->rowCount() == 0) return -1;
 	$user = $user[0];
-	$time = $gs->makeTime($score["uploadDate"]);
+	if ($timestampType == 0) {
+		$time = $gs->makeTime($score["uploadDate"]);
+	} else {
+		$time = date("d/m/Y G.i", $score["uploadDate"]);
+	}
 	$lvlscorestring .= "1:" . $user["userName"] . ":2:" . $user["userID"] . ":9:" . $user["icon"] . ":10:" . $user["color1"] . ":11:" . $user["color2"] . ":14:" . $user["iconType"] . ":15:" . $user["special"] . ":16:" . $user["extID"] . ":3:" . $score["percent"] . ":6:" . $place . ":13:" . $score["coins"] . ":42:" . $time . "|";
 	$place++;
 }

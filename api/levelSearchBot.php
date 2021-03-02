@@ -4,6 +4,7 @@ require_once "../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../incl/lib/mainLib.php";
 $gs = new mainLib();
+require "../config/misc.php";
 $str = $ep->remove($_GET["str"]);
 $difficulty = "";
 $original = "";
@@ -43,8 +44,13 @@ if ($levelInfo["starEpic"] != 0) {
 //getting length
 $length = $gs->getLength($levelInfo["levelLength"]);
 //times
-$uploadDate = $gs->makeTime($levelInfo["uploadDate"]);
-$updateDate = $gs->makeTime($levelInfo["updateDate"]);
+if ($timestampType == 0) {
+	$uploadDate = $gs->makeTime($levelInfo["uploadDate"]);
+	$updateDate = $gs->makeTime($levelInfo["updateDate"]);
+} else {
+	$uploadDate = date("d-m-Y G-i", $levelInfo["uploadDate"]);
+	$updateDate = date("d-m-Y G-i", $levelInfo["updateDate"]);
+}
 //getting original level
 if ($levelInfo["original"] != 0) {
 	$original .= "\r\n**Original:** " . $levelInfo["original"];

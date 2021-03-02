@@ -7,6 +7,7 @@ require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
+require "../../config/misc.php";
 $accountID = $ep->remove($_POST["accountID"]);
 $gjp = $ep->remove($_POST["gjp"]);
 $gjpresult = $GJPCheck->check($gjp, $accountID);
@@ -32,6 +33,10 @@ if ($isSender != 1) {
 $query = $db->prepare("SELECT userName, userID FROM users WHERE extID = :accountID");
 $query->execute([':accountID' => $accountID]);
 $result2 = $query->fetch();
-$uploadDate = $gs->makeTime($result["timestamp"]);
+if ($timestampType == 0) {
+	$uploadDate = $gs->makeTime($result["timestamp"]);
+} else {
+	$uploadDate = date("d/m/Y G.i", $result["timestamp"]);
+}
 echo "6:" . $result2["userName"] . ":3:" . $result2["userID"] . ":2:" . $accountID . ":1:" . $messageID . ":4:" . $result["subject"] . ":8:" . $result["isNew"] . ":9:" . $isSender . ":5:" . $result["body"] . ":7:" . $uploadDate;
 ?>

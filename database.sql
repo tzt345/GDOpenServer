@@ -51,6 +51,7 @@ CREATE TABLE `accounts` (
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `verifySecret` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `isVerified` int(11) NOT NULL DEFAULT 1,
+  `isEmailVerified` int(11) NOT NULL DEFAULT 0,
   `isDisabled` int(11) NOT NULL DEFAULT 0,
   `saveData` longtext COLLATE utf8_unicode_ci NOT NULL,
   `isAdmin` int(11) NOT NULL DEFAULT 0,
@@ -848,7 +849,7 @@ ALTER TABLE `gauntlets`
 -- AUTO_INCREMENT for table `levels`
 --
 ALTER TABLE `levels`
-  MODIFY `levelID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `levelID` int(11) NOT NULL AUTO_INCREMENT = 128;
 
 --
 -- AUTO_INCREMENT for table `levelscores`

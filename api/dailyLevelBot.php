@@ -2,6 +2,7 @@
 require "../incl/lib/connection.php";
 require_once "../incl/lib/mainLib.php";
 $gs = new mainLib();
+require "../config/misc.php";
 $difficulty = "";
 //getting level data
 echo "***CURRENT DAILY LEVEL***\r\n";
@@ -42,8 +43,13 @@ if ($levelInfo["starEpic"] != 0) {
 //getting length
 $length = $gs->getLength($levelInfo["levelLength"]);
 //times
-$uploadDate = $gs->makeTime($levelInfo["uploadDate"]);
-$updateDate = $gs->makeTime($levelInfo["updateDate"]);
+if ($timestampType == 0) {
+	$uploadDate = $gs->makeTime($levelInfo["uploadDate"]);
+	$updateDate = $gs->makeTime($levelInfo["updateDate"]);
+} else {
+	$uploadDate = date("d-m-Y G-i", $levelInfo["uploadDate"]);
+	$updateDate = date("d-m-Y G-i", $levelInfo["updateDate"]);
+}
 //getting original level
 if ($levelInfo["original"] != 0) {
 	$original = "\r\n**Original:** " . $levelInfo["original"];
@@ -81,7 +87,11 @@ if ($levelInfo["starCoins"] != 0) {
 }
 //gameVersion
 $gameVersion = $gs->getGameVersion($levelInfo["gameVersion"]);
-$dailyTime = $gs->makeTime($dailyinfo["timestamp"]);
+if ($timestampType == 0) {
+	$dailytime = $gs->makeTime($dailyinfo["timestamp"]);
+} else {
+	$dailytime = date("d-m-Y G-i", $dailyinfo["timestamp"]);
+}
 //outputting everything
 echo "**NAME:** " . $levelInfo["levelName"] . "
 **ID:** " . $levelInfo["levelID"] . "

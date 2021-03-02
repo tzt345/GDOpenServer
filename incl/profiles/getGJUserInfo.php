@@ -7,6 +7,7 @@ require_once "../lib/GJPCheck.php";
 $GJPCheck = new GJPCheck();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
+require "../../config/misc.php";
 $appendix = "";
 $extid = $ep->number($_POST["targetAccountID"]);
 if (!empty($_POST["gjp"]) AND !empty($_POST["accountID"])) {
@@ -90,7 +91,11 @@ if ($me == $extid) {
 	$INCrequests = $query->rowCount();
 	$INCrequestinfo = $query->fetch();
 	if ($INCrequests > 0) {
-		$uploadDate = $gs->makeTime($INCrequestinfo["uploadDate"]);
+		if ($timestampType == 0) {
+			$uploaddate = $gs->makeTime($INCrequestinfo["uploadDate"]);
+		} else {
+			$uploaddate = date("d/m/Y G.i", $INCrequestinfo["uploadDate"]);
+		}
 		$friendstate = 3;
 	}
 	//check if OUTCOMING friend request

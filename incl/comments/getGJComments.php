@@ -5,6 +5,7 @@ require_once "../lib/exploitPatch.php";
 $ep = new exploitPatch();
 require_once "../lib/mainLib.php";
 $gs = new mainLib();
+require "../config/misc.php";
 $gameVersion = 2;
 if (!empty($_POST["gameVersion"])) {
 	$gameVersion = $ep->remove($_POST["gameVersion"]);
@@ -56,7 +57,11 @@ $query->execute([':levelID' => $levelID]);
 $result = $query->fetchAll();
 foreach ($result as &$comment1) {
 	if ($comment1["commentID"] != "") {
-		$uploadDate = $gs->makeTime($comment1["timestamp"]);
+		if ($timestampType == 0) {
+			$uploadDate = $gs->makeTime($comment1["timestamp"]);
+		} else {
+			$uploadDate = date("d/m/Y G.i", $comment1["timestamp"]);
+		}
 		$actualcomment = $comment1["comment"];
 		if ($gameVersion < 20) {
 			$actualcomment = base64_decode($actualcomment);

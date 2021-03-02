@@ -3,6 +3,7 @@
 require "../../incl/lib/connection.php";
 require_once "../../incl/lib/mainLib.php";
 $gs = new mainLib();
+require "../../config/misc.php";
 $query = $db->prepare("SELECT roleID, roleName FROM roles WHERE priority > 0 ORDER BY priority DESC");
 $query->execute();
 $result = $query->fetchAll();
@@ -16,7 +17,11 @@ foreach ($result as &$role) {
 		$query = $db->prepare("SELECT userName, lastPlayed FROM users WHERE extID = :id");
 		$query->execute([':id' => $user["accountID"]]);
 		$account = $query->fetch();
-		$time = $gs->makeTime($account["lastPlayed"]);
+		if ($timestampType == 0) {
+			$time = $gs->makeTime($account["lastPlayed"]);
+		} else {
+			$time = date("d/m/Y G:i:s", $account["lastPlayed"]);
+		}
 		$userName = htmlspecialchars($account["userName"], ENT_QUOTES);
 		echo "<tr><td>" . $userName . "</td><td>$time</td></tr>";
 	}
