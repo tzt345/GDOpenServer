@@ -789,7 +789,7 @@ ALTER TABLE `acccomments`
 -- AUTO_INCREMENT for table `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `accountID` int(11) NOT NULL AUTO_INCREMENT=71;
+  MODIFY `accountID` int(11) NOT NULL AUTO_INCREMENT=71 ;
 
 --
 -- AUTO_INCREMENT for table `actions`
@@ -849,7 +849,7 @@ ALTER TABLE `gauntlets`
 -- AUTO_INCREMENT for table `levels`
 --
 ALTER TABLE `levels`
-  MODIFY `levelID` int(11) NOT NULL AUTO_INCREMENT=128;
+  MODIFY `levelID` int(11) NOT NULL AUTO_INCREMENT=128 ;
 
 --
 -- AUTO_INCREMENT for table `levelscores`
@@ -927,7 +927,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `songs`
 --
 ALTER TABLE `songs`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT=5000000;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT=5000000 ;
 
 --
 -- AUTO_INCREMENT for table `suggest`
